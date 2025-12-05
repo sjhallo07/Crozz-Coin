@@ -5,6 +5,8 @@
         "rust-lang.rust-analyzer",
         "esbenp.prettier-vscode",
         "ms-playwright.playwright",
-        "dbaeumer.vscode-eslint"
+        "dbaeumer.vscode-eslint",
+        "move.move-analyzer",
+        "movebit.sui-move-analyzer"
     ]
 }
