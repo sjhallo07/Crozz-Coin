@@ -37,6 +37,30 @@ import {
   CROZZ_ESCROW_IMPLEMENTATION,
 } from "./escrowExamples";
 
+import {
+  EVENT_STRUCTURE,
+  LOCK_EVENT_EMISSION,
+  GAME_STATE_EVENT_EMISSION,
+  TRADE_EVENT_EMISSION,
+  EVENT_FILTERS,
+  TYPESCRIPT_EVENT_QUERIES,
+  EVENT_MONITORING,
+  GRAPHQL_EVENT_QUERIES,
+  CROZZ_EVENT_STRATEGY,
+  EVENT_DATABASE_SCHEMA,
+  EVENT_PROCESSING_PATTERNS,
+} from "./eventsConfig";
+
+import {
+  EventProcessor,
+  EventQueryBuilder,
+  EventStatsCollector,
+  createCrozzEventProcessor,
+  handleLockObjects,
+  handleEscrowObjects,
+  handleGameEvents,
+} from "./eventHandlers";
+
 /**
  * SERVICE ARCHITECTURE MAPPING
  *
@@ -113,6 +137,103 @@ export const SERVICE_ARCHITECTURE = {
       historicalQueries: "Query historical data",
       realTimeSync: "Keep up with network",
     },
+  },
+
+  /**
+   * 3.5 EVENT MONITORING SERVICE
+   * Implements: Sui Events System from Using Events guide
+   * Purpose: Track and monitor on-chain activity
+   */
+  eventMonitoringService: {
+    concept: "Event emission, querying, and monitoring",
+    implementation: "src/config/eventsConfig.ts, src/config/eventHandlers.ts, src/config/graphqlEvents.ts",
+    documentation: "https://docs.sui.io/guides/developer/sui-101/using-events",
+    features: {
+      eventEmission: "Move event::emit in contracts",
+      eventQuerying: "Query events via RPC or GraphQL",
+      eventPolling: "Continuous event monitoring",
+      eventSubscriptions: "Real-time WebSocket subscriptions",
+    },
+    eventStructure: EVENT_STRUCTURE,
+    queryFilters: EVENT_FILTERS,
+    processingPatterns: EVENT_PROCESSING_PATTERNS,
+    
+    moveEventPatterns: {
+      lockEvents: {
+        title: "Lock Event Pattern",
+        config: LOCK_EVENT_EMISSION,
+        handler: handleLockObjects,
+        useCase: "Track secure object locking and escrow creation"
+      },
+      gameStateEvents: {
+        title: "Game State Events",
+        config: GAME_STATE_EVENT_EMISSION,
+        handler: handleGameEvents,
+        useCase: "Monitor game lifecycle and player moves"
+      },
+      tradeEvents: {
+        title: "Trade/Escrow Events",
+        config: TRADE_EVENT_EMISSION,
+        handler: handleEscrowObjects,
+        useCase: "Track atomic swaps and trustless trades"
+      }
+    },
+
+    queryingMethods: {
+      jsonRpc: {
+        method: "suix_queryEvents",
+        client: "SuiClient.queryEvents()",
+        implementation: TYPESCRIPT_EVENT_QUERIES,
+        advantage: "Supported everywhere, simple API"
+      },
+      graphQL: {
+        method: "GraphQL events query",
+        status: "Early-stage feature",
+        implementation: GRAPHQL_EVENT_QUERIES,
+        advantage: "Type-safe, flexible filtering, subscriptions"
+      }
+    },
+
+    monitoringStrategy: {
+      realTimeEvents: {
+        method: "Custom indexer (checkpoint streaming)",
+        latency: "< 500ms",
+        events: ["GameFinished", "TradeCompleted", "EscrowSwapped"],
+        useCase: "Immediate rewards, leaderboard updates"
+      },
+      frequentEvents: {
+        method: "Polling every 5-10 seconds",
+        latency: "5-10 seconds",
+        events: ["MoveMade", "ItemTransferred", "SwapExecuted"],
+        useCase: "Analytics, market data, audit logs"
+      },
+      infrequentEvents: {
+        method: "Polling every 1-5 minutes",
+        latency: "1-5 minutes",
+        events: ["ItemMinted", "AchievementUnlocked"],
+        useCase: "Statistics, trending data"
+      }
+    },
+
+    databaseSchema: EVENT_DATABASE_SCHEMA,
+    
+    crozczImplementation: CROZZ_EVENT_STRATEGY,
+    
+    processingClasses: {
+      EventProcessor,
+      EventQueryBuilder,
+      EventStatsCollector
+    },
+    
+    crozczProcessor: {
+      function: createCrozzEventProcessor,
+      description: "Pre-configured event processor for CROZZ ecosystem",
+      trackers: [
+        { module: "lock", events: ["LockCreated", "LockDestroyed"] },
+        { module: "shared", events: ["EscrowCreated", "EscrowSwapped", "EscrowCancelled"] },
+        { module: "game", events: ["GameCreated", "MoveMade", "GameFinished"] }
+      ]
+    }
   },
 
   /**

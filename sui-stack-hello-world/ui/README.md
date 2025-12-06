@@ -619,6 +619,407 @@ Located in `src/config/`:
 - **`architectureIntegration.ts`** - Integration with services and UI
 - **`suiArchitectureConfig.ts`** - Network, storage, and consensus details
 
+---
+
+## 🎯 Using Events (Deep Dive)
+
+**Documentation:** [Sui Using Events Guide](https://docs.sui.io/guides/developer/sui-101/using-events)
+
+The Sui network tracks countless on-chain activities through **events**. CROZZ uses event monitoring to track game progress, trades, item transfers, and ecosystem activity in real-time.
+
+### Event Structure
+
+Every event on Sui contains:
+
+| Field | Description |
+|-------|-------------|
+| `id` | Transaction digest + event sequence number |
+| `packageId` | Smart contract package ID |
+| `transactionModule` | Module that emitted the event |
+| `sender` | Address that triggered the event |
+| `type` | Event type (e.g., `package::module::EventName`) |
+| `parsedJson` | Event payload data |
+| `bcs` | Binary canonical serialization |
+| `timestampMs` | Unix timestamp in milliseconds |
+
+### Move Event Emission Patterns
+
+#### 1. Lock Events (Escrow Pattern)
+
+```move
+use sui::event;
+
+public struct LockCreated has copy, drop {
+    lock_id: ID,
+    key_id: ID,
+    creator: address,
+    item_id: ID,
+}
+
+public fun lock<T: key + store>(
+    obj: T, 
+    ctx: &mut TxContext
+): (Locked<T>, Key) {
+    let key = Key { id: object::new(ctx) };
+    let mut lock = Locked {
+        id: object::new(ctx),
+        key: object::id(&key),
+    };
+
+    // Emit event when lock is created
+    event::emit(LockCreated {
+        lock_id: object::id(&lock),
+        key_id: object::id(&key),
+        creator: ctx.sender(),
+        item_id: object::id(&obj),
+    });
+
+    (lock, key)
+}
+```
+
+**Use Case:** Track secure object locking for trustless escrows
+**Payload:** Creator address, lock ID, key ID, item ID
+**Benefits:** 
+- Enables audit trail for escrow lifecycle
+- Track who created locks and when
+- Monitor item transfers through escrows
+
+#### 2. Game State Events
+
+```move
+public struct GameCreated has copy, drop {
+    game_id: ID,
+    creator: address,
+    size: u8,
+    timestamp: u64,
+}
+
+public struct MoveMade has copy, drop {
+    game_id: ID,
+    player: address,
+    position: u8,
+    outcome: u8, // 0 = ongoing, 1 = won, 2 = lost
+}
+
+public struct GameFinished has copy, drop {
+    game_id: ID,
+    winner: address,
+    final_outcome: u8,
+}
+```
+
+**Use Case:** Monitor game lifecycle and player progress
+**Payload:** Game ID, player addresses, move positions, outcomes
+**Benefits:**
+- Real-time game status updates
+- Player achievement tracking
+- Leaderboard generation
+- Statistics and analytics
+
+#### 3. Trade/Escrow Events
+
+```move
+public struct EscrowCreated has copy, drop {
+    escrow_id: ID,
+    sender: address,
+    locked_asset_id: ID,
+    recipient: address,
+}
+
+public struct EscrowSwapped has copy, drop {
+    escrow_id: ID,
+    sender: address,
+    recipient: address,
+    asset_received: ID,
+}
+
+public struct EscrowCancelled has copy, drop {
+    escrow_id: ID,
+    sender: address,
+    refunded_asset: ID,
+}
+```
+
+**Use Case:** Track trustless atomic swaps
+**Payload:** Participant addresses, asset IDs, trade status
+**Benefits:**
+- Audit trail for all trades
+- Detect and prevent fraud
+- Monitor market activity
+- Generate trade analytics
+
+### Querying Events
+
+#### JSON-RPC Method: `queryEvents`
+
+```typescript
+import { SuiClient } from "@mysten/sui/client";
+
+const client = new SuiClient({ url: "https://fullnode.testnet.sui.io" });
+
+// Query events by transaction
+const events = await client.queryEvents({
+  query: { Transaction: txDigest },
+});
+
+// Query events by module
+const moduleEvents = await client.queryEvents({
+  query: {
+    MoveModule: {
+      package: "0x158f2027f60c89bb91526d9bf08831d27f5a0fcb0f74e6698b9f0e1fb2be5d05",
+      module: "lock"
+    }
+  }
+});
+
+// Query events by sender
+const senderEvents = await client.queryEvents({
+  query: {
+    Sender: "0x8b35e67a519fffa11a9c74f169228ff1aa085f3a3d57710af08baab8c02211b9"
+  }
+});
+
+// Query with pagination
+let cursor = null;
+while (true) {
+  const result = await client.queryEvents({
+    query: { MoveModule: { package, module } },
+    cursor,
+    limit: 50,
+  });
+
+  console.log(`Processed ${result.data.length} events`);
+  
+  if (!result.hasNextPage) break;
+  cursor = result.nextCursor;
+}
+```
+
+#### Event Filter Options
+
+| Filter | Description | Use Case |
+|--------|-------------|----------|
+| `All` | All events on network | Debugging, testing |
+| `Transaction` | Events from specific tx | Single transaction analysis |
+| `MoveModule` | Events from package::module | Monitor specific contracts |
+| `MoveEventType` | Events by type name | Track specific event type |
+| `Sender` | Events by address | Monitor specific user activity |
+| `TimeRange` | Events in time window | Historical analysis, reports |
+| `Any` | Multiple filters (OR logic) | Complex queries |
+
+### Monitoring Strategies
+
+#### Strategy 1: Polling (Simple & Flexible)
+
+```typescript
+const EVENTS_TO_TRACK = [
+  {
+    type: `${packageId}::lock`,
+    filter: { MoveEventModule: { package: packageId, module: "lock" } },
+    callback: handleLockObjects,
+  },
+  {
+    type: `${packageId}::shared`,
+    filter: { MoveEventModule: { package: packageId, module: "shared" } },
+    callback: handleEscrowObjects,
+  },
+];
+
+// Poll for new events
+async function pollEvents() {
+  for (const tracker of EVENTS_TO_TRACK) {
+    const result = await client.queryEvents({
+      query: tracker.filter,
+      cursor: lastCursor,
+      order: "ascending",
+    });
+
+    // Process events
+    await tracker.callback(result.data, tracker.type);
+
+    // Save cursor for next poll
+    if (result.nextCursor) {
+      lastCursor = result.nextCursor;
+    }
+
+    // Schedule next poll
+    setTimeout(pollEvents, 5000); // Poll every 5 seconds
+  }
+}
+```
+
+**Advantages:**
+- Simple to implement
+- Works with any endpoint
+- Easy to debug
+- No external dependencies
+
+**Disadvantages:**
+- Latency: 5-30 second delays
+- Network overhead: Many requests
+- Not suitable for real-time responses
+
+**Best For:** Statistics, analytics, audit logs, infrequent events
+
+#### Strategy 2: Custom Indexer (Real-Time)
+
+```typescript
+// Stream checkpoints for real-time events
+const indexer = new CustomIndexer(client);
+
+indexer.on("checkpoint", async (checkpoint) => {
+  for (const event of checkpoint.events) {
+    if (event.type.includes("GameFinished")) {
+      // Update leaderboard immediately
+      await updateLeaderboard(event);
+    }
+    
+    if (event.type.includes("EscrowSwapped")) {
+      // Process trade immediately
+      await processTrade(event);
+    }
+  }
+});
+
+await indexer.start();
+```
+
+**Advantages:**
+- Real-time events (< 500ms)
+- Consistent checkpoint ordering
+- Minimal overhead per event
+- Suitable for immediate reactions
+
+**Disadvantages:**
+- More complex setup
+- Requires running indexer service
+- State management overhead
+
+**Best For:** Leaderboards, immediate rewards, real-time UI updates
+
+### CROZZ Event Strategy
+
+CROZZ uses a **hybrid approach** optimized for different event types:
+
+| Event Type | Method | Latency | Use Case |
+|------------|--------|---------|----------|
+| **GameFinished** | Custom Indexer | < 500ms | Immediate reward distribution |
+| **MoveMade** | Polling (5s) | 5-10s | Game state updates, analytics |
+| **TradeCompleted** | Custom Indexer | < 500ms | Instant settlement confirmation |
+| **ItemTransferred** | Polling (10s) | 10-30s | Market data, inventory sync |
+| **NPCTradeCompleted** | Polling (5s) | 5-10s | NPC economy tracking |
+| **ItemMinted** | Polling (1m) | 1-5m | Statistics, supply data |
+| **AchievementUnlocked** | Polling (10s) | 10-30s | Profile updates |
+
+### Event Processing with Database
+
+```typescript
+import { SuiEvent } from "@mysten/sui/client";
+import { prisma } from "../db";
+
+type LockEvent = LockCreated | LockDestroyed;
+
+export const handleLockObjects = async (
+  events: SuiEvent[],
+  type: string
+) => {
+  const updates = {};
+
+  // Group events by lock ID
+  for (const event of events) {
+    const data = event.parsedJson as LockEvent;
+    const isDeletion = !("key_id" in data);
+
+    if (!updates[data.lock_id]) {
+      updates[data.lock_id] = {
+        objectId: data.lock_id,
+      };
+    }
+
+    if (isDeletion) {
+      updates[data.lock_id].deleted = true;
+    } else {
+      updates[data.lock_id].keyId = data.key_id;
+      updates[data.lock_id].creator = data.creator;
+      updates[data.lock_id].itemId = data.item_id;
+    }
+  }
+
+  // Batch database updates
+  const promises = Object.values(updates).map((update) =>
+    prisma.locked.upsert({
+      where: { objectId: update.objectId },
+      create: update,
+      update,
+    })
+  );
+
+  await Promise.all(promises);
+};
+```
+
+### GraphQL Event Queries (Early-Stage)
+
+```graphql
+{
+  events(
+    filter: {
+      eventType: "0x3164fcf73eb6b41ff3d2129346141bd68469964c2d95a5b1533e8d16e6ea6e13::Market::ChangePriceEvent"
+    }
+  ) {
+    nodes {
+      sendingModule { name package { digest } }
+      sender { address }
+      timestamp
+      contents { type { repr } json }
+    }
+  }
+}
+```
+
+Query by sender:
+
+```graphql
+query ByTxSender {
+  events(
+    first: 10
+    filter: { sender: "0xdff57c401e125a7e0e06606380560b459a179aacd08ed396d0162d57dbbdadfb" }
+  ) {
+    pageInfo { hasNextPage endCursor }
+    nodes {
+      sender { address }
+      timestamp
+      contents { type { repr } json }
+    }
+  }
+}
+```
+
+### Configuration Files
+
+Located in `src/config/`:
+- **`eventsConfig.ts`** - Event structures, patterns, and strategies (900+ lines)
+- **`eventHandlers.ts`** - Event processing and polling system (500+ lines)
+- **`graphqlEvents.ts`** - GraphQL queries and WebSocket subscriptions (600+ lines)
+
+### Key Features Implemented
+
+✅ Event structure documentation
+✅ Move event emission patterns (3 types)
+✅ TypeScript event query builder
+✅ JSON-RPC event polling system
+✅ Database schema for event storage
+✅ Event processing patterns (batch, idempotent, DLQ)
+✅ GraphQL event queries
+✅ Real-time event subscriptions (WebSocket)
+✅ CROZZ-specific event handlers
+✅ Event statistics collection
+✅ Adaptive polling strategies
+✅ Pagination support
+
+---
+
 ## 📚 Additional Documentation
 
 ### GraphQL Integration
