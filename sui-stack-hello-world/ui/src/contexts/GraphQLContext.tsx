@@ -46,7 +46,10 @@ export function GraphQLProvider({
   // Initialize client on mount
   useEffect(() => {
     if (autoConnect) {
-      connectToEnvironment(defaultEnvironment);
+      connectToEnvironment(defaultEnvironment).catch(err => {
+        // Silently handle connection errors on initial load
+        console.debug('GraphQL not available on initial load:', err);
+      });
     }
   }, []);
 

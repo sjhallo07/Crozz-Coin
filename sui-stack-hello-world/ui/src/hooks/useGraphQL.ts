@@ -43,7 +43,10 @@ export function useGraphQLQuery<T = any>(
   const [error, setError] = useState<string | null>(null);
 
   const executeQuery = useCallback(async () => {
-    if (!client || !isConnected || options?.skip) {
+    // Early return if GraphQL is not available
+    if (!client || !isConnected || options?.skip || options?.enabled === false) {
+      setLoading(false);
+      setError(null);
       return;
     }
 
