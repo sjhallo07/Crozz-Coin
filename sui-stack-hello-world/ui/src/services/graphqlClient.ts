@@ -105,19 +105,7 @@ export class SuiGraphQLClient {
 
       const data: GraphQLResponse<T> = await response.json();
 
-      if (data.errors) {
-        // Only log in development, and only if it's not a connection error
-        const isDev = process.env.NODE_ENV === 'development';
-        if (isDev) {
-          const hasConnectionError = data.errors.some(err => 
-            err.message?.includes('connect') || 
-            err.message?.includes('ECONNREFUSED')
-          );
-          if (!hasConnectionError) {
-            console.warn("GraphQL Errors:", data.errors);
-          }
-        }
-      }
+      // Never spam the console in production/dev; surface errors via return value instead.
 
       return data;
     } catch (error) {
@@ -126,8 +114,17 @@ export class SuiGraphQLClient {
           throw new Error("GraphQL request timeout");
         }
         // Silently handle connection errors (GraphQL not available)
-        if (error.message?.includes('fetch') || error.message?.includes('Failed to fetch')) {
-          return { errors: [{ message: 'GraphQL service not available' } as GraphQLError] };
+        if (
+          error.message?.includes("fetch") ||
+          error.message?.includes("Failed to fetch")
+        ) {
+          return {
+            errors: [
+              {
+                message: "GraphQL service not available",
+              } as GraphQLError,
+            ],
+          };
         }
         throw error;
       }

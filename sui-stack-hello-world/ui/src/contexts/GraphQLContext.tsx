@@ -44,15 +44,6 @@ export function GraphQLProvider({
   const [error, setError] = useState<string | null>(null);
 
   // Initialize client on mount
-  useEffect(() => {
-    if (autoConnect) {
-      connectToEnvironment(defaultEnvironment).catch(err => {
-        // Silently handle connection errors on initial load
-        console.debug('GraphQL not available on initial load:', err);
-      });
-    }
-  }, []);
-
   /**
    * Connect to a specific environment
    */
@@ -61,6 +52,15 @@ export function GraphQLProvider({
       try {
         setError(null);
         const newClient = new SuiGraphQLClient(env);
+        const health = await newClient.getServiceConfig();
+
+        if (health.errors) {
+          throw new Error(
+            health.errors.map((e) => e.message).join(", ") ||
+              "Failed to connect to GraphQL",
+          );
+        }
+
         setClient(newClient);
         setCurrentEndpoint(newClient.getEndpoint());
         setEnvironment(env);
@@ -68,12 +68,22 @@ export function GraphQLProvider({
       } catch (err) {
         const errorMessage =
           err instanceof Error ? err.message : "Failed to connect to GraphQL";
-        setError(errorMessage);
+        setClient(null);
+        setCurrentEndpoint("");
         setIsConnected(false);
+        setError(errorMessage);
       }
     },
     [],
   );
+
+  useEffect(() => {
+    if (autoConnect) {
+      connectToEnvironment(defaultEnvironment).catch(() => {
+        // Error state is handled inside connectToEnvironment.
+      });
+    }
+  }, [autoConnect, connectToEnvironment, defaultEnvironment]);
 
   /**
    * Connect to custom endpoint
@@ -92,12 +102,23 @@ export function GraphQLProvider({
       const newClient = new SuiGraphQLClient("testnet");
       newClient.setEndpoint(endpoint);
 
+      const health = await newClient.getServiceConfig();
+
+      if (health.errors) {
+        throw new Error(
+          health.errors.map((e) => e.message).join(", ") ||
+            "Failed to connect to endpoint",
+        );
+      }
+
       setClient(newClient);
       setCurrentEndpoint(endpoint);
       setIsConnected(true);
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Failed to connect to endpoint";
+      setClient(null);
+      setCurrentEndpoint("");
       setError(errorMessage);
       setIsConnected(false);
     }

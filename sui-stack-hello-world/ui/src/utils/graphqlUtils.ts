@@ -455,7 +455,7 @@ export function calculateQueryComplexity(
   warnings: string[];
 } {
   const warnings: string[] = [];
-  let complexity = nodes * (depth / 2);
+  const complexity = nodes * (depth / 2);
 
   if (nodes > maxNodes) {
     warnings.push(`Query nodes (${nodes}) exceeds limit (${maxNodes})`);

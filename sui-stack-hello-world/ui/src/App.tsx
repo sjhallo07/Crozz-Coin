@@ -28,6 +28,9 @@ import { StakingGovernanceInfo } from "./StakingGovernanceInfo";
 import { DeepBookSdkInfo } from "./DeepBookSdkInfo";
 import { DeepBookMarginSdkInfo } from "./DeepBookMarginSdkInfo";
 import { DisplayInfo } from "./DisplayInfo";
+import { PaymentKitInfo } from "./PaymentKitInfo";
+import { WalletStandardInfo } from "./WalletStandardInfo";
+import { ReferencesOverviewInfo } from "./ReferencesOverviewInfo";
 import { GraphQLProvider } from "./contexts/GraphQLContext";
 import { GraphQLExplorer } from "./components/GraphQLExplorer";
 
@@ -124,8 +127,11 @@ function App() {
             {currentAccount && isOnTestnet && <FlashLoansInfo />}
             {currentAccount && isOnTestnet && <StakingGovernanceInfo />}
             {currentAccount && isOnTestnet && <DeepBookSdkInfo />}
-              {currentAccount && isOnTestnet && <DeepBookMarginSdkInfo />}
+            {currentAccount && isOnTestnet && <DeepBookMarginSdkInfo />}
             {currentAccount && isOnTestnet && <DisplayInfo />}
+            {currentAccount && isOnTestnet && <PaymentKitInfo />}
+            {currentAccount && isOnTestnet && <WalletStandardInfo />}
+            {currentAccount && isOnTestnet && <ReferencesOverviewInfo />}
           </Flex>
 
           {currentAccount ? (
