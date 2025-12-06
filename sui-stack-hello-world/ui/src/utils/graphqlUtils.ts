@@ -1,7 +1,5 @@
-/**
- * GraphQL Query Builders and Utilities
- * Helper functions for building and executing GraphQL queries
- */
+// Copyright (c) Mysten Labs, Inc.
+// SPDX-License-Identifier: Apache-2.0
 
 // ============================================================================
 // Query Builders
@@ -259,9 +257,10 @@ export interface PaginationParams {
  * Validate pagination parameters
  * According to GraphQL spec, cannot use both 'first' and 'last'
  */
-export function validatePaginationParams(
-  params: PaginationParams
-): { valid: boolean; error?: string } {
+export function validatePaginationParams(params: PaginationParams): {
+  valid: boolean;
+  error?: string;
+} {
   if (params.first !== undefined && params.last !== undefined) {
     return {
       valid: false,
@@ -269,23 +268,17 @@ export function validatePaginationParams(
     };
   }
 
-  if (
-    params.first !== undefined &&
-    params.first > 100
-  ) {
+  if (params.first !== undefined && params.first > 100) {
     return {
       valid: false,
-      error: 'Page size limit exceeded. Maximum is 100.',
+      error: "Page size limit exceeded. Maximum is 100.",
     };
   }
 
-  if (
-    params.last !== undefined &&
-    params.last > 100
-  ) {
+  if (params.last !== undefined && params.last > 100) {
     return {
       valid: false,
-      error: 'Page size limit exceeded. Maximum is 100.',
+      error: "Page size limit exceeded. Maximum is 100.",
     };
   }
 
@@ -296,7 +289,7 @@ export function validatePaginationParams(
  * Build pagination variables for a query
  */
 export function buildPaginationVariables(
-  params: PaginationParams
+  params: PaginationParams,
 ): Record<string, any> {
   const variables: Record<string, any> = {};
 
@@ -325,7 +318,9 @@ export function buildPaginationVariables(
  */
 export function isValidSuiAddress(address: string): boolean {
   // Sui addresses are 32 bytes hex (64 chars) optionally prefixed with 0x
-  const normalizedAddress = address.startsWith('0x') ? address.slice(2) : address;
+  const normalizedAddress = address.startsWith("0x")
+    ? address.slice(2)
+    : address;
   return /^[a-fA-F0-9]{64}$/.test(normalizedAddress);
 }
 
@@ -352,7 +347,7 @@ export function isValidTransactionDigest(digest: string): boolean {
  * Format balance from MIST to SUI (1 SUI = 1,000,000,000 MIST)
  */
 export function formatBalance(balance: string | number): string {
-  const num = typeof balance === 'string' ? BigInt(balance) : BigInt(balance);
+  const num = typeof balance === "string" ? BigInt(balance) : BigInt(balance);
   const divisor = BigInt(1_000_000_000);
   const integerPart = num / divisor;
   const fractionalPart = num % divisor;
@@ -361,7 +356,7 @@ export function formatBalance(balance: string | number): string {
     return integerPart.toString();
   }
 
-  const fractionalStr = fractionalPart.toString().padStart(9, '0');
+  const fractionalStr = fractionalPart.toString().padStart(9, "0");
   return `${integerPart}.${fractionalStr}`;
 }
 
@@ -369,9 +364,10 @@ export function formatBalance(balance: string | number): string {
  * Parse SUI amount to MIST
  */
 export function parseBalance(suiAmount: string): string {
-  const [integerPart, fractionalPart = ''] = suiAmount.split('.');
-  const paddedFractional = fractionalPart.padEnd(9, '0');
-  const mist = BigInt(integerPart) * BigInt(1_000_000_000) + BigInt(paddedFractional);
+  const [integerPart, fractionalPart = ""] = suiAmount.split(".");
+  const paddedFractional = fractionalPart.padEnd(9, "0");
+  const mist =
+    BigInt(integerPart) * BigInt(1_000_000_000) + BigInt(paddedFractional);
   return mist.toString();
 }
 
@@ -386,7 +382,10 @@ export function formatTimestamp(timestamp: string): string {
 /**
  * Format object address with truncation option
  */
-export function formatAddress(address: string, truncate: boolean = false): string {
+export function formatAddress(
+  address: string,
+  truncate: boolean = false,
+): string {
   if (!truncate) return address;
   if (address.length <= 10) return address;
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
@@ -400,10 +399,10 @@ export function formatAddress(address: string, truncate: boolean = false): strin
  * Extract error message from GraphQL response
  */
 export function extractErrorMessage(
-  errors?: Array<{ message: string }>
+  errors?: Array<{ message: string }>,
 ): string | null {
   if (!errors || errors.length === 0) return null;
-  return errors.map((e) => e.message).join('; ');
+  return errors.map((e) => e.message).join("; ");
 }
 
 /**
@@ -415,7 +414,7 @@ export function parseGraphQLError(error: any): {
   path?: (string | number)[];
 } {
   return {
-    message: error.message || 'Unknown GraphQL error',
+    message: error.message || "Unknown GraphQL error",
     locations: error.locations,
     path: error.path,
   };
@@ -429,14 +428,14 @@ export function parseGraphQLError(error: any): {
  * Build a query with usage tracking headers
  */
 export function buildQueryWithUsage(
-  showUsage: boolean = true
+  showUsage: boolean = true,
 ): Record<string, string> {
   const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   };
 
   if (showUsage) {
-    headers['x-sui-rpc-show-usage'] = 'true';
+    headers["x-sui-rpc-show-usage"] = "true";
   }
 
   return headers;
@@ -449,7 +448,7 @@ export function calculateQueryComplexity(
   nodes: number,
   depth: number,
   maxNodes: number = 15000,
-  maxDepth: number = 15
+  maxDepth: number = 15,
 ): {
   complexity: number;
   isValid: boolean;
@@ -459,15 +458,11 @@ export function calculateQueryComplexity(
   let complexity = nodes * (depth / 2);
 
   if (nodes > maxNodes) {
-    warnings.push(
-      `Query nodes (${nodes}) exceeds limit (${maxNodes})`
-    );
+    warnings.push(`Query nodes (${nodes}) exceeds limit (${maxNodes})`);
   }
 
   if (depth > maxDepth) {
-    warnings.push(
-      `Query depth (${depth}) exceeds limit (${maxDepth})`
-    );
+    warnings.push(`Query depth (${depth}) exceeds limit (${maxDepth})`);
   }
 
   return {

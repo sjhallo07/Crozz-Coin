@@ -1,5 +1,5 @@
-// zkLogin Client Implementation for CROZZ ECOSYSTEM
-// Handles OAuth authentication, JWT processing, and zkLogin transactions
+// Copyright (c) Mysten Labs, Inc.
+// SPDX-License-Identifier: Apache-2.0
 
 import {
   OAuthProvider,
@@ -13,8 +13,8 @@ import {
   ZKLOGIN_SECURITY_CONFIG,
   ZKLOGIN_ADDRESS_CONFIG,
   generateZkLoginNonce,
-} from './zkloginProvider';
-import crypto from 'crypto';
+} from "./zkloginProvider";
+import crypto from "crypto";
 
 /**
  * zkLogin Client for CROZZ ECOSYSTEM
@@ -25,15 +25,15 @@ export class ZkLoginClient {
   private clientId: string;
   private clientSecret?: string;
   private redirectUri: string;
-  private network: 'devnet' | 'testnet' | 'mainnet';
+  private network: "devnet" | "testnet" | "mainnet";
   private sessions: Map<string, ZkLoginSession> = new Map();
 
   constructor(
     provider: OAuthProvider,
     clientId: string,
     redirectUri: string,
-    network: 'devnet' | 'testnet' | 'mainnet' = 'testnet',
-    clientSecret?: string
+    network: "devnet" | "testnet" | "mainnet" = "testnet",
+    clientSecret?: string,
   ) {
     this.provider = provider;
     this.clientId = clientId;
@@ -45,7 +45,7 @@ export class ZkLoginClient {
     const providerConfig = ZKLOGIN_PROVIDERS[provider];
     if (!providerConfig.supportedNetworks?.includes(network)) {
       throw new Error(
-        `Provider ${provider} is not supported on ${network}. Supported networks: ${providerConfig.supportedNetworks?.join(', ')}`
+        `Provider ${provider} is not supported on ${network}. Supported networks: ${providerConfig.supportedNetworks?.join(", ")}`,
       );
     }
   }
@@ -56,7 +56,9 @@ export class ZkLoginClient {
   generateAuthorizationUrl(): string {
     const providerConfig = ZKLOGIN_PROVIDERS[this.provider];
     if (!providerConfig.authorizationEndpoint) {
-      throw new Error(`No authorization endpoint for provider ${this.provider}`);
+      throw new Error(
+        `No authorization endpoint for provider ${this.provider}`,
+      );
     }
 
     // Generate ephemeral key pair for this session
@@ -65,7 +67,11 @@ export class ZkLoginClient {
     const jwtRandomness = this.generateRandomness();
 
     // Generate nonce with ephemeral public key + max epoch + randomness
-    const nonce = generateZkLoginNonce(ephemeralKeyPair.publicKey, maxEpoch, jwtRandomness);
+    const nonce = generateZkLoginNonce(
+      ephemeralKeyPair.publicKey,
+      maxEpoch,
+      jwtRandomness,
+    );
 
     // Store ephemeral key pair for later use
     const sessionId = crypto.randomUUID();
@@ -73,7 +79,9 @@ export class ZkLoginClient {
       id: sessionId,
       provider: this.provider,
       ephemeralKeyPair,
-      expiresAt: Date.now() + ZKLOGIN_SECURITY_CONFIG.ephemeralKey.sessionDuration * 1000,
+      expiresAt:
+        Date.now() +
+        ZKLOGIN_SECURITY_CONFIG.ephemeralKey.sessionDuration * 1000,
       createdAt: Date.now(),
     };
     this.sessions.set(sessionId, session);
@@ -81,8 +89,8 @@ export class ZkLoginClient {
     // Construct authorization URL
     const params = new URLSearchParams({
       client_id: this.clientId,
-      response_type: 'id_token',
-      scope: (providerConfig.scope || []).join(' '),
+      response_type: "id_token",
+      scope: (providerConfig.scope || []).join(" "),
       redirect_uri: this.redirectUri,
       nonce: nonce,
       state: sessionId, // Store session ID in state for retrieval
@@ -96,17 +104,17 @@ export class ZkLoginClient {
    */
   async handleCallback(callbackUrl: string): Promise<ZkLoginSession> {
     const url = new URL(callbackUrl);
-    const idToken = url.searchParams.get('id_token');
-    const state = url.searchParams.get('state');
+    const idToken = url.searchParams.get("id_token");
+    const state = url.searchParams.get("state");
 
     if (!idToken || !state) {
-      throw new Error('Missing id_token or state in callback');
+      throw new Error("Missing id_token or state in callback");
     }
 
     // Retrieve session from state
     const session = this.sessions.get(state);
     if (!session) {
-      throw new Error('Invalid session state');
+      throw new Error("Invalid session state");
     }
 
     // Parse JWT (without verification - verification happens on-chain)
@@ -127,8 +135,8 @@ export class ZkLoginClient {
     const payload = jwt.payload as JWTPayload;
 
     const response = await fetch(`${saltServiceUrl}/salt`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         issuer: payload.iss,
         clientId: this.clientId, // aud
@@ -151,20 +159,20 @@ export class ZkLoginClient {
     provingServiceUrl: string,
     jwt: JWT,
     userSalt: string,
-    session: ZkLoginSession
+    session: ZkLoginSession,
   ): Promise<ZkLoginProof> {
     const payload = jwt.payload as JWTPayload;
 
     const response = await fetch(`${provingServiceUrl}/prove`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         jwt: jwt.raw,
         userSalt,
         ephemeralPublicKey: session.ephemeralKeyPair.publicKey,
         jwtRandomness: this.generateRandomness(), // In production, use stored randomness from nonce
         maxEpoch: session.ephemeralKeyPair.maxEpoch,
-        keyClaimName: 'sub',
+        keyClaimName: "sub",
         keyClaimValue: payload.sub,
       }),
     });
@@ -192,7 +200,14 @@ export class ZkLoginClient {
     // In production, this uses Poseidon hashing for zkSNARK compatibility
     // For now, we use a simplified approach with Blake2b
 
-    const { issuer, clientId, subjectId, userSalt, keyClaimName, keyClaimValue } = components;
+    const {
+      issuer,
+      clientId,
+      subjectId,
+      userSalt,
+      keyClaimName,
+      keyClaimValue,
+    } = components;
 
     // Create address seed from components
     const addrSeedData = [
@@ -201,23 +216,29 @@ export class ZkLoginClient {
       clientId,
       userSalt,
       issuer,
-    ].join(':');
+    ].join(":");
 
     // Hash the seed
-    const addrSeedHash = crypto.createHash('blake2b256').update(addrSeedData).digest();
+    const addrSeedHash = crypto
+      .createHash("blake2b256")
+      .update(addrSeedData)
+      .digest();
 
     // Create final address
     const flagByte = Buffer.alloc(1);
     flagByte[0] = ZKLOGIN_ADDRESS_CONFIG.addressFlag;
 
     // Derive from flag, issuer and seed
-    const issuerBytes = Buffer.from(issuer, 'utf-8');
+    const issuerBytes = Buffer.from(issuer, "utf-8");
     const addressData = Buffer.concat([flagByte, issuerBytes, addrSeedHash]);
 
-    const address = crypto.createHash('blake2b256').update(addressData).digest('hex');
+    const address = crypto
+      .createHash("blake2b256")
+      .update(addressData)
+      .digest("hex");
 
     // Format as Sui address (0x prefix)
-    return '0x' + address.slice(0, 64);
+    return "0x" + address.slice(0, 64);
   }
 
   /**
@@ -226,12 +247,12 @@ export class ZkLoginClient {
   async authenticate(
     callbackUrl: string,
     saltServiceUrl: string,
-    provingServiceUrl: string
+    provingServiceUrl: string,
   ): Promise<{ address: string; session: ZkLoginSession }> {
     // Step 1: Handle OAuth callback
     const session = await this.handleCallback(callbackUrl);
     if (!session.jwt) {
-      throw new Error('JWT not available in session');
+      throw new Error("JWT not available in session");
     }
 
     const payload = session.jwt.payload as JWTPayload;
@@ -241,7 +262,12 @@ export class ZkLoginClient {
     session.userSalt = userSalt;
 
     // Step 3: Request ZK proof
-    const proof = await this.requestZkProof(provingServiceUrl, session.jwt, userSalt, session);
+    const proof = await this.requestZkProof(
+      provingServiceUrl,
+      session.jwt,
+      userSalt,
+      session,
+    );
     session.proof = proof;
 
     // Step 4: Derive zkLogin address
@@ -250,7 +276,7 @@ export class ZkLoginClient {
       clientId: this.clientId,
       subjectId: payload.sub,
       userSalt,
-      keyClaimName: 'sub',
+      keyClaimName: "sub",
       keyClaimValue: payload.sub,
     });
 
@@ -266,19 +292,19 @@ export class ZkLoginClient {
   signTransaction(sessionId: string, transactionData: Buffer): string {
     const session = this.sessions.get(sessionId);
     if (!session) {
-      throw new Error('Session not found');
+      throw new Error("Session not found");
     }
 
     // In production, this uses the actual ephemeral private key from the session
     // For now, we create a signature using the private key
     const privateKey = crypto.createPrivateKey({
-      key: Buffer.from(session.ephemeralKeyPair.privateKey, 'hex'),
-      format: 'der',
-      type: 'pkcs1',
+      key: Buffer.from(session.ephemeralKeyPair.privateKey, "hex"),
+      format: "der",
+      type: "pkcs1",
     });
 
-    const signature = crypto.sign('sha256', transactionData, privateKey);
-    return signature.toString('hex');
+    const signature = crypto.sign("sha256", transactionData, privateKey);
+    return signature.toString("hex");
   }
 
   /**
@@ -308,18 +334,19 @@ export class ZkLoginClient {
   async refreshSession(sessionId: string): Promise<ZkLoginSession> {
     const session = this.sessions.get(sessionId);
     if (!session) {
-      throw new Error('Session not found');
+      throw new Error("Session not found");
     }
 
     if (!session.jwt) {
-      throw new Error('JWT not available in session');
+      throw new Error("JWT not available in session");
     }
 
     // Generate new ephemeral key pair
     session.ephemeralKeyPair = this.generateEphemeralKeyPair();
 
     // Extend session expiry
-    session.expiresAt = Date.now() + ZKLOGIN_SECURITY_CONFIG.ephemeralKey.sessionDuration * 1000;
+    session.expiresAt =
+      Date.now() + ZKLOGIN_SECURITY_CONFIG.ephemeralKey.sessionDuration * 1000;
 
     // In production, would regenerate ZK proof with new nonce
     // session.proof = await this.requestZkProof(...);
@@ -356,21 +383,27 @@ export class ZkLoginClient {
    * Generate ephemeral key pair
    */
   private generateEphemeralKeyPair(): EphemeralKeyPair {
-    const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
+    const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
       modulusLength: 2048,
-      publicKeyEncoding: { type: 'spki', format: 'pem' },
-      privateKeyEncoding: { type: 'pkcs1', format: 'pem' },
+      publicKeyEncoding: { type: "spki", format: "pem" },
+      privateKeyEncoding: { type: "pkcs1", format: "pem" },
     });
 
     const now = Date.now();
-    const sessionDuration = ZKLOGIN_SECURITY_CONFIG.ephemeralKey.sessionDuration * 1000;
+    const sessionDuration =
+      ZKLOGIN_SECURITY_CONFIG.ephemeralKey.sessionDuration * 1000;
 
     return {
-      publicKey: crypto.createPublicKey(publicKey).export({ format: 'der', type: 'spki' }).toString('hex'),
-      privateKey: privateKey.toString('hex'),
+      publicKey: crypto
+        .createPublicKey(publicKey)
+        .export({ format: "der", type: "spki" })
+        .toString("hex"),
+      privateKey: Buffer.from(privateKey).toString("hex"),
       createdAt: now,
       expiresAt: now + sessionDuration,
-      maxEpoch: Math.floor(now / 1000) + ZKLOGIN_SECURITY_CONFIG.ephemeralKey.maxSessionEpochs,
+      maxEpoch:
+        Math.floor(now / 1000) +
+        ZKLOGIN_SECURITY_CONFIG.ephemeralKey.maxSessionEpochs,
     };
   }
 
@@ -388,7 +421,7 @@ export class ZkLoginClient {
    * Generate random value for JWT
    */
   private generateRandomness(): string {
-    return crypto.randomBytes(32).toString('hex');
+    return crypto.randomBytes(32).toString("hex");
   }
 
   /**
@@ -396,16 +429,16 @@ export class ZkLoginClient {
    * Verification is done on-chain by Sui validators
    */
   private parseJWT(token: string): JWT {
-    const parts = token.split('.');
+    const parts = token.split(".");
     if (parts.length !== 3) {
-      throw new Error('Invalid JWT format');
+      throw new Error("Invalid JWT format");
     }
 
     const [headerStr, payloadStr, signature] = parts;
 
     try {
-      const header = JSON.parse(Buffer.from(headerStr, 'base64').toString());
-      const payload = JSON.parse(Buffer.from(payloadStr, 'base64').toString());
+      const header = JSON.parse(Buffer.from(headerStr, "base64").toString());
+      const payload = JSON.parse(Buffer.from(payloadStr, "base64").toString());
 
       return {
         header,
@@ -414,7 +447,7 @@ export class ZkLoginClient {
         raw: token,
       };
     } catch (error) {
-      throw new Error('Failed to parse JWT');
+      throw new Error("Failed to parse JWT");
     }
   }
 }

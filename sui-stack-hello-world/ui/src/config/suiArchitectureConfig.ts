@@ -1,8 +1,7 @@
-// Sui Architecture Concepts Configuration
-// Maps official Sui documentation concepts to CROZZ implementation
+// Copyright (c) Mysten Labs, Inc.
+// SPDX-License-Identifier: Apache-2.0
 
 import { SuiClient, getFullnodeUrl } from "@mysten/sui/client";
-import type { Network } from "@mysten/sui/networks";
 
 /**
  * 1. NETWORKS CONFIGURATION
@@ -13,27 +12,48 @@ export const NETWORKS_CONFIG = {
     name: "Mainnet",
     purpose: "Production environment",
     url: getFullnodeUrl("mainnet"),
+    rpcUrl: "https://fullnode.mainnet.sui.io:443",
+    epochDuration: "~24h",
+    persistence: "Persistent (production ledger)",
+    faucet: null,
+    explorer: "https://suiscan.xyz/mainnet/home",
     status: "production",
-    description: "Live blockchain for real transactions",
+    description: "Live blockchain for real transactions (uses real SUI/MIST)",
   },
   testnet: {
     name: "Testnet",
     purpose: "Staging and pre-production testing",
     url: getFullnodeUrl("testnet"),
+    rpcUrl: "https://fullnode.testnet.sui.io:443",
+    epochDuration: "~24h",
+    persistence: "Best-effort; may be wiped occasionally",
+    faucet: "https://faucet.sui.io",
+    explorer: "https://testnet.suivision.xyz/",
     status: "staging",
-    description: "Testing before mainnet deployment",
+    description:
+      "Testing before mainnet deployment (uses free Testnet SUI/MIST)",
   },
   devnet: {
     name: "Devnet",
     purpose: "Development and new feature testing",
     url: getFullnodeUrl("devnet"),
+    rpcUrl: "https://fullnode.devnet.sui.io:443",
+    epochDuration: "~1h",
+    persistence: "Wiped weekly (scheduled)",
+    faucet: "https://faucet.sui.io",
+    explorer: "https://suiscan.xyz/devnet/home",
     status: "development",
-    description: "For developing new features",
+    description: "For developing upcoming features; unstable, frequent resets",
   },
   localnet: {
     name: "Localnet",
     purpose: "Local development environment",
     url: "http://localhost:9000",
+    rpcUrl: "http://localhost:9000",
+    epochDuration: "Configurable",
+    persistence: "Depends on local config",
+    faucet: "Local faucet (optional)",
+    explorer: null,
     status: "local",
     description: "Run Sui locally with `sui start`",
   },
@@ -46,10 +66,19 @@ export const NETWORKS_CONFIG = {
 export const STORAGE_CONFIG = {
   // Storage pricing per byte per year (in MIST - 1 SUI = 10^9 MIST)
   pricing: {
-    storageCostPerByteYear: 38_400,      // Approximate cost
-    computationCostPerUnit: 1_000,       // Per computational unit
-    minStorageRebate: 2_700,             // Minimum refund when deleting
-    baseTransactionCost: 1_000,          // Base cost for any transaction
+    storageCostPerByteYear: 38_400, // Approximate cost
+    computationCostPerUnit: 1_000, // Per computational unit
+    minStorageRebate: 2_700, // Minimum refund when deleting
+    baseTransactionCost: 1_000, // Base cost for any transaction
+  },
+
+  // On-chain fee model
+  fees: {
+    storageUnitMist: 76, // per storage unit
+    unitsPerByte: 100, // 1 byte = 100 storage units
+    refundablePortion: 0.99, // refunded on delete (storage rebate)
+    nonRefundablePortion: 0.01, // locked in storage fund
+    note: "Storage fee is part of gas; rebate returned when data is deleted (immutable objects lock fees forever)",
   },
 
   // Object lifecycle costs
@@ -58,6 +87,42 @@ export const STORAGE_CONFIG = {
     mutation: "Read (free) + Write (storage cost)",
     deletion: "Refunded storage rebate",
     transfer: "Minimal cost, no storage change",
+  },
+
+  // Pruning strategies (aligning with Sui storage guidance)
+  pruningProfiles: {
+    moderate: {
+      target: "Validators / pruned full nodes",
+      retention: "Enable pruning; keep recent epochs and rely on checkpoints bucket for older data",
+      expectedDisk: "~250-400GB validators; ~2.5TB pruned full nodes with indexes (Mainnet single-epoch snapshot)",
+    },
+    aggressive: {
+      target: "RPC-focused or resource-constrained full nodes",
+      retention: "Minimal history; delegate historical fetches to checkpoints bucket or archival peer",
+      expectedDisk: "Similar to validators for DB; indexes dominate (~1.5TB in Mainnet). Use archival bucket for deep history",
+      caution: "Aggressive pruning requires archival fallback for historical RPC queries",
+    },
+    unpruned: {
+      target: "Rare, archival needs",
+      retention: "Full object and transaction history",
+      expectedDisk: "~16TB (Mainnet, Nov 2025)",
+    },
+  },
+
+  // Storage classes and growth references (Mainnet, Nov 2025)
+  storageClasses: {
+    validators: { medium: "~250-400GB", description: "Pruned, high-performance NVMe" },
+    prunedFullNodes: { medium: "~2.5TB", description: "Indexes + consensus_db, single-epoch snapshot" },
+    unprunedFullNodes: { large: "~16TB", description: "Full history archival" },
+    snapshots: {
+      database: "Same size as source DB (1:1)",
+      formal: "~30GB per recent epoch",
+    },
+    checkpointsBucket: {
+      size: "~30TB",
+      growthPerDay: "3-10GB/day depending on TPS",
+      purpose: "Historical state fetch for pruned nodes",
+    },
   },
 
   // Best practices
@@ -75,17 +140,51 @@ export const STORAGE_CONFIG = {
  */
 export const CONSENSUS_CONFIG = {
   epochModel: {
-    duration: "Approximately 24 hours",
+    duration: "~24h (Mainnet/Testnet), ~1h (Devnet)",
     validatorSetFixed: "Remains same throughout epoch",
-    reconfiguration: "Network parameters adjust at boundaries",
-    finality: "Object reads must be within same epoch",
+    reconfiguration: "Validator set & staking ops processed at boundaries",
+    finality: "Certificates give finality within epoch",
   },
 
   equivocation: {
-    definition: "Using same object in parallel transactions",
-    prevention: "Serialize object access",
-    detection: "Validators detect double-spending attempts",
-    consequences: "Transaction reverted",
+    definition: "Using same object pair (ObjectId, SequenceNumber) in multiple non-finalized transactions",
+    objectVersioning: "(ObjectId, SequenceNumber) uniquely identifies object version",
+    versionUpdate: "Only 1 tx modifies per version; version increments after modification",
+    prevention: "Serialize transactions or use PTBs (up to 1024 ops per block)",
+    detection: "Validators detect and lock objects until epoch end",
+    consequences: "Objects locked, transactions fail, network usability degraded",
+    doubleSpending: "Prevented via object versioning (coin reused with updated version)",
+    punishment: "Validator punishment discourages accidental/intentional abuse",
+    singleThreadRec: "Serialize txs using same owned object to prevent SequenceNumber errors",
+    parallelRec: "Create separate owned object per thread or use shared wrapper with allowlist",
+    tools: "Use sui-tool locked-object command to check/rescue locked assets",
+    advantage: "Enables safe reuse of same gas coin across series of transactions",
+  },
+
+  reconfiguration: {
+    timing: "End of each epoch",
+    purpose: "Adjust network for upcoming epoch (only fully synchronous network event)",
+    step1: "Finalize transactions & checkpoints (identical state across validators)",
+    step2: "Distribute gas rewards to validator staking pool",
+    step3: "Allocate storage fees to storage fund",
+    step4: "Process pending staking/unstaking (sole opportunity for validator set change)",
+    step5: "Protocol upgrade if agreed by 2f+1 validators (new features, bug fixes, framework updates)",
+    advantages: "Consistent state across validators; coordinated reward distribution; decentralized upgrades",
+  },
+
+  quorum: {
+    threshold: ">= 2/3 voting power",
+    certificate: "Tx + quorum signatures → certificate for BFT safety",
+    staking: "DPoS; voting power from staked SUI",
+  },
+
+  mysticeti: {
+    model: "DAG-based, implicit commitment",
+    latency: "~0.5s median to commit (tested)",
+    throughput: "~200k TPS sustained; tests up to 300-400k TPS",
+    parallelProposals: "Multiple validators propose in parallel",
+    leaderTolerance: "Tolerates unavailable leaders with low tail latency",
+    cancellation: "Can cancel overly expensive batches post-consensus",
   },
 
   implementation: {
@@ -93,6 +192,7 @@ export const CONSENSUS_CONFIG = {
     respectEpochBounds: "Submit transactions within validity window",
     handleReconfiguration: "Be ready for validator changes",
     verifyFinality: "Wait for epoch boundaries",
+    epochMetadata: "All transactions include epoch value; only valid if executed before set epoch",
   },
 };
 
@@ -393,7 +493,11 @@ export const MOVE_CONFIG = {
 export const DATA_ACCESS_CONFIG = {
   graphQL: {
     type: "Structured query language",
-    benefits: ["Type-safe queries", "Flexible filtering", "Real-time subscriptions"],
+    benefits: [
+      "Type-safe queries",
+      "Flexible filtering",
+      "Real-time subscriptions",
+    ],
     capabilities: {
       objects: true,
       transactions: true,
@@ -513,7 +617,9 @@ export const ADVANCED_CONFIG = {
 /**
  * Helper function to get current network client
  */
-export function getSuiClient(network: keyof typeof NETWORKS_CONFIG = "testnet"): SuiClient {
+export function getSuiClient(
+  network: keyof typeof NETWORKS_CONFIG = "testnet",
+): SuiClient {
   const config = NETWORKS_CONFIG[network];
   return new SuiClient({ url: config.url });
 }
@@ -521,7 +627,9 @@ export function getSuiClient(network: keyof typeof NETWORKS_CONFIG = "testnet"):
 /**
  * Helper function to get network info
  */
-export function getNetworkInfo(network: keyof typeof NETWORKS_CONFIG = "testnet") {
+export function getNetworkInfo(
+  network: keyof typeof NETWORKS_CONFIG = "testnet",
+) {
   return NETWORKS_CONFIG[network];
 }
 
@@ -531,12 +639,14 @@ export function getNetworkInfo(network: keyof typeof NETWORKS_CONFIG = "testnet"
 export function estimateGasCost(
   computationUnits: number,
   storageBytes: number,
-  durationYears: number = 1
+  durationYears: number = 1,
 ): number {
-  const computation = 
+  const computation =
     computationUnits * STORAGE_CONFIG.pricing.computationCostPerUnit;
-  const storage = 
-    storageBytes * durationYears * STORAGE_CONFIG.pricing.storageCostPerByteYear;
+  const storage =
+    storageBytes *
+    durationYears *
+    STORAGE_CONFIG.pricing.storageCostPerByteYear;
   const base = STORAGE_CONFIG.pricing.baseTransactionCost;
 
   return computation + storage + base;

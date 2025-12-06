@@ -3,10 +3,12 @@
 ## 🗂️ Navegación Rápida
 
 ### 🚀 Comienza Aquí
+
 - **[QUICK_START.md](./QUICK_START.md)** - 3 minutos para empezar (¡Recomendado!)
 - **[INTEGRATION_GUIDE.md](./INTEGRATION_GUIDE.md)** - Guía completa paso a paso
 
 ### 📚 Documentación Principal
+
 - **[GRPC_README.md](./GRPC_README.md)** - Overview y características
 - **[README_GRPC.md](./README_GRPC.md)** - Referencia técnica detallada
 - **[IMPLEMENTATION_SUMMARY.md](./IMPLEMENTATION_SUMMARY.md)** - Detalles de implementación
@@ -14,6 +16,7 @@
 ### 📁 Código Fuente
 
 #### Configuración
+
 ```
 src/config/grpcConfig.ts
 ├── Endpoints (devnet, testnet, mainnet)
@@ -23,6 +26,7 @@ src/config/grpcConfig.ts
 ```
 
 #### Context React
+
 ```
 src/contexts/GrpcContext.tsx
 ├── GrpcProvider
@@ -33,6 +37,7 @@ src/contexts/GrpcContext.tsx
 ```
 
 #### Cliente gRPC
+
 ```
 src/services/grpcClient.ts
 ├── SuiGrpcClient (40+ métodos)
@@ -46,6 +51,7 @@ src/services/grpcClient.ts
 ```
 
 #### React Hooks
+
 ```
 src/hooks/useGrpc.ts
 ├── useCheckpoint()
@@ -62,6 +68,7 @@ src/hooks/useGrpc.ts
 ```
 
 #### Componentes UI
+
 ```
 src/components/GrpcConnection.tsx
 ├── GrpcConnectionSelector
@@ -73,6 +80,7 @@ src/components/GrpcApiExplorer.tsx
 ```
 
 #### Tipos y Utilidades
+
 ```
 src/types/grpc.ts
 └── Interfaces de tipos TypeScript
@@ -112,30 +120,39 @@ src/examples/grpcExamples.ts
 ### Si Quieres...
 
 #### ✅ Empezar en 3 minutos
+
 → Lee **[QUICK_START.md](./QUICK_START.md)**
 
 #### ✅ Entender la arquitectura
+
 → Lee **[IMPLEMENTATION_SUMMARY.md](./IMPLEMENTATION_SUMMARY.md)**
 
 #### ✅ Integrar en tu app
+
 → Lee **[INTEGRATION_GUIDE.md](./INTEGRATION_GUIDE.md)** (Sección "Integración React Profunda")
 
 #### ✅ Usar los hooks
+
 → Lee **[INTEGRATION_GUIDE.md](./INTEGRATION_GUIDE.md)** (Sección "Hooks Disponibles")
 
 #### ✅ Crear componentes personalizados
+
 → Copia de **src/examples/grpcExamples.ts**
 
 #### ✅ Saber qué métodos hay disponibles
+
 → Ve **src/services/grpcClient.ts** o **[README_GRPC.md](./README_GRPC.md)**
 
 #### ✅ Optimizar respuestas
+
 → Lee **src/utils/fieldMask.ts** y su documentación
 
 #### ✅ Manejar errores
+
 → Lee **[INTEGRATION_GUIDE.md](./INTEGRATION_GUIDE.md)** (Sección "Manejo de Errores")
 
 #### ✅ Cambiar entre entornos
+
 → Usa **GrpcConnectionSelector** en componentes
 
 ## 📊 Contenido por Archivo
@@ -169,17 +186,20 @@ src/examples/grpcExamples.ts
 ## 🔗 Enlaces Rápidos
 
 ### Dentro del Proyecto
+
 - [Configuración](./src/config/grpcConfig.ts)
 - [Hooks React](./src/hooks/useGrpc.ts)
 - [Componentes](./src/components/GrpcConnection.tsx)
 - [Ejemplos](./src/examples/grpcExamples.ts)
 
 ### Documentación Oficial
+
 - [Sui Docs](https://docs.sui.io)
 - [Sui gRPC Service](https://docs.sui.io/guides/developer/sui-full-node/grpc-service)
 - [Protocol Buffers](https://developers.google.com/protocol-buffers)
 
 ### Herramientas
+
 - [VS Code](https://code.visualstudio.com/)
 - [React DevTools](https://react-devtools-tutorial.vercel.app/)
 - [Network Tab (F12)](https://developer.chrome.com/docs/devtools/network/)
@@ -187,22 +207,26 @@ src/examples/grpcExamples.ts
 ## 🎓 Plan de Aprendizaje Recomendado
 
 ### Día 1: Fundamentos (30 min)
+
 1. Lee **QUICK_START.md** (5 min)
 2. Lee **GRPC_README.md** (10 min)
 3. Copia **App.example.tsx** (10 min)
 4. Ejecuta `npm run dev` (5 min)
 
 ### Día 2: Integración (1 hora)
+
 1. Lee **INTEGRATION_GUIDE.md** (30 min)
 2. Implementa GrpcConnectionSelector (15 min)
 3. Prueba en localhost:5173 (15 min)
 
 ### Día 3: Desarrollo (2 horas)
+
 1. Copia un ejemplo de **grpcExamples.ts** (30 min)
 2. Crea componentes con hooks (60 min)
 3. Optimiza con field masks (30 min)
 
 ### Día 4: Producción
+
 1. Configura variables de entorno (.env)
 2. Prueba con diferentes endpoints
 3. Implementa manejo de errores

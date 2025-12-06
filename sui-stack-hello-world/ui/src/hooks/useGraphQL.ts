@@ -1,10 +1,11 @@
-/**
- * Sui GraphQL React Hooks
- * Custom hooks for GraphQL queries and operations
- */
+// Copyright (c) Mysten Labs, Inc.
+// SPDX-License-Identifier: Apache-2.0
 
-import { useCallback, useEffect, useState } from 'react';
-import { useSuiGraphQLClient, useGraphQLConnected } from '../contexts/GraphQLContext';
+import { useCallback, useEffect, useState } from "react";
+import {
+  useSuiGraphQLClient,
+  useGraphQLConnected,
+} from "../contexts/GraphQLContext";
 import {
   Epoch,
   TransactionBlockConnection,
@@ -12,7 +13,7 @@ import {
   OwnerCoins,
   SuiAddress,
   TransactionBlockFilter,
-} from '../types/graphql';
+} from "../types/graphql";
 
 // ============================================================================
 // Generic Query Hook
@@ -32,7 +33,7 @@ export function useGraphQLQuery<T = any>(
     enabled?: boolean;
     skip?: boolean;
     showUsage?: boolean;
-  }
+  },
 ): UseGraphQLQueryResult<T> {
   const client = useSuiGraphQLClient();
   const isConnected = useGraphQLConnected();
@@ -55,18 +56,23 @@ export function useGraphQLQuery<T = any>(
       });
 
       if (response.errors) {
-        throw new Error(
-          response.errors.map((e) => e.message).join(', ')
-        );
+        throw new Error(response.errors.map((e) => e.message).join(", "));
       }
 
       setData(response.data || null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Query failed');
+      setError(err instanceof Error ? err.message : "Query failed");
     } finally {
       setLoading(false);
     }
-  }, [client, isConnected, query, variables, options?.skip, options?.showUsage]);
+  }, [
+    client,
+    isConnected,
+    query,
+    variables,
+    options?.skip,
+    options?.showUsage,
+  ]);
 
   useEffect(() => {
     if (options?.enabled === false) return;
@@ -102,13 +108,11 @@ export function useEpoch(epochId?: number) {
     try {
       const response = await client.getEpoch(epochId);
       if (response.errors) {
-        throw new Error(
-          response.errors.map((e) => e.message).join(', ')
-        );
+        throw new Error(response.errors.map((e) => e.message).join(", "));
       }
       setData(response.data?.epoch || null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch epoch');
+      setError(err instanceof Error ? err.message : "Failed to fetch epoch");
     } finally {
       setLoading(false);
     }
@@ -130,7 +134,7 @@ export function useTransactionBlocks(
   first: number = 10,
   options?: {
     skip?: boolean;
-  }
+  },
 ) {
   const client = useSuiGraphQLClient();
   const isConnected = useGraphQLConnected();
@@ -149,13 +153,13 @@ export function useTransactionBlocks(
     try {
       const response = await client.getTransactionBlocks(first, after, filter);
       if (response.errors) {
-        throw new Error(
-          response.errors.map((e) => e.message).join(', ')
-        );
+        throw new Error(response.errors.map((e) => e.message).join(", "));
       }
       setData(response.data?.transactionBlocks || null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch transactions');
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch transactions",
+      );
     } finally {
       setLoading(false);
     }
@@ -209,13 +213,11 @@ export function useObject(objectId: string) {
     try {
       const response = await client.getObject(objectId);
       if (response.errors) {
-        throw new Error(
-          response.errors.map((e) => e.message).join(', ')
-        );
+        throw new Error(response.errors.map((e) => e.message).join(", "));
       }
       setData(response.data?.object || null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch object');
+      setError(err instanceof Error ? err.message : "Failed to fetch object");
     } finally {
       setLoading(false);
     }
@@ -234,7 +236,7 @@ export function useObject(objectId: string) {
 
 export function useCoinBalance(
   owner: SuiAddress,
-  coinType: string = '0x2::sui::SUI'
+  coinType: string = "0x2::sui::SUI",
 ) {
   const client = useSuiGraphQLClient();
   const isConnected = useGraphQLConnected();
@@ -252,13 +254,13 @@ export function useCoinBalance(
     try {
       const response = await client.getCoinBalance(owner, coinType);
       if (response.errors) {
-        throw new Error(
-          response.errors.map((e) => e.message).join(', ')
-        );
+        throw new Error(response.errors.map((e) => e.message).join(", "));
       }
       setData(response.data?.owner || null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch coin balance');
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch coin balance",
+      );
     } finally {
       setLoading(false);
     }
@@ -280,7 +282,7 @@ export function useOwnedObjects(
   first: number = 50,
   options?: {
     skip?: boolean;
-  }
+  },
 ) {
   const client = useSuiGraphQLClient();
   const isConnected = useGraphQLConnected();
@@ -299,13 +301,13 @@ export function useOwnedObjects(
     try {
       const response = await client.getOwnedObjects(owner, first, after);
       if (response.errors) {
-        throw new Error(
-          response.errors.map((e) => e.message).join(', ')
-        );
+        throw new Error(response.errors.map((e) => e.message).join(", "));
       }
       setData(response.data?.owner || null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch owned objects');
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch owned objects",
+      );
     } finally {
       setLoading(false);
     }
@@ -352,13 +354,13 @@ export function useServiceConfig() {
     try {
       const response = await client.getServiceConfig();
       if (response.errors) {
-        throw new Error(
-          response.errors.map((e) => e.message).join(', ')
-        );
+        throw new Error(response.errors.map((e) => e.message).join(", "));
       }
       setData(response.data?.serviceConfig || null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch service config');
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch service config",
+      );
     } finally {
       setLoading(false);
     }
@@ -378,7 +380,7 @@ export function useServiceConfig() {
 export function useDataRetention(
   queryType: string,
   field: string,
-  filter?: string
+  filter?: string,
 ) {
   const client = useSuiGraphQLClient();
   const isConnected = useGraphQLConnected();
@@ -396,13 +398,13 @@ export function useDataRetention(
     try {
       const response = await client.getDataRetention(queryType, field, filter);
       if (response.errors) {
-        throw new Error(
-          response.errors.map((e) => e.message).join(', ')
-        );
+        throw new Error(response.errors.map((e) => e.message).join(", "));
       }
       setData(response.data?.serviceConfig?.retention || null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch retention info');
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch retention info",
+      );
     } finally {
       setLoading(false);
     }

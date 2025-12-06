@@ -119,7 +119,7 @@ const protocolInject = async function (source) {
       )}\n</div>`,
     );
     content.push("<div className='ml-4'>");
-    if (file.messages.length > 0){
+    if (file.messages.length > 0) {
       content.push(`<h4 className="mt-8">Messages</h4>`);
     }
     for (const message of file.messages) {
@@ -291,7 +291,8 @@ const protocolInject = async function (source) {
           );
           //
           content.push(
-            `<div className="${colCellStyle}">${handleCurlies(val.description).replace(/\n+\/?/g, " ")
+            `<div className="${colCellStyle}">${handleCurlies(val.description)
+              .replace(/\n+\/?/g, " ")
               .replace(/<(http.*)>/g, "$1")}</div>`,
           );
         }

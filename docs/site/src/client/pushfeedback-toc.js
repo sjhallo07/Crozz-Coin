@@ -16,13 +16,13 @@ function ensurePushFeedbackScript() {
 function styleVars() {
   // Use your Docusaurus tokens so it adapts to light/dark
   return [
-    '--pf-overlay-bg: rgba(0,0,0,0.6)',
-    '--pf-modal-bg: var(--ifm-background-color)',
-    '--pf-text-color: var(--ifm-font-color-base)',
-    '--pf-border-color: var(--ifm-color-emphasis-200)',
-    '--pf-radius: 12px',
-    '--pf-shadow: 0 8px 30px rgba(0,0,0,.2)',
-  ].join('; ');
+    "--pf-overlay-bg: rgba(0,0,0,0.6)",
+    "--pf-modal-bg: var(--ifm-background-color)",
+    "--pf-text-color: var(--ifm-font-color-base)",
+    "--pf-border-color: var(--ifm-color-emphasis-200)",
+    "--pf-radius: 12px",
+    "--pf-shadow: 0 8px 30px rgba(0,0,0,.2)",
+  ].join("; ");
 }
 
 function buildLI() {
@@ -80,7 +80,7 @@ function injectIntoTOC() {
     document.querySelector(".theme-doc-toc-desktop ul.table-of-contents") ||
     document.querySelector("ul.table-of-contents");
 
-  if (!ul) return;               // no TOC on this page
+  if (!ul) return; // no TOC on this page
   if (document.getElementById("__pf_toc_item")) return; // already inserted
 
   // Insert as a <li> to keep UL valid

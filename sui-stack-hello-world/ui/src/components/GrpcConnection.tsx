@@ -1,12 +1,22 @@
-import React, { useState } from 'react';
-import { useGrpcContext } from '../contexts/GrpcContext';
-import { GRPC_CONFIG, getAllGrpcEndpoints } from '../config/grpcConfig';
+// Copyright (c) Mysten Labs, Inc.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useState } from "react";
+import { useGrpcContext } from "../contexts/GrpcContext";
+import { GRPC_CONFIG, getAllGrpcEndpoints } from "../config/grpcConfig";
 
 export function GrpcConnectionSelector() {
-  const { environment, switchEnvironment, currentEndpoint, isConnected, error } = useGrpcContext();
-  const [customEndpoint, setCustomEndpoint] = useState('');
+  const {
+    environment,
+    switchEnvironment,
+    currentEndpoint,
+    isConnected,
+    error,
+  } = useGrpcContext();
+  const [customEndpoint, setCustomEndpoint] = useState("");
 
-  const handleEnvironmentChange = async (env: 'mainnet' | 'testnet' | 'devnet') => {
+  const handleEnvironmentChange = async (
+    env: "mainnet" | "testnet" | "devnet",
+  ) => {
     await switchEnvironment(env);
   };
 
@@ -14,7 +24,7 @@ export function GrpcConnectionSelector() {
     if (customEndpoint.trim()) {
       const { connectToEndpoint } = useGrpcContext();
       await connectToEndpoint(customEndpoint);
-      setCustomEndpoint('');
+      setCustomEndpoint("");
     }
   };
 
@@ -25,8 +35,12 @@ export function GrpcConnectionSelector() {
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold">Conexión gRPC</h2>
         <div className="flex items-center gap-2">
-          <div className={`h-3 w-3 rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`} />
-          <span className="text-sm font-medium">{isConnected ? 'Conectado' : 'Desconectado'}</span>
+          <div
+            className={`h-3 w-3 rounded-full ${isConnected ? "bg-green-500" : "bg-red-500"}`}
+          />
+          <span className="text-sm font-medium">
+            {isConnected ? "Conectado" : "Desconectado"}
+          </span>
         </div>
       </div>
 
@@ -39,16 +53,18 @@ export function GrpcConnectionSelector() {
       <div className="space-y-3">
         {/* Entornos predefinidos */}
         <div>
-          <label className="block text-sm font-medium mb-2">Entorno predefinido:</label>
+          <label className="block text-sm font-medium mb-2">
+            Entorno predefinido:
+          </label>
           <div className="grid grid-cols-3 gap-2">
-            {(['devnet', 'testnet', 'mainnet'] as const).map((env) => (
+            {(["devnet", "testnet", "mainnet"] as const).map((env) => (
               <button
                 key={env}
                 onClick={() => handleEnvironmentChange(env)}
                 className={`px-3 py-2 rounded border text-sm font-medium transition-colors ${
                   environment === env
-                    ? 'bg-blue-500 text-white border-blue-500'
-                    : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
+                    ? "bg-blue-500 text-white border-blue-500"
+                    : "bg-white text-gray-700 border-gray-300 hover:border-gray-400"
                 }`}
               >
                 {env.charAt(0).toUpperCase() + env.slice(1)}
@@ -59,15 +75,19 @@ export function GrpcConnectionSelector() {
 
         {/* Endpoint actual */}
         <div>
-          <label className="block text-sm font-medium mb-1">Endpoint actual:</label>
+          <label className="block text-sm font-medium mb-1">
+            Endpoint actual:
+          </label>
           <div className="p-2 bg-gray-50 rounded border border-gray-200 text-sm text-gray-600 break-all">
-            {currentEndpoint || 'No conectado'}
+            {currentEndpoint || "No conectado"}
           </div>
         </div>
 
         {/* Endpoint personalizado */}
         <div>
-          <label className="block text-sm font-medium mb-2">O conectar a endpoint personalizado:</label>
+          <label className="block text-sm font-medium mb-2">
+            O conectar a endpoint personalizado:
+          </label>
           <div className="flex gap-2">
             <input
               type="text"
@@ -76,7 +96,7 @@ export function GrpcConnectionSelector() {
               placeholder="https://custom-endpoint.example.com:443"
               className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               onKeyPress={(e) => {
-                if (e.key === 'Enter') {
+                if (e.key === "Enter") {
                   handleCustomConnect();
                 }
               }}
@@ -93,12 +113,19 @@ export function GrpcConnectionSelector() {
 
         {/* Lista de endpoints disponibles */}
         <div>
-          <label className="block text-sm font-medium mb-2">Endpoints disponibles:</label>
+          <label className="block text-sm font-medium mb-2">
+            Endpoints disponibles:
+          </label>
           <div className="space-y-1 bg-gray-50 p-2 rounded border border-gray-200 max-h-24 overflow-y-auto">
             {endpoints.map((ep) => (
-              <div key={ep.name} className="text-xs text-gray-600 flex items-center justify-between">
+              <div
+                key={ep.name}
+                className="text-xs text-gray-600 flex items-center justify-between"
+              >
                 <span className="font-medium">{ep.name}:</span>
-                <code className="bg-white px-2 py-1 rounded border border-gray-200">{ep.endpoint}</code>
+                <code className="bg-white px-2 py-1 rounded border border-gray-200">
+                  {ep.endpoint}
+                </code>
               </div>
             ))}
           </div>
@@ -119,15 +146,19 @@ export function GrpcConnectionInfo() {
       <div className="grid grid-cols-2 gap-2">
         <div>
           <span className="font-medium text-gray-700">Estado:</span>
-          <p className="text-gray-600">{isConnected ? '✓ Conectado' : '✗ Desconectado'}</p>
+          <p className="text-gray-600">
+            {isConnected ? "✓ Conectado" : "✗ Desconectado"}
+          </p>
         </div>
         <div>
           <span className="font-medium text-gray-700">Ambiente:</span>
-          <p className="text-gray-600">{environment || '-'}</p>
+          <p className="text-gray-600">{environment || "-"}</p>
         </div>
         <div className="col-span-2">
           <span className="font-medium text-gray-700">Endpoint:</span>
-          <p className="text-gray-600 break-all">{currentEndpoint || 'No configurado'}</p>
+          <p className="text-gray-600 break-all">
+            {currentEndpoint || "No configurado"}
+          </p>
         </div>
         {error && (
           <div className="col-span-2">
@@ -148,9 +179,11 @@ export function GrpcConnectionBadge() {
 
   return (
     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100 text-sm">
-      <div className={`h-2 w-2 rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`} />
+      <div
+        className={`h-2 w-2 rounded-full ${isConnected ? "bg-green-500" : "bg-red-500"}`}
+      />
       <span className="font-medium text-gray-700">
-        {isConnected ? `gRPC (${environment})` : 'gRPC (offline)'}
+        {isConnected ? `gRPC (${environment})` : "gRPC (offline)"}
       </span>
     </div>
   );

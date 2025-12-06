@@ -83,7 +83,7 @@
           pattern: /::/,
           alias: "punctuation",
         },
-      }
+      },
     },
 
     /**
@@ -119,13 +119,13 @@
           // lookbehind: true,
           // alias: "constant",
         },
-      }
+      },
     },
 
     /**
      * Scope: Module:Friend
      */
-    "friend": {
+    friend: {
       pattern: /\b(friend).*;/,
       inside: {
         "friend-keyword": {
@@ -140,14 +140,14 @@
           pattern: /((0x[0-9A-F]+)|([a-z][a-z_0-9]+))/,
           alias: "address-alias",
         },
-      }
+      },
     },
 
     /**
      * Scope: Module:Const
      */
 
-    "const": {
+    const: {
       pattern: /\b(const)\b.*(?=;)/,
       greedy: true,
       // alias: "keyword",
@@ -172,8 +172,8 @@
         },
         // see assignments in the end of this file
         // Prism allows injecting tokens into other tokens
-        literals: null
-      }
+        literals: null,
+      },
     },
 
     /**
@@ -195,20 +195,20 @@
           pattern: /\b(has)\b/,
           alias: "keyword",
         },
-        "abilities": {
+        abilities: {
           pattern: /\b(key|store|copy|drop)\b/,
           alias: ["regex", "important"],
         },
         "struct-name": {
           pattern: /(\w+)/,
           lookbehind: true,
-          alias: "entity"
+          alias: "entity",
         },
         "phantom-keyword": {
           pattern: /\b(phantom)\b/,
           alias: "keyword",
         },
-      }
+      },
     },
 
     /**
@@ -227,12 +227,12 @@
       alias: "keyword",
     },
 
-    "visibility": {
+    visibility: {
       pattern: /\b(public|entry|native|\(friend\))\b/,
-      alias: "keyword"
+      alias: "keyword",
     },
 
-    "macro": {
+    macro: {
       pattern: /\b(macro)\b/,
       alias: "keyword",
     },
@@ -272,7 +272,7 @@
       alias: "keyword",
     },
 
-    "label": {
+    label: {
       pattern: /'(\w+):/,
       alias: "namespace",
     },
@@ -287,7 +287,7 @@
      * Scope: Top | Module
      */
 
-    "attribute": {
+    attribute: {
       pattern: /#!?\[(?:[^\[\]"]|"(?:\\[\s\S]|[^\\"])*")*\]/,
       greedy: true,
       alias: "attr-name",
@@ -297,7 +297,7 @@
      * Scope: Misc (Any)
      */
 
-    "abilities": {
+    abilities: {
       pattern: /\b(key|store|copy|drop)\b/,
       alias: ["regex", "important"],
     },
@@ -319,7 +319,7 @@
       alias: "keyword",
     },
 
-    "literals": [
+    literals: [
       /** ASCII Bytestring literal: b"this is ascii" */
       {
         pattern: /(?:b)"(\\[\s\S]|[^\\"])*"/,
@@ -385,5 +385,5 @@
   Prism.languages.move.const.inside.literals = Prism.languages.move.literals;
 
   // Prism.languages["move"]["attribute"].inside["string"] =
-    // Prism.languages["move"]["string"];
+  // Prism.languages["move"]["string"];
 })(Prism);

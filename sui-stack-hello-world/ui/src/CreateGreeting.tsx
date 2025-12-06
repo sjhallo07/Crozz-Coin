@@ -1,3 +1,5 @@
+// Copyright (c) Mysten Labs, Inc.
+// SPDX-License-Identifier: Apache-2.0
 import { Transaction } from "@mysten/sui/transactions";
 import { Button, Container } from "@radix-ui/themes";
 import { useSignAndExecuteTransaction, useSuiClient } from "@mysten/dapp-kit";
@@ -12,12 +14,11 @@ export function CreateGreeting({
 }) {
   const helloWorldPackageId = useNetworkVariable("helloWorldPackageId");
   const suiClient = useSuiClient();
-  const { mutate: signAndExecute } = useSignAndExecuteTransaction();	
+  const { mutate: signAndExecute } = useSignAndExecuteTransaction();
 
   const [waitingForTxn, setWaitingForTxn] = useState(false);
 
   const create = () => {
-
     setWaitingForTxn(true);
 
     const tx = new Transaction();
@@ -33,17 +34,23 @@ export function CreateGreeting({
       },
       {
         onSuccess: (tx) => {
-          suiClient.waitForTransaction({ digest: tx.digest, options: { showEffects: true } }).then(async (result) => {
-            const objectId = result.effects?.created?.[0]?.reference?.objectId;
-            if (objectId) {
-              onCreated(objectId);
-              setWaitingForTxn(false);
-            }
-          });
+          suiClient
+            .waitForTransaction({
+              digest: tx.digest,
+              options: { showEffects: true },
+            })
+            .then(async (result) => {
+              const objectId =
+                result.effects?.created?.[0]?.reference?.objectId;
+              if (objectId) {
+                onCreated(objectId);
+                setWaitingForTxn(false);
+              }
+            });
         },
       },
     );
-  }
+  };
 
   return (
     <Container>
@@ -54,11 +61,7 @@ export function CreateGreeting({
         }}
         disabled={waitingForTxn}
       >
-        {waitingForTxn? (
-          <ClipLoader size={20} />
-        ) : (
-          "Create Greeting"
-        )}
+        {waitingForTxn ? <ClipLoader size={20} /> : "Create Greeting"}
       </Button>
     </Container>
   );

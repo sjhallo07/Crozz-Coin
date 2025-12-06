@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useState, useEffect } from "react";
-import {Highlight, themes} from "prism-react-renderer";
+import { Highlight, themes } from "prism-react-renderer";
 
 import axios from "axios";
 import { Prism } from "prism-react-renderer";

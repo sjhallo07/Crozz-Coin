@@ -1,12 +1,11 @@
-/**
- * Tipos y interfaces para APIs gRPC de Sui
- */
+// Copyright (c) Mysten Labs, Inc.
+// SPDX-License-Identifier: Apache-2.0
 
 // ==================== Transacciones ====================
 
 export interface TransactionEffects {
   status: {
-    status: 'success' | 'failure';
+    status: "success" | "failure";
     error?: string;
   };
   executed_epoch: string;
@@ -53,7 +52,7 @@ export interface ObjectContent {
   digest: string;
   type: string;
   owner: {
-    type: 'address_owner' | 'object_owner' | 'shared' | 'immutable';
+    type: "address_owner" | "object_owner" | "shared" | "immutable";
     value?: string;
   };
   previous_transaction: string;
@@ -124,7 +123,7 @@ export interface MoveModule {
 }
 
 export interface MoveFunction {
-  visibility: 'public' | 'friend' | 'private';
+  visibility: "public" | "friend" | "private";
   is_entry: boolean;
   parameters?: string[];
   return_types?: string[];
@@ -219,26 +218,26 @@ export class GrpcError extends Error {
     message: string,
     public code: string,
     public statusCode?: number,
-    public details?: Record<string, unknown>
+    public details?: Record<string, unknown>,
   ) {
     super(message);
-    this.name = 'GrpcError';
+    this.name = "GrpcError";
   }
 }
 
 // ==================== Eventos ====================
 
 export enum EventType {
-  MintEvent = 'mint',
-  BurnEvent = 'burn',
-  TransferEvent = 'transfer',
-  MoveEvent = 'move',
-  DeleteEvent = 'delete',
-  NewObjectEvent = 'new_object',
-  MutateObjectEvent = 'mutate_object',
-  UnwrapObjectEvent = 'unwrap_object',
-  CoinBalanceChangeEvent = 'coin_balance_change',
-  ModulePublishEvent = 'module_publish',
+  MintEvent = "mint",
+  BurnEvent = "burn",
+  TransferEvent = "transfer",
+  MoveEvent = "move",
+  DeleteEvent = "delete",
+  NewObjectEvent = "new_object",
+  MutateObjectEvent = "mutate_object",
+  UnwrapObjectEvent = "unwrap_object",
+  CoinBalanceChangeEvent = "coin_balance_change",
+  ModulePublishEvent = "module_publish",
 }
 
 // ==================== Firma ====================
@@ -261,5 +260,7 @@ export interface CheckpointStreamMessage {
   checkpoint: Checkpoint;
 }
 
-export type CheckpointStreamCallback = (message: CheckpointStreamMessage) => void;
+export type CheckpointStreamCallback = (
+  message: CheckpointStreamMessage,
+) => void;
 export type UnsubscribeFn = () => void;

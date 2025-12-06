@@ -3,15 +3,15 @@
 
 // This file is used only for instruction.
 
-import React from 'react';
+import React from "react";
 
 function App() {
-  return (
-    <div>
-      <h1>Hello, World!</h1>
-      <p>This is a minimal React app.</p>
-    </div>
-  );
+    return (
+        <div>
+            <h1>Hello, World!</h1>
+            <p>This is a minimal React app.</p>
+        </div>
+    );
 }
 
 export default App;

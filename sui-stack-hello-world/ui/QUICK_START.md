@@ -1,4 +1,4 @@
-# 🎉 Sistema gRPC Sui Stack - ¡COMPLETADO!
+# 🎉 Sistema gRPC Sui Stack - ¡COMPLETADO
 
 ## ✅ Estado: LISTO PARA USAR
 
@@ -7,6 +7,7 @@ Se ha implementado exitosamente un sistema completo y profesional de integració
 ## 📦 Lo Que Se Entregó
 
 ### 🔧 **5 Archivos de Código Core**
+
 - ✅ `src/config/grpcConfig.ts` - Configuración centralizada
 - ✅ `src/contexts/GrpcContext.tsx` - Context React + Provider
 - ✅ `src/services/grpcClient.ts` - Cliente gRPC (40+ métodos)
@@ -14,12 +15,14 @@ Se ha implementado exitosamente un sistema completo y profesional de integració
 - ✅ `src/components/GrpcConnection.tsx` - Componentes UI
 
 ### 📚 **4 Documentos de Documentación**
+
 - ✅ `INTEGRATION_GUIDE.md` - Guía de integración (250+ líneas)
 - ✅ `GRPC_README.md` - README principal (300+ líneas)
 - ✅ `IMPLEMENTATION_SUMMARY.md` - Resumen técnico completo
 - ✅ `.env.example` - Variables de entorno
 
 ### 🛠️ **Herramientas de Validación**
+
 - ✅ `validate-implementation.sh` - Script de validación
 
 ## 🚀 Inicio Rápido (30 segundos)
@@ -91,6 +94,7 @@ Raíz/
 ## 💡 3 Formas de Usar
 
 ### Opción 1: Componentes UI (Recomendado)
+
 ```tsx
 <GrpcProvider>
   <GrpcConnectionSelector />
@@ -99,12 +103,14 @@ Raíz/
 ```
 
 ### Opción 2: Hooks en Componentes
+
 ```tsx
 const { balances } = useCoinBalances(address);
 const { transaction } = useTransaction(digest);
 ```
 
 ### Opción 3: Cliente Directo
+
 ```tsx
 const client = useSuiGrpcClient();
 await client.getCheckpoint('1000');
@@ -146,10 +152,10 @@ await client.getCheckpoint('1000');
 
 ## 🌐 URLs Importantes
 
-- **Servidor dev:** http://localhost:5173/
-- **Devnet gRPC:** https://fullnode.devnet.sui.io:443
-- **Testnet gRPC:** https://fullnode.testnet.sui.io:443
-- **Mainnet gRPC:** https://fullnode.mainnet.sui.io:443
+- **Servidor dev:** <http://localhost:5173/>
+- **Devnet gRPC:** <https://fullnode.devnet.sui.io:443>
+- **Testnet gRPC:** <https://fullnode.testnet.sui.io:443>
+- **Mainnet gRPC:** <https://fullnode.mainnet.sui.io:443>
 
 ## 📞 Próximos Pasos
 
@@ -210,6 +216,7 @@ npm run dev
 ## 📞 Soporte
 
 Si tienes preguntas:
+
 1. Revisa `INTEGRATION_GUIDE.md`
 2. Ve a `examples/grpcExamples.ts`
 3. Consulta `GRPC_README.md`
@@ -217,10 +224,10 @@ Si tienes preguntas:
 
 ---
 
-## 🎉 ¡LISTO PARA USAR!
+## 🎉 ¡LISTO PARA USAR
 
 Todo está implementado, documentado, validado y en ejecución.
 
-**El servidor está corriendo en http://localhost:5173/**
+**El servidor está corriendo en <http://localhost:5173/>**
 
 **¡Comienza ahora mismo!** 🚀

@@ -1,11 +1,11 @@
-/**
- * Ejemplos de uso de todas las APIs gRPC de Sui
- */
+// Copyright (c) Mysten Labs, Inc.
+// SPDX-License-Identifier: Apache-2.0
 
-import SuiGrpcClient from '../services/grpcClient';
-import { FIELD_MASK_PRESETS } from '../utils/fieldMask';
+import SuiGrpcClient from "../services/grpcClient";
+import { FIELD_MASK_PRESETS } from "../utils/fieldMask";
 
-const GRPC_ENDPOINT = process.env.REACT_APP_GRPC_ENDPOINT || 'fullnode.devnet.sui.io';
+const GRPC_ENDPOINT =
+  process.env.REACT_APP_GRPC_ENDPOINT || "fullnode.devnet.sui.io";
 
 class SuiGrpcExamples {
   private client: SuiGrpcClient;
@@ -21,18 +21,21 @@ class SuiGrpcExamples {
     try {
       console.log(`📝 Obteniendo transacción ${digest}...`);
       const tx = await this.client.getTransaction(digest);
-      console.log('Transacción:', tx);
+      console.log("Transacción:", tx);
 
       if (tx.effects) {
-        console.log('Status:', (tx.effects as Record<string, unknown>).status);
-        console.log('Gas usado:', (tx.effects as Record<string, unknown>).gas_used);
+        console.log("Status:", (tx.effects as Record<string, unknown>).status);
+        console.log(
+          "Gas usado:",
+          (tx.effects as Record<string, unknown>).gas_used,
+        );
       }
 
       if (tx.events) {
-        console.log('Eventos:', (tx.events as unknown[]).length);
+        console.log("Eventos:", (tx.events as unknown[]).length);
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   }
 
@@ -43,23 +46,25 @@ class SuiGrpcExamples {
     try {
       console.log(`💰 Obteniendo balances para ${address}...`);
       const balances = await this.client.getAllCoinBalances(address);
-      console.log('Balances:', balances);
+      console.log("Balances:", balances);
 
       // Agrupar por tipo de moneda
-      if (balances && 'coin_balances' in balances) {
+      if (balances && "coin_balances" in balances) {
         const coinBalances = balances.coin_balances as Array<{
           coin_type: string;
           balance: string;
           coin_object_count: number;
         }>;
 
-        console.log('Resumen de balances:');
+        console.log("Resumen de balances:");
         coinBalances.forEach((cb) => {
-          console.log(`  ${cb.coin_type}: ${cb.balance} (${cb.coin_object_count} monedas)`);
+          console.log(
+            `  ${cb.coin_type}: ${cb.balance} (${cb.coin_object_count} monedas)`,
+          );
         });
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   }
 
@@ -70,23 +75,28 @@ class SuiGrpcExamples {
     try {
       console.log(`📦 Listando objetos de ${address}...`);
       const result = await this.client.listOwnedObjects(address, pageSize);
-      console.log('Objetos:', result);
+      console.log("Objetos:", result);
 
-      if (result && 'objects' in result) {
-        const objects = result.objects as Array<{ object_id: string; version: string }>;
+      if (result && "objects" in result) {
+        const objects = result.objects as Array<{
+          object_id: string;
+          version: string;
+        }>;
         console.log(`Total de objetos (primera página): ${objects.length}`);
 
         // Mostrar primeros 5
         objects.slice(0, 5).forEach((obj) => {
-          console.log(`  - ${(obj as Record<string, unknown>).object_id} (v${(obj as Record<string, unknown>).version})`);
+          console.log(
+            `  - ${(obj as Record<string, unknown>).object_id} (v${(obj as Record<string, unknown>).version})`,
+          );
         });
 
-        if ('next_page_token' in result && result.next_page_token) {
-          console.log('Hay más páginas disponibles...');
+        if ("next_page_token" in result && result.next_page_token) {
+          console.log("Hay más páginas disponibles...");
         }
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   }
 
@@ -97,16 +107,16 @@ class SuiGrpcExamples {
     try {
       console.log(`🔍 Obteniendo detalles del objeto ${objectId}...`);
       const obj = await this.client.getObject(objectId);
-      console.log('Objeto:', obj);
+      console.log("Objeto:", obj);
 
-      if (obj && 'content' in obj) {
+      if (obj && "content" in obj) {
         const content = obj.content as Record<string, unknown>;
-        console.log('Tipo:', content.type);
-        console.log('Propietario:', content.owner);
-        console.log('Versión:', content.version);
+        console.log("Tipo:", content.type);
+        console.log("Propietario:", content.owner);
+        console.log("Versión:", content.version);
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   }
 
@@ -115,31 +125,34 @@ class SuiGrpcExamples {
    */
   async simulateTransaction(
     txBytes: string,
-    signerAddress: string
+    signerAddress: string,
   ): Promise<void> {
     try {
-      console.log('🧪 Simulando transacción...');
-      const result = await this.client.dryRunTransaction(txBytes, signerAddress);
-      console.log('Resultado de simulación:', result);
+      console.log("🧪 Simulando transacción...");
+      const result = await this.client.dryRunTransaction(
+        txBytes,
+        signerAddress,
+      );
+      console.log("Resultado de simulación:", result);
 
-      if (result && 'effects' in result) {
+      if (result && "effects" in result) {
         const effects = result.effects as Record<string, unknown>;
-        console.log('Estado:', effects.status);
+        console.log("Estado:", effects.status);
 
-        if ('gas_used' in effects) {
+        if ("gas_used" in effects) {
           const gasUsed = effects.gas_used as Record<string, unknown>;
           console.log(
-            `Gas estimado: ${gasUsed.computation_cost} (computación) + ${gasUsed.storage_cost} (almacenamiento)`
+            `Gas estimado: ${gasUsed.computation_cost} (computación) + ${gasUsed.storage_cost} (almacenamiento)`,
           );
         }
       }
 
-      if ('events' in result) {
+      if ("events" in result) {
         const events = result.events as unknown[];
         console.log(`Eventos emitidos: ${events.length}`);
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   }
 
@@ -150,9 +163,9 @@ class SuiGrpcExamples {
     try {
       console.log(`📚 Explorando paquete ${packageId}...`);
       const pkg = await this.client.getMovePackage(packageId);
-      console.log('Paquete:', pkg);
+      console.log("Paquete:", pkg);
 
-      if (pkg && 'module' in pkg) {
+      if (pkg && "module" in pkg) {
         const modules = pkg.module as Record<string, unknown>;
         console.log(`Módulos encontrados: ${Object.keys(modules).length}`);
 
@@ -161,7 +174,7 @@ class SuiGrpcExamples {
         });
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   }
 
@@ -172,13 +185,13 @@ class SuiGrpcExamples {
     try {
       console.log(`🏷️ Resolviendo nombre SuiNS: ${name}...`);
       const record = await this.client.resolveSuiNSName(name);
-      console.log('Registro SuiNS:', record);
+      console.log("Registro SuiNS:", record);
 
       if (record) {
         console.log(`Propietario:`, record);
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   }
 
@@ -189,16 +202,16 @@ class SuiGrpcExamples {
     try {
       console.log(`💎 Obteniendo metadata de ${coinType}...`);
       const info = await this.client.getCoinInfo(coinType);
-      console.log('Información de moneda:', info);
+      console.log("Información de moneda:", info);
 
       if (info) {
-        console.log('Símbolo:', (info as Record<string, unknown>).symbol);
-        console.log('Nombre:', (info as Record<string, unknown>).name);
-        console.log('Decimales:', (info as Record<string, unknown>).decimals);
-        console.log('Suministro:', (info as Record<string, unknown>).supply);
+        console.log("Símbolo:", (info as Record<string, unknown>).symbol);
+        console.log("Nombre:", (info as Record<string, unknown>).name);
+        console.log("Decimales:", (info as Record<string, unknown>).decimals);
+        console.log("Suministro:", (info as Record<string, unknown>).supply);
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   }
 
@@ -209,16 +222,16 @@ class SuiGrpcExamples {
     try {
       console.log(`📊 Obteniendo checkpoint ${sequenceNumber}...`);
       const checkpoint = await this.client.getCheckpoint(sequenceNumber);
-      console.log('Checkpoint:', checkpoint);
+      console.log("Checkpoint:", checkpoint);
 
-      if (checkpoint && 'summary' in checkpoint) {
+      if (checkpoint && "summary" in checkpoint) {
         const summary = checkpoint.summary as Record<string, unknown>;
-        console.log('Timestamp:', summary.timestamp);
-        console.log('Transacciones:', summary.network_total_transactions);
-        console.log('Epoch:', summary.epoch);
+        console.log("Timestamp:", summary.timestamp);
+        console.log("Transacciones:", summary.network_total_transactions);
+        console.log("Epoch:", summary.epoch);
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   }
 
@@ -227,15 +240,15 @@ class SuiGrpcExamples {
    */
   async getServiceInfo(): Promise<void> {
     try {
-      console.log('ℹ️ Obteniendo información del servidor gRPC...');
+      console.log("ℹ️ Obteniendo información del servidor gRPC...");
       const info = await this.client.getServiceInfo();
-      console.log('Información del servidor:', info);
+      console.log("Información del servidor:", info);
 
       console.log(`Versión:`, info);
       console.log(`Cadena:`, info);
       console.log(`Punto de control más bajo:`, info);
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   }
 
@@ -246,14 +259,14 @@ class SuiGrpcExamples {
     try {
       console.log(`📦 Obteniendo ${objectIds.length} objetos en lote...`);
       const result = await this.client.batchGetObjects(objectIds);
-      console.log('Objetos obtenidos:', result);
+      console.log("Objetos obtenidos:", result);
 
-      if (result && 'objects' in result) {
+      if (result && "objects" in result) {
         const objects = result.objects as unknown[];
         console.log(`Objetos exitosos: ${objects.length}`);
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   }
 
@@ -264,14 +277,14 @@ class SuiGrpcExamples {
     try {
       console.log(`📝 Obteniendo ${digests.length} transacciones en lote...`);
       const result = await this.client.batchGetTransactions(digests);
-      console.log('Transacciones obtenidas:', result);
+      console.log("Transacciones obtenidas:", result);
 
-      if (result && 'transactions' in result) {
+      if (result && "transactions" in result) {
         const transactions = result.transactions as unknown[];
         console.log(`Transacciones exitosas: ${transactions.length}`);
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   }
 
@@ -282,17 +295,22 @@ class SuiGrpcExamples {
     try {
       console.log(`🔗 Listando campos dinámicos de ${parentId}...`);
       const result = await this.client.listDynamicFields(parentId);
-      console.log('Campos dinámicos:', result);
+      console.log("Campos dinámicos:", result);
 
-      if (result && 'dynamic_fields' in result) {
-        const fields = result.dynamic_fields as Array<{ name: string; type: string }>;
+      if (result && "dynamic_fields" in result) {
+        const fields = result.dynamic_fields as Array<{
+          name: string;
+          type: string;
+        }>;
         console.log(`Total de campos: ${fields.length}`);
         fields.forEach((field) => {
-          console.log(`  - ${(field as Record<string, unknown>).name}: ${(field as Record<string, unknown>).type}`);
+          console.log(
+            `  - ${(field as Record<string, unknown>).name}: ${(field as Record<string, unknown>).type}`,
+          );
         });
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   }
 
@@ -301,7 +319,7 @@ class SuiGrpcExamples {
    */
   async subscribeToCheckpoints(): Promise<void> {
     try {
-      console.log('📡 Suscribiéndose a actualizaciones de checkpoints...');
+      console.log("📡 Suscribiéndose a actualizaciones de checkpoints...");
 
       let count = 0;
       const unsubscribe = await this.client.subscribeCheckpoints(
@@ -309,19 +327,19 @@ class SuiGrpcExamples {
           count++;
           console.log(
             `Checkpoint #${count}:`,
-            (checkpoint as Record<string, unknown>).sequence_number
+            (checkpoint as Record<string, unknown>).sequence_number,
           );
 
           // Desuscribirse después de 5 checkpoints
           if (count >= 5) {
-            console.log('Deteniendo suscripción...');
+            console.log("Deteniendo suscripción...");
             unsubscribe();
           }
         },
-        ['sequence_number', 'digest', 'summary.timestamp']
+        ["sequence_number", "digest", "summary.timestamp"],
       );
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   }
 }

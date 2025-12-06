@@ -1,7 +1,5 @@
-/**
- * Sui GraphQL Response Types
- * Type definitions for GraphQL API responses
- */
+// Copyright (c) Mysten Labs, Inc.
+// SPDX-License-Identifier: Apache-2.0
 
 // ============================================================================
 // Scalar Types
@@ -19,21 +17,21 @@ export type BigInt = string;
 // ============================================================================
 
 export enum TransactionStatus {
-  SUCCESS = 'SUCCESS',
-  FAILURE = 'FAILURE',
+  SUCCESS = "SUCCESS",
+  FAILURE = "FAILURE",
 }
 
 export enum ObjectStatus {
-  ACTIVE = 'ACTIVE',
-  WRAPPED = 'WRAPPED',
-  DELETED = 'DELETED',
+  ACTIVE = "ACTIVE",
+  WRAPPED = "WRAPPED",
+  DELETED = "DELETED",
 }
 
 export enum OwnerType {
-  ADDRESS = 'AddressOwner',
-  OBJECT = 'ObjectOwner',
-  SHARED = 'Shared',
-  IMMUTABLE = 'Immutable',
+  ADDRESS = "AddressOwner",
+  OBJECT = "ObjectOwner",
+  SHARED = "Shared",
+  IMMUTABLE = "Immutable",
 }
 
 // ============================================================================
@@ -67,22 +65,22 @@ export interface Address {
 }
 
 export interface AddressOwner {
-  __typename: 'AddressOwner';
+  __typename: "AddressOwner";
   owner: Address;
 }
 
 export interface ObjectOwner {
-  __typename: 'ObjectOwner';
+  __typename: "ObjectOwner";
   owner: Address;
 }
 
 export interface SharedOwner {
-  __typename: 'Shared';
+  __typename: "Shared";
   initialSharedVersion: string;
 }
 
 export interface ImmutableOwner {
-  __typename: 'Immutable';
+  __typename: "Immutable";
 }
 
 export type Owner = AddressOwner | ObjectOwner | SharedOwner | ImmutableOwner;
@@ -96,14 +94,14 @@ export interface MoveType {
 }
 
 export interface MoveValue {
-  __typename: 'MoveValue';
+  __typename: "MoveValue";
   type: MoveType;
   json: any;
   bcs: Base64;
 }
 
 export interface MoveObject {
-  __typename: 'MoveObject';
+  __typename: "MoveObject";
   hasPublicTransfer: boolean;
   contents: MoveValue;
 }
@@ -194,7 +192,8 @@ export interface TransactionBlock {
   gasInput: GasInput;
 }
 
-export interface TransactionBlockConnection extends Connection<TransactionBlock> {
+export interface TransactionBlockConnection
+  extends Connection<TransactionBlock> {
   nodes: TransactionBlock[];
   pageInfo: PageInfo;
 }

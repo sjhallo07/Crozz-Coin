@@ -1,7 +1,5 @@
-/**
- * gRPC Client Service para Sui Full Node
- * Proporciona acceso a todas las APIs de gRPC disponibles
- */
+// Copyright (c) Mysten Labs, Inc.
+// SPDX-License-Identifier: Apache-2.0
 
 interface GrpcConfig {
   endpoint: string;
@@ -14,14 +12,30 @@ class SuiGrpcClient {
   private port: number;
   private ssl: boolean;
 
-  constructor(config: GrpcConfig) {
-    this.endpoint = config.endpoint;
-    this.port = config.port || 443;
-    this.ssl = config.ssl !== false;
+  constructor(config: GrpcConfig | string) {
+    if (typeof config === "string") {
+      try {
+        const url = new URL(
+          config.startsWith("http") ? config : `https://${config}`,
+        );
+        this.endpoint = url.hostname;
+        this.port = url.port ? Number(url.port) : 443;
+        this.ssl = url.protocol !== "http:";
+      } catch {
+        // fallback: treat string as host
+        this.endpoint = config;
+        this.port = 443;
+        this.ssl = true;
+      }
+    } else {
+      this.endpoint = config.endpoint;
+      this.port = config.port || 443;
+      this.ssl = config.ssl !== false;
+    }
   }
 
   private getUrl(): string {
-    const protocol = this.ssl ? 'https' : 'http';
+    const protocol = this.ssl ? "https" : "http";
     return `${protocol}://${this.endpoint}:${this.port}`;
   }
 
@@ -32,7 +46,7 @@ class SuiGrpcClient {
     service: string,
     method: string,
     request: Record<string, unknown>,
-    readMask?: string[]
+    readMask?: string[],
   ): Promise<T> {
     const payload = {
       ...request,
@@ -40,17 +54,17 @@ class SuiGrpcClient {
     };
 
     const response = await fetch(`${this.getUrl()}/${service}/${method}`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/grpc+proto',
-        'grpc-accept-encoding': 'gzip',
+        "Content-Type": "application/grpc+proto",
+        "grpc-accept-encoding": "gzip",
       },
       body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
       throw new Error(
-        `gRPC call failed: ${response.status} ${response.statusText}`
+        `gRPC call failed: ${response.status} ${response.statusText}`,
       );
     }
 
@@ -64,12 +78,16 @@ class SuiGrpcClient {
    */
   async executeTransaction(
     txBytes: string,
-    signatures: string[]
+    signatures: string[],
   ): Promise<Record<string, unknown>> {
-    return this.grpcCall('sui.rpc.v2.TransactionExecutionService', 'ExecuteTransaction', {
-      transaction_bytes: txBytes,
-      signatures,
-    });
+    return this.grpcCall(
+      "sui.rpc.v2.TransactionExecutionService",
+      "ExecuteTransaction",
+      {
+        transaction_bytes: txBytes,
+        signatures,
+      },
+    );
   }
 
   /**
@@ -77,12 +95,17 @@ class SuiGrpcClient {
    */
   async simulateTransaction(
     txBytes: string,
-    signerAddress: string
+    signerAddress: string,
   ): Promise<Record<string, unknown>> {
-    return this.grpcCall('sui.rpc.v2.TransactionExecutionService', 'SimulateTransaction', {
-      transaction_bytes: txBytes,
-      signer_address: signerAddress,
-    }, ['effects', 'events']);
+    return this.grpcCall(
+      "sui.rpc.v2.TransactionExecutionService",
+      "SimulateTransaction",
+      {
+        transaction_bytes: txBytes,
+        signer_address: signerAddress,
+      },
+      ["effects", "events"],
+    );
   }
 
   // ==================== LedgerService ====================
@@ -90,47 +113,69 @@ class SuiGrpcClient {
   /**
    * Obtiene información de un checkpoint específico
    */
-  async getCheckpoint(sequenceNumber: string): Promise<Record<string, unknown>> {
-    return this.grpcCall('sui.rpc.v2.LedgerService', 'GetCheckpoint', {
-      sequence_number: sequenceNumber,
-    }, ['transactions', 'summary']);
+  async getCheckpoint(
+    sequenceNumber: string,
+  ): Promise<Record<string, unknown>> {
+    return this.grpcCall(
+      "sui.rpc.v2.LedgerService",
+      "GetCheckpoint",
+      {
+        sequence_number: sequenceNumber,
+      },
+      ["transactions", "summary"],
+    );
   }
 
   /**
    * Obtiene las transacciones en un checkpoint
    */
   async getCheckpointTransactions(
-    sequenceNumber: string
+    sequenceNumber: string,
   ): Promise<Record<string, unknown>> {
-    return this.grpcCall('sui.rpc.v2.LedgerService', 'GetCheckpoint', {
-      sequence_number: sequenceNumber,
-    }, ['transactions']);
+    return this.grpcCall(
+      "sui.rpc.v2.LedgerService",
+      "GetCheckpoint",
+      {
+        sequence_number: sequenceNumber,
+      },
+      ["transactions"],
+    );
   }
 
   /**
    * Obtiene una transacción específica por digest
    */
   async getTransaction(digest: string): Promise<Record<string, unknown>> {
-    return this.grpcCall('sui.rpc.v2.LedgerService', 'GetTransaction', {
-      digest,
-    }, ['effects', 'events']);
+    return this.grpcCall(
+      "sui.rpc.v2.LedgerService",
+      "GetTransaction",
+      {
+        digest,
+      },
+      ["effects", "events"],
+    );
   }
 
   /**
    * Obtiene un objeto específico
    */
   async getObject(objectId: string): Promise<Record<string, unknown>> {
-    return this.grpcCall('sui.rpc.v2.LedgerService', 'GetObject', {
-      object_id: objectId,
-    }, ['bcs', 'content']);
+    return this.grpcCall(
+      "sui.rpc.v2.LedgerService",
+      "GetObject",
+      {
+        object_id: objectId,
+      },
+      ["bcs", "content"],
+    );
   }
 
   /**
    * Obtiene información de la época actual
    */
   async getCurrentEpoch(): Promise<Record<string, unknown>> {
-    return this.grpcCall('sui.rpc.v2.LedgerService', 'GetEpoch', {
-      epoch_id: 'latest',
+    return this.grpcCall("sui.rpc.v2.LedgerService", "GetEpoch", {
+      epoch_id: "latest",
     });
   }
 
@@ -138,25 +183,37 @@ class SuiGrpcClient {
    * Obtiene información de servicio (versión, cadena, etc.)
    */
   async getServiceInfo(): Promise<Record<string, unknown>> {
-    return this.grpcCall('sui.rpc.v2.LedgerService', 'GetServiceInfo', {});
+    return this.grpcCall("sui.rpc.v2.LedgerService", "GetServiceInfo", {});
   }
 
   /**
    * Obtiene múltiples transacciones en lote
    */
-  async batchGetTransactions(digests: string[]): Promise<Record<string, unknown>> {
-    return this.grpcCall('sui.rpc.v2.LedgerService', 'BatchGetTransactions', {
-      digests,
-    }, ['effects', 'events']);
+  async batchGetTransactions(
+    digests: string[],
+  ): Promise<Record<string, unknown>> {
+    return this.grpcCall(
+      "sui.rpc.v2.LedgerService",
+      "BatchGetTransactions",
+      {
+        digests,
+      },
+      ["effects", "events"],
+    );
   }
 
   /**
    * Obtiene múltiples objetos en lote
    */
   async batchGetObjects(objectIds: string[]): Promise<Record<string, unknown>> {
-    return this.grpcCall('sui.rpc.v2.LedgerService', 'BatchGetObjects', {
-      object_ids: objectIds,
-    }, ['bcs']);
+    return this.grpcCall(
+      "sui.rpc.v2.LedgerService",
+      "BatchGetObjects",
+      {
+        object_ids: objectIds,
+      },
+      ["bcs"],
+    );
   }
 
   // ==================== StateService ====================
@@ -166,9 +223,9 @@ class SuiGrpcClient {
    */
   async getCoinBalance(
     owner: string,
-    coinType: string = '0x2::sui::SUI'
+    coinType: string = "0x2::sui::SUI",
   ): Promise<Record<string, unknown>> {
-    return this.grpcCall('sui.rpc.v2.StateService', 'GetCoinBalance', {
+    return this.grpcCall("sui.rpc.v2.StateService", "GetCoinBalance", {
       owner,
       coin_type: coinType,
     });
@@ -178,7 +235,7 @@ class SuiGrpcClient {
    * Obtiene los balances de todos los tipos de monedas para una dirección
    */
   async getAllCoinBalances(owner: string): Promise<Record<string, unknown>> {
-    return this.grpcCall('sui.rpc.v2.StateService', 'GetAllCoinBalances', {
+    return this.grpcCall("sui.rpc.v2.StateService", "GetAllCoinBalances", {
       owner,
     });
   }
@@ -187,7 +244,7 @@ class SuiGrpcClient {
    * Obtiene información de un tipo de moneda
    */
   async getCoinInfo(coinType: string): Promise<Record<string, unknown>> {
-    return this.grpcCall('sui.rpc.v2.StateService', 'GetCoinInfo', {
+    return this.grpcCall("sui.rpc.v2.StateService", "GetCoinInfo", {
       coin_type: coinType,
     });
   }
@@ -198,9 +255,9 @@ class SuiGrpcClient {
   async listOwnedObjects(
     owner: string,
     pageSize?: number,
-    pageToken?: string
+    pageToken?: string,
   ): Promise<Record<string, unknown>> {
-    return this.grpcCall('sui.rpc.v2.StateService', 'ListOwnedObjects', {
+    return this.grpcCall("sui.rpc.v2.StateService", "ListOwnedObjects", {
       owner,
       page_size: pageSize || 50,
       page_token: pageToken,
@@ -213,9 +270,9 @@ class SuiGrpcClient {
   async listDynamicFields(
     parent: string,
     pageSize?: number,
-    pageToken?: string
+    pageToken?: string,
   ): Promise<Record<string, unknown>> {
-    return this.grpcCall('sui.rpc.v2.StateService', 'ListDynamicFields', {
+    return this.grpcCall("sui.rpc.v2.StateService", "ListDynamicFields", {
       parent,
       page_size: pageSize || 50,
       page_token: pageToken,
@@ -227,9 +284,9 @@ class SuiGrpcClient {
    */
   async getDynamicFieldObject(
     parentId: string,
-    name: string
+    name: string,
   ): Promise<Record<string, unknown>> {
-    return this.grpcCall('sui.rpc.v2.StateService', 'GetDynamicFieldObject', {
+    return this.grpcCall("sui.rpc.v2.StateService", "GetDynamicFieldObject", {
       parent_id: parentId,
       name,
     });
@@ -240,12 +297,17 @@ class SuiGrpcClient {
    */
   async dryRunTransaction(
     txBytes: string,
-    signerAddress: string
+    signerAddress: string,
   ): Promise<Record<string, unknown>> {
-    return this.grpcCall('sui.rpc.v2.StateService', 'DryRunTransaction', {
-      transaction_bytes: txBytes,
-      signer_address: signerAddress,
-    }, ['effects', 'events']);
+    return this.grpcCall(
+      "sui.rpc.v2.StateService",
+      "DryRunTransaction",
+      {
+        transaction_bytes: txBytes,
+        signer_address: signerAddress,
+      },
+      ["effects", "events"],
+    );
   }
 
   // ==================== SubscriptionService ====================
@@ -256,19 +318,19 @@ class SuiGrpcClient {
    */
   async subscribeCheckpoints(
     onCheckpoint: (checkpoint: Record<string, unknown>) => void,
-    readMask?: string[]
+    readMask?: string[],
   ): Promise<() => void> {
     const wsUrl = this.getUrl()
-      .replace('https://', 'wss://')
-      .replace('http://', 'ws://');
+      .replace("https://", "wss://")
+      .replace("http://", "ws://");
 
     const ws = new WebSocket(wsUrl);
 
     const subscribe = {
-      service: 'sui.rpc.v2.SubscriptionService',
-      method: 'SubscribeCheckpoints',
+      service: "sui.rpc.v2.SubscriptionService",
+      method: "SubscribeCheckpoints",
       request: {
-        read_mask: { paths: readMask || ['*'] },
+        read_mask: { paths: readMask || ["*"] },
       },
     };
 
@@ -283,7 +345,7 @@ class SuiGrpcClient {
           onCheckpoint(data.checkpoint);
         }
       } catch (error) {
-        console.error('Error parsing checkpoint message:', error);
+        console.error("Error parsing checkpoint message:", error);
       }
     };
 
@@ -299,7 +361,7 @@ class SuiGrpcClient {
    * Obtiene el contenido de un paquete Move
    */
   async getMovePackage(packageId: string): Promise<Record<string, unknown>> {
-    return this.grpcCall('sui.rpc.v2.MovePackageService', 'GetMovePackage', {
+    return this.grpcCall("sui.rpc.v2.MovePackageService", "GetMovePackage", {
       package_id: packageId,
     });
   }
@@ -309,9 +371,9 @@ class SuiGrpcClient {
    */
   async getMoveModule(
     packageId: string,
-    moduleName: string
+    moduleName: string,
   ): Promise<Record<string, unknown>> {
-    return this.grpcCall('sui.rpc.v2.MovePackageService', 'GetMoveModule', {
+    return this.grpcCall("sui.rpc.v2.MovePackageService", "GetMoveModule", {
       package_id: packageId,
       module_name: moduleName,
     });
@@ -323,9 +385,9 @@ class SuiGrpcClient {
   async getMoveStruct(
     packageId: string,
     moduleName: string,
-    structName: string
+    structName: string,
   ): Promise<Record<string, unknown>> {
-    return this.grpcCall('sui.rpc.v2.MovePackageService', 'GetMoveStruct', {
+    return this.grpcCall("sui.rpc.v2.MovePackageService", "GetMoveStruct", {
       package_id: packageId,
       module_name: moduleName,
       struct_name: structName,
@@ -338,9 +400,9 @@ class SuiGrpcClient {
   async getMoveFunction(
     packageId: string,
     moduleName: string,
-    functionName: string
+    functionName: string,
   ): Promise<Record<string, unknown>> {
-    return this.grpcCall('sui.rpc.v2.MovePackageService', 'GetMoveFunction', {
+    return this.grpcCall("sui.rpc.v2.MovePackageService", "GetMoveFunction", {
       package_id: packageId,
       module_name: moduleName,
       function_name: functionName,
@@ -355,13 +417,17 @@ class SuiGrpcClient {
   async verifySignature(
     signature: string,
     messageBytes: string,
-    publicKey: string
+    publicKey: string,
   ): Promise<Record<string, unknown>> {
-    return this.grpcCall('sui.rpc.v2.SignatureVerificationService', 'VerifySignature', {
-      signature,
-      message_bytes: messageBytes,
-      public_key: publicKey,
-    });
+    return this.grpcCall(
+      "sui.rpc.v2.SignatureVerificationService",
+      "VerifySignature",
+      {
+        signature,
+        message_bytes: messageBytes,
+        public_key: publicKey,
+      },
+    );
   }
 
   /**
@@ -372,14 +438,14 @@ class SuiGrpcClient {
       signature: string;
       messageBytes: string;
       publicKey: string;
-    }>
+    }>,
   ): Promise<Record<string, unknown>> {
     return this.grpcCall(
-      'sui.rpc.v2.SignatureVerificationService',
-      'BatchVerifySignatures',
+      "sui.rpc.v2.SignatureVerificationService",
+      "BatchVerifySignatures",
       {
         signatures,
-      }
+      },
     );
   }
 
@@ -389,7 +455,7 @@ class SuiGrpcClient {
    * Resuelve un nombre SuiNS a su registro
    */
   async resolveSuiNSName(name: string): Promise<Record<string, unknown>> {
-    return this.grpcCall('sui.rpc.v2.NameService', 'ResolveSuiNSName', {
+    return this.grpcCall("sui.rpc.v2.NameService", "ResolveSuiNSName", {
       name,
     });
   }
@@ -398,9 +464,9 @@ class SuiGrpcClient {
    * Realiza una búsqueda inversa: de dirección a nombre SuiNS
    */
   async reverseLookupAddress(
-    address: string
+    address: string,
   ): Promise<Record<string, unknown>> {
-    return this.grpcCall('sui.rpc.v2.NameService', 'ReverseLookupAddress', {
+    return this.grpcCall("sui.rpc.v2.NameService", "ReverseLookupAddress", {
       address,
     });
   }

@@ -1,10 +1,23 @@
-// zkLogin Authentication Component for CROZZ ECOSYSTEM
-// React component handling OAuth login and zkLogin integration
+// Copyright (c) Mysten Labs, Inc.
+// SPDX-License-Identifier: Apache-2.0
 
-import React, { useState, useCallback, useEffect } from 'react';
-import { Box, Button, Card, Dialog, Flex, Heading, Text, TextField } from '@radix-ui/themes';
-import { OAuthProvider, ZKLOGIN_PROVIDERS, ZkLoginSession } from '../services/zkloginProvider';
-import ZkLoginClient from '../services/zkloginClient';
+import React, { useState, useCallback, useEffect } from "react";
+import {
+  Box,
+  Button,
+  Card,
+  Dialog,
+  Flex,
+  Heading,
+  Text,
+  TextField,
+} from "@radix-ui/themes";
+import {
+  OAuthProvider,
+  ZKLOGIN_PROVIDERS,
+  ZkLoginSession,
+} from "../services/zkloginProvider";
+import ZkLoginClient from "../services/zkloginClient";
 
 interface ZkLoginAuthProps {
   provider: OAuthProvider;
@@ -12,7 +25,7 @@ interface ZkLoginAuthProps {
   redirectUri: string;
   saltServiceUrl: string;
   provingServiceUrl: string;
-  network?: 'devnet' | 'testnet' | 'mainnet';
+  network?: "devnet" | "testnet" | "mainnet";
   onAuthSuccess?: (address: string, session: ZkLoginSession) => void;
   onAuthError?: (error: Error) => void;
 }
@@ -23,7 +36,12 @@ interface AuthState {
   address?: string;
   session?: ZkLoginSession;
   error?: Error;
-  step: 'initial' | 'authenticating' | 'generating-proof' | 'complete' | 'error';
+  step:
+    | "initial"
+    | "authenticating"
+    | "generating-proof"
+    | "complete"
+    | "error";
 }
 
 /**
@@ -35,14 +53,14 @@ export const ZkLoginAuth: React.FC<ZkLoginAuthProps> = ({
   redirectUri,
   saltServiceUrl,
   provingServiceUrl,
-  network = 'testnet',
+  network = "testnet",
   onAuthSuccess,
   onAuthError,
 }) => {
   const [state, setState] = useState<AuthState>({
     isLoading: false,
     isAuthenticated: false,
-    step: 'initial',
+    step: "initial",
   });
 
   const [client, setClient] = useState<ZkLoginClient | null>(null);
@@ -50,13 +68,21 @@ export const ZkLoginAuth: React.FC<ZkLoginAuthProps> = ({
   // Initialize zkLogin client
   useEffect(() => {
     try {
-      const zkLoginClient = new ZkLoginClient(provider, clientId, redirectUri, network);
+      const zkLoginClient = new ZkLoginClient(
+        provider,
+        clientId,
+        redirectUri,
+        network,
+      );
       setClient(zkLoginClient);
     } catch (error) {
       setState((prev) => ({
         ...prev,
-        step: 'error',
-        error: error instanceof Error ? error : new Error('Failed to initialize zkLogin'),
+        step: "error",
+        error:
+          error instanceof Error
+            ? error
+            : new Error("Failed to initialize zkLogin"),
       }));
     }
   }, [provider, clientId, redirectUri, network]);
@@ -65,7 +91,7 @@ export const ZkLoginAuth: React.FC<ZkLoginAuthProps> = ({
   useEffect(() => {
     const handleCallback = async () => {
       const callbackUrl = window.location.href;
-      if (!callbackUrl.includes('id_token')) {
+      if (!callbackUrl.includes("id_token")) {
         return;
       }
 
@@ -74,14 +100,14 @@ export const ZkLoginAuth: React.FC<ZkLoginAuthProps> = ({
       setState((prev) => ({
         ...prev,
         isLoading: true,
-        step: 'generating-proof',
+        step: "generating-proof",
       }));
 
       try {
         const { address, session } = await client.authenticate(
           callbackUrl,
           saltServiceUrl,
-          provingServiceUrl
+          provingServiceUrl,
         );
 
         setState((prev) => ({
@@ -90,19 +116,24 @@ export const ZkLoginAuth: React.FC<ZkLoginAuthProps> = ({
           isAuthenticated: true,
           address,
           session,
-          step: 'complete',
+          step: "complete",
         }));
 
         onAuthSuccess?.(address, session);
 
         // Clean up URL
-        window.history.replaceState({}, document.title, window.location.pathname);
+        window.history.replaceState(
+          {},
+          document.title,
+          window.location.pathname,
+        );
       } catch (error) {
-        const err = error instanceof Error ? error : new Error('Authentication failed');
+        const err =
+          error instanceof Error ? error : new Error("Authentication failed");
         setState((prev) => ({
           ...prev,
           isLoading: false,
-          step: 'error',
+          step: "error",
           error: err,
         }));
         onAuthError?.(err);
@@ -118,18 +149,21 @@ export const ZkLoginAuth: React.FC<ZkLoginAuthProps> = ({
     setState((prev) => ({
       ...prev,
       isLoading: true,
-      step: 'authenticating',
+      step: "authenticating",
     }));
 
     try {
       const authUrl = client.generateAuthorizationUrl();
       window.location.href = authUrl;
     } catch (error) {
-      const err = error instanceof Error ? error : new Error('Failed to generate authorization URL');
+      const err =
+        error instanceof Error
+          ? error
+          : new Error("Failed to generate authorization URL");
       setState((prev) => ({
         ...prev,
         isLoading: false,
-        step: 'error',
+        step: "error",
         error: err,
       }));
       onAuthError?.(err);
@@ -140,18 +174,21 @@ export const ZkLoginAuth: React.FC<ZkLoginAuthProps> = ({
     setState({
       isLoading: false,
       isAuthenticated: false,
-      step: 'initial',
+      step: "initial",
     });
   }, []);
 
   // Provider display name
-  const providerName = provider.replace('https://', '').split('.')[0].toUpperCase();
+  const providerName = provider
+    .replace("https://", "")
+    .split(".")[0]
+    .toUpperCase();
   const providerConfig = ZKLOGIN_PROVIDERS[provider];
 
   return (
-    <Box style={{ width: '100%', maxWidth: '500px' }}>
-      {state.step === 'initial' && !state.isAuthenticated && (
-        <Card style={{ padding: '24px', textAlign: 'center' }}>
+    <Box style={{ width: "100%", maxWidth: "500px" }}>
+      {state.step === "initial" && !state.isAuthenticated && (
+        <Card style={{ padding: "24px", textAlign: "center" }}>
           <Heading size="5" mb="3">
             zkLogin Authentication
           </Heading>
@@ -163,21 +200,29 @@ export const ZkLoginAuth: React.FC<ZkLoginAuthProps> = ({
             onClick={handleLogin}
             disabled={state.isLoading}
             size="3"
-            style={{ width: '100%', marginBottom: '12px' }}
+            style={{ width: "100%", marginBottom: "12px" }}
           >
-            {state.isLoading ? 'Connecting...' : `Sign in with ${providerName}`}
+            {state.isLoading ? "Connecting..." : `Sign in with ${providerName}`}
           </Button>
 
-          <Box style={{ marginTop: '20px', padding: '12px', backgroundColor: '#f0f0f0', borderRadius: '8px' }}>
+          <Box
+            style={{
+              marginTop: "20px",
+              padding: "12px",
+              backgroundColor: "#f0f0f0",
+              borderRadius: "8px",
+            }}
+          >
             <Text size="1" color="gray">
-              <strong>Network:</strong> {providerConfig.supportedNetworks?.join(', ') || 'N/A'}
+              <strong>Network:</strong>{" "}
+              {providerConfig.supportedNetworks?.join(", ") || "N/A"}
             </Text>
           </Box>
         </Card>
       )}
 
-      {state.step === 'authenticating' && (
-        <Card style={{ padding: '24px', textAlign: 'center' }}>
+      {state.step === "authenticating" && (
+        <Card style={{ padding: "24px", textAlign: "center" }}>
           <Heading size="5" mb="3">
             Redirecting to {providerName}...
           </Heading>
@@ -187,34 +232,41 @@ export const ZkLoginAuth: React.FC<ZkLoginAuthProps> = ({
         </Card>
       )}
 
-      {state.step === 'generating-proof' && (
-        <Card style={{ padding: '24px', textAlign: 'center' }}>
+      {state.step === "generating-proof" && (
+        <Card style={{ padding: "24px", textAlign: "center" }}>
           <Heading size="5" mb="3">
             Generating Zero-Knowledge Proof
           </Heading>
           <Text size="2" color="gray" mb="6">
             Creating your zkLogin address and ZK proof...
           </Text>
-          <Box style={{ animation: 'spin 1s linear infinite' }}>⚙️</Box>
+          <Box style={{ animation: "spin 1s linear infinite" }}>⚙️</Box>
         </Card>
       )}
 
-      {state.step === 'complete' && state.isAuthenticated && state.address && (
-        <Card style={{ padding: '24px' }}>
+      {state.step === "complete" && state.isAuthenticated && state.address && (
+        <Card style={{ padding: "24px" }}>
           <Heading size="5" mb="3">
             ✓ Authentication Successful
           </Heading>
 
-          <Box style={{ marginBottom: '16px', padding: '12px', backgroundColor: '#e8f5e9', borderRadius: '8px' }}>
+          <Box
+            style={{
+              marginBottom: "16px",
+              padding: "12px",
+              backgroundColor: "#e8f5e9",
+              borderRadius: "8px",
+            }}
+          >
             <Text size="1" weight="bold" color="green">
               zkLogin Address
             </Text>
             <Text
               size="1"
               style={{
-                fontFamily: 'monospace',
-                wordBreak: 'break-all',
-                marginTop: '8px',
+                fontFamily: "monospace",
+                wordBreak: "break-all",
+                marginTop: "8px",
               }}
             >
               {state.address}
@@ -222,7 +274,14 @@ export const ZkLoginAuth: React.FC<ZkLoginAuthProps> = ({
           </Box>
 
           {state.session && (
-            <Box style={{ marginBottom: '16px', padding: '12px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
+            <Box
+              style={{
+                marginBottom: "16px",
+                padding: "12px",
+                backgroundColor: "#f5f5f5",
+                borderRadius: "8px",
+              }}
+            >
               <Text size="1" weight="bold">
                 Session Details
               </Text>
@@ -246,7 +305,7 @@ export const ZkLoginAuth: React.FC<ZkLoginAuthProps> = ({
             </Button>
             <Button
               onClick={() => {
-                navigator.clipboard.writeText(state.address || '');
+                navigator.clipboard.writeText(state.address || "");
               }}
               style={{ flex: 1 }}
             >
@@ -256,8 +315,14 @@ export const ZkLoginAuth: React.FC<ZkLoginAuthProps> = ({
         </Card>
       )}
 
-      {state.step === 'error' && state.error && (
-        <Card style={{ padding: '24px', borderColor: '#ff6b6b', borderWidth: '2px' }}>
+      {state.step === "error" && state.error && (
+        <Card
+          style={{
+            padding: "24px",
+            borderColor: "#ff6b6b",
+            borderWidth: "2px",
+          }}
+        >
           <Heading size="5" mb="3" color="red">
             ✗ Authentication Error
           </Heading>
@@ -268,7 +333,7 @@ export const ZkLoginAuth: React.FC<ZkLoginAuthProps> = ({
             onClick={handleLogout}
             color="gray"
             variant="outline"
-            style={{ width: '100%' }}
+            style={{ width: "100%" }}
           >
             Try Again
           </Button>
@@ -320,10 +385,17 @@ export const ZkLoginSessionManager: React.FC<ZkLoginSessionManagerProps> = ({
   const minutesRemaining = Math.floor(timeRemaining / 60000);
 
   return (
-    <Box style={{ padding: '12px', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
+    <Box
+      style={{
+        padding: "12px",
+        backgroundColor: "#f9f9f9",
+        borderRadius: "8px",
+      }}
+    >
       <Flex justify="between" align="center">
         <Text size="1">
-          <strong>zkLogin Session Active</strong> ({minutesRemaining} min remaining)
+          <strong>zkLogin Session Active</strong> ({minutesRemaining} min
+          remaining)
         </Text>
         <Button
           size="1"
@@ -333,7 +405,7 @@ export const ZkLoginSessionManager: React.FC<ZkLoginSessionManagerProps> = ({
               const updated = client.getSession(sessionId);
               setSession(updated);
             } catch (error) {
-              console.error('Failed to refresh session', error);
+              console.error("Failed to refresh session", error);
             }
           }}
         >

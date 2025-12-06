@@ -9,6 +9,17 @@
 # OSX
 .DS_Store
 
+# IDE
+**/.history/
+**/.vscode/
+**/.idea/
+**/CLAUDE-local.md
+**/CLAUDE.local.md
+**/.claude/
+
+# OSX
+.DS_Store
+
 # Rust build directory
 **/target
 .pre-commit*
@@ -45,6 +56,12 @@ node_modules
 .tsbuildinfo
 *.tsbuildinfo
 .turbo
+pnpm-debug.log*
+
+# Vite / bundler caches
+.vite
+.svelte-kit
+.parcel-cache
 
 # App build directories
 dist/
@@ -66,10 +83,16 @@ sui.log.*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+*.log
 
 # misc
 *.key
 .env
+.env.*
+.env.*.local
+.env.local
+.eslintcache
+.vscode-test
 checkpoints_dir/*
 light_client.yaml
 docs/content/references/sui-api/sui-graphql/*

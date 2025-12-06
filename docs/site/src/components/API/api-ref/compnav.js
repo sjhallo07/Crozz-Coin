@@ -13,14 +13,17 @@ const CompNav = (props) => {
         <h2>Component schemas</h2>
         {Object.keys(json["components"]["schemas"]).map((component) => {
           return (
-          <div key={component}>
-            <Link href={`#${component.toLowerCase()}`}
-            data-to-scrollspy-id={`${component.toLowerCase()}`}
-            className="my-1 pl-4 block text-sui-gray-95 dark:text-sui-grey-35 hover:no-underline dark:hover:text-sui-blue">
-              {component}
-            </Link>
+            <div key={component}>
+              <Link
+                href={`#${component.toLowerCase()}`}
+                data-to-scrollspy-id={`${component.toLowerCase()}`}
+                className="my-1 pl-4 block text-sui-gray-95 dark:text-sui-grey-35 hover:no-underline dark:hover:text-sui-blue"
+              >
+                {component}
+              </Link>
             </div>
-        )})}      
+          );
+        })}
       </div>
     </div>
   );

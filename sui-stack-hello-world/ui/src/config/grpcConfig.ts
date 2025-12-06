@@ -1,6 +1,5 @@
-/**
- * Configuración centralizada para gRPC de Sui
- */
+// Copyright (c) Mysten Labs, Inc.
+// SPDX-License-Identifier: Apache-2.0
 
 export interface GrpcEnvironmentConfig {
   mainnet: {
@@ -19,15 +18,15 @@ export interface GrpcEnvironmentConfig {
 
 export const GRPC_CONFIG: GrpcEnvironmentConfig = {
   mainnet: {
-    endpoint: 'fullnode.mainnet.sui.io',
+    endpoint: "fullnode.mainnet.sui.io",
     port: 443,
   },
   testnet: {
-    endpoint: 'fullnode.testnet.sui.io',
+    endpoint: "fullnode.testnet.sui.io",
     port: 443,
   },
   devnet: {
-    endpoint: 'fullnode.devnet.sui.io',
+    endpoint: "fullnode.devnet.sui.io",
     port: 443,
   },
 };
@@ -36,7 +35,7 @@ export const GRPC_CONFIG: GrpcEnvironmentConfig = {
  * Obtiene la configuración según el ambiente
  */
 export function getGrpcConfig(
-  environment: keyof typeof GRPC_CONFIG = 'devnet'
+  environment: keyof typeof GRPC_CONFIG = "devnet",
 ): { endpoint: string; port: number } {
   return GRPC_CONFIG[environment];
 }
@@ -45,28 +44,28 @@ export function getGrpcConfig(
  * Endpoints de SuiNS resolvibles
  */
 export const SUIN_S_CONFIG = {
-  testnet: 'testnet.suins.io',
-  devnet: 'devnet.suins.io',
-  mainnet: 'suins.io',
+  testnet: "testnet.suins.io",
+  devnet: "devnet.suins.io",
+  mainnet: "suins.io",
 };
 
 /**
  * Tipos de monedas comunes
  */
 export const COMMON_COIN_TYPES = {
-  SUI: '0x2::sui::SUI',
-  USDC: '0x5d4b302506645c34f144ef5b109669ba1b3192f5720338603bdc2bdb51b50882::coin::Coin',
-  USDT: '0xc060006111016b8a029ad1c8397dba19c28ff4e6a433d4b5cb3a91b8287dcccf::coin::Coin',
+  SUI: "0x2::sui::SUI",
+  USDC: "0x5d4b302506645c34f144ef5b109669ba1b3192f5720338603bdc2bdb51b50882::coin::Coin",
+  USDT: "0xc060006111016b8a029ad1c8397dba19c28ff4e6a433d4b5cb3a91b8287dcccf::coin::Coin",
 };
 
 /**
  * Direcciones de paquetes del sistema
  */
 export const SYSTEM_PACKAGES = {
-  SUI_SYSTEM: '0x3',
-  CLOCK: '0x6',
-  SUI_FRAMEWORK: '0x1',
-  STD: '0x1',
+  SUI_SYSTEM: "0x3",
+  CLOCK: "0x6",
+  SUI_FRAMEWORK: "0x1",
+  STD: "0x1",
 };
 
 /**
@@ -101,8 +100,8 @@ export const RETRY_CONFIG = {
  * Headers HTTP para requests gRPC
  */
 export const GRPC_HEADERS = {
-  'Content-Type': 'application/grpc+proto',
-  'grpc-accept-encoding': 'gzip',
+  "Content-Type": "application/grpc+proto",
+  "grpc-accept-encoding": "gzip",
 };
 
 /**
@@ -132,20 +131,20 @@ export const GRPC_ERROR_CODES = {
  * Estados de transacción
  */
 export enum TransactionStatus {
-  SUCCESS = 'success',
-  FAILURE = 'failure',
-  PENDING = 'pending',
+  SUCCESS = "success",
+  FAILURE = "failure",
+  PENDING = "pending",
 }
 
 /**
  * Tipos de eventos Move comunes
  */
 export const MOVE_EVENT_TYPES = {
-  COIN_TRANSFER: '0x2::transfer::Transfer',
-  COIN_BURN: '0x2::coin::Coin',
-  OBJECT_CREATED: 'object::Created',
-  OBJECT_DELETED: 'object::Deleted',
-  PACKAGE_PUBLISHED: 'package::Published',
+  COIN_TRANSFER: "0x2::transfer::Transfer",
+  COIN_BURN: "0x2::coin::Coin",
+  OBJECT_CREATED: "object::Created",
+  OBJECT_DELETED: "object::Deleted",
+  PACKAGE_PUBLISHED: "package::Published",
 };
 
 /**
@@ -167,10 +166,10 @@ export function isValidObjectId(objectId: string): boolean {
  * Formatear una dirección de Sui
  */
 export function formatSuiAddress(address: string): string {
-  if (!address.startsWith('0x')) {
-    return '0x' + address.padStart(64, '0');
+  if (!address.startsWith("0x")) {
+    return "0x" + address.padStart(64, "0");
   }
-  return address.padStart(66, '0'); // 0x + 64 caracteres
+  return address.padStart(66, "0"); // 0x + 64 caracteres
 }
 
 /**
@@ -186,8 +185,11 @@ export function truncateSuiAddress(address: string, chars: number = 4): string {
 /**
  * Convertir balance (en unidades más pequeñas) a SUI
  */
-export function balanceToSui(balance: string | number, decimals: number = 9): number {
-  const num = typeof balance === 'string' ? BigInt(balance) : BigInt(balance);
+export function balanceToSui(
+  balance: string | number,
+  decimals: number = 9,
+): number {
+  const num = typeof balance === "string" ? BigInt(balance) : BigInt(balance);
   return Number(num) / Math.pow(10, decimals);
 }
 
@@ -202,17 +204,20 @@ export function suiToBalance(sui: number, decimals: number = 9): bigint {
  * Obtener nombre legible para tipo de moneda
  */
 export function getCoinTypeName(coinType: string): string {
-  const parts = coinType.split('::');
+  const parts = coinType.split("::");
   return parts[parts.length - 1] || coinType;
 }
 
 /**
  * Obtener todos los endpoints disponibles
  */
-export function getAllGrpcEndpoints(): Array<{ name: string; endpoint: string }> {
+export function getAllGrpcEndpoints(): Array<{
+  name: string;
+  endpoint: string;
+}> {
   return [
-    { name: 'Mainnet', endpoint: GRPC_CONFIG.mainnet.endpoint },
-    { name: 'Testnet', endpoint: GRPC_CONFIG.testnet.endpoint },
-    { name: 'Devnet', endpoint: GRPC_CONFIG.devnet.endpoint },
+    { name: "Mainnet", endpoint: GRPC_CONFIG.mainnet.endpoint },
+    { name: "Testnet", endpoint: GRPC_CONFIG.testnet.endpoint },
+    { name: "Devnet", endpoint: GRPC_CONFIG.devnet.endpoint },
   ];
 }

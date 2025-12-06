@@ -1,30 +1,28 @@
-/**
- * GraphQL Context Provider for Sui
- * Global state management for GraphQL client and operations
- */
+// Copyright (c) Mysten Labs, Inc.
+// SPDX-License-Identifier: Apache-2.0
 
-import React, { createContext, useCallback, useEffect, useState } from 'react';
-import SuiGraphQLClient from '../services/graphqlClient';
+import React, { createContext, useCallback, useEffect, useState } from "react";
+import SuiGraphQLClient from "../services/graphqlClient";
 
 export interface GraphQLContextType {
   client: SuiGraphQLClient | null;
   isConnected: boolean;
   currentEndpoint: string;
-  environment: 'devnet' | 'testnet' | 'mainnet';
+  environment: "devnet" | "testnet" | "mainnet";
   error: string | null;
   connectToEndpoint: (endpoint: string) => Promise<void>;
-  switchEnvironment: (env: 'devnet' | 'testnet' | 'mainnet') => Promise<void>;
+  switchEnvironment: (env: "devnet" | "testnet" | "mainnet") => Promise<void>;
   disconnect: () => void;
   resetError: () => void;
 }
 
 export const GraphQLContext = createContext<GraphQLContextType | undefined>(
-  undefined
+  undefined,
 );
 
 interface GraphQLProviderProps {
   children: React.ReactNode;
-  defaultEnvironment?: 'devnet' | 'testnet' | 'mainnet';
+  defaultEnvironment?: "devnet" | "testnet" | "mainnet";
   autoConnect?: boolean;
 }
 
@@ -34,14 +32,15 @@ interface GraphQLProviderProps {
  */
 export function GraphQLProvider({
   children,
-  defaultEnvironment = 'testnet',
+  defaultEnvironment = "testnet",
   autoConnect = true,
 }: GraphQLProviderProps) {
   const [client, setClient] = useState<SuiGraphQLClient | null>(null);
   const [isConnected, setIsConnected] = useState(false);
-  const [currentEndpoint, setCurrentEndpoint] = useState('');
-  const [environment, setEnvironment] =
-    useState<'devnet' | 'testnet' | 'mainnet'>(defaultEnvironment);
+  const [currentEndpoint, setCurrentEndpoint] = useState("");
+  const [environment, setEnvironment] = useState<
+    "devnet" | "testnet" | "mainnet"
+  >(defaultEnvironment);
   const [error, setError] = useState<string | null>(null);
 
   // Initialize client on mount
@@ -55,7 +54,7 @@ export function GraphQLProvider({
    * Connect to a specific environment
    */
   const connectToEnvironment = useCallback(
-    async (env: 'devnet' | 'testnet' | 'mainnet') => {
+    async (env: "devnet" | "testnet" | "mainnet") => {
       try {
         setError(null);
         const newClient = new SuiGraphQLClient(env);
@@ -65,12 +64,12 @@ export function GraphQLProvider({
         setIsConnected(true);
       } catch (err) {
         const errorMessage =
-          err instanceof Error ? err.message : 'Failed to connect to GraphQL';
+          err instanceof Error ? err.message : "Failed to connect to GraphQL";
         setError(errorMessage);
         setIsConnected(false);
       }
     },
-    []
+    [],
   );
 
   /**
@@ -81,11 +80,13 @@ export function GraphQLProvider({
       setError(null);
 
       // Validate endpoint
-      if (!endpoint.startsWith('http://') && !endpoint.startsWith('https://')) {
-        throw new Error('Invalid endpoint: must start with http:// or https://');
+      if (!endpoint.startsWith("http://") && !endpoint.startsWith("https://")) {
+        throw new Error(
+          "Invalid endpoint: must start with http:// or https://",
+        );
       }
 
-      const newClient = new SuiGraphQLClient('testnet');
+      const newClient = new SuiGraphQLClient("testnet");
       newClient.setEndpoint(endpoint);
 
       setClient(newClient);
@@ -93,7 +94,7 @@ export function GraphQLProvider({
       setIsConnected(true);
     } catch (err) {
       const errorMessage =
-        err instanceof Error ? err.message : 'Failed to connect to endpoint';
+        err instanceof Error ? err.message : "Failed to connect to endpoint";
       setError(errorMessage);
       setIsConnected(false);
     }
@@ -103,10 +104,10 @@ export function GraphQLProvider({
    * Switch environment
    */
   const switchEnvironment = useCallback(
-    async (env: 'devnet' | 'testnet' | 'mainnet') => {
+    async (env: "devnet" | "testnet" | "mainnet") => {
       await connectToEnvironment(env);
     },
-    [connectToEnvironment]
+    [connectToEnvironment],
   );
 
   /**
@@ -115,7 +116,7 @@ export function GraphQLProvider({
   const disconnect = useCallback(() => {
     setClient(null);
     setIsConnected(false);
-    setCurrentEndpoint('');
+    setCurrentEndpoint("");
     setError(null);
   }, []);
 
@@ -149,9 +150,7 @@ export function GraphQLProvider({
 export function useGraphQLContext(): GraphQLContextType {
   const context = React.useContext(GraphQLContext);
   if (context === undefined) {
-    throw new Error(
-      'useGraphQLContext must be used within a GraphQLProvider'
-    );
+    throw new Error("useGraphQLContext must be used within a GraphQLProvider");
   }
   return context;
 }

@@ -1,7 +1,7 @@
+// Copyright (c) Mysten Labs, Inc.
+// SPDX-License-Identifier: Apache-2.0
 import { getFullnodeUrl } from "@mysten/sui/client";
-import {
-  TESTNET_HELLO_WORLD_PACKAGE_ID,
-} from "./constants.ts";
+import { TESTNET_HELLO_WORLD_PACKAGE_ID } from "./constants.ts";
 import { createNetworkConfig } from "@mysten/dapp-kit";
 
 const { networkConfig, useNetworkVariable, useNetworkVariables } =

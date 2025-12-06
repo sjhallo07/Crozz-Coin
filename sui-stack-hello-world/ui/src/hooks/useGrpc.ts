@@ -1,16 +1,16 @@
-/**
- * Custom Hooks para integración de gRPC en React
- * Proporciona interfaz fácil de usar para las APIs de Sui gRPC
- */
+// Copyright (c) Mysten Labs, Inc.
+// SPDX-License-Identifier: Apache-2.0
 
-import { useState, useCallback, useEffect } from 'react';
-import { useSuiGrpcClient, useGrpcConnected } from '../contexts/GrpcContext';
+import { useState, useCallback, useEffect } from "react";
+import { useSuiGrpcClient, useGrpcConnected } from "../contexts/GrpcContext";
 
 // Hook para obtener información de checkpoints
 export function useCheckpoint(sequenceNumber?: string) {
   const client = useSuiGrpcClient();
   const isConnected = useGrpcConnected();
-  const [checkpoint, setCheckpoint] = useState<Record<string, unknown> | null>(null);
+  const [checkpoint, setCheckpoint] = useState<Record<string, unknown> | null>(
+    null,
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -24,7 +24,9 @@ export function useCheckpoint(sequenceNumber?: string) {
       const data = await client.getCheckpoint(sequenceNumber);
       setCheckpoint(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error fetching checkpoint');
+      setError(
+        err instanceof Error ? err.message : "Error fetching checkpoint",
+      );
     } finally {
       setLoading(false);
     }
@@ -41,7 +43,10 @@ export function useCheckpoint(sequenceNumber?: string) {
 export function useTransaction(digest?: string) {
   const client = useSuiGrpcClient();
   const isConnected = useGrpcConnected();
-  const [transaction, setTransaction] = useState<Record<string, unknown> | null>(null);
+  const [transaction, setTransaction] = useState<Record<
+    string,
+    unknown
+  > | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -55,7 +60,9 @@ export function useTransaction(digest?: string) {
       const data = await client.getTransaction(digest);
       setTransaction(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error fetching transaction');
+      setError(
+        err instanceof Error ? err.message : "Error fetching transaction",
+      );
     } finally {
       setLoading(false);
     }
@@ -86,7 +93,7 @@ export function useObject(objectId?: string) {
       const data = await client.getObject(objectId);
       setObject(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error fetching object');
+      setError(err instanceof Error ? err.message : "Error fetching object");
     } finally {
       setLoading(false);
     }
@@ -103,7 +110,9 @@ export function useObject(objectId?: string) {
 export function useCoinBalances(owner?: string) {
   const client = useSuiGrpcClient();
   const isConnected = useGrpcConnected();
-  const [balances, setBalances] = useState<Record<string, unknown> | null>(null);
+  const [balances, setBalances] = useState<Record<string, unknown> | null>(
+    null,
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -117,16 +126,17 @@ export function useCoinBalances(owner?: string) {
       const data = await client.getAllCoinBalances(owner);
       setBalances(data);
     } catch (err) {
+      setError(err instanceof Error ? err.message : "Error fetching balances");
     } finally {
       setLoading(false);
     }
-  }, [coinType, isConnected, client]);
+  }, [owner, isConnected, client]);
 
   useEffect(() => {
-    fetchCoinInfo();
-  }, [fetchCoinInfo]);
+    fetchBalances();
+  }, [fetchBalances]);
 
-  return { coinInfo, loading, error, refetch: fetchCoinInfo };
+  return { balances, loading, error, refetch: fetchBalances };
 }
 
 // Hook para listar objetos poseídos
@@ -147,7 +157,7 @@ export function useOwnedObjects(owner?: string) {
       const data = await client.listOwnedObjects(owner);
       setObjects(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error fetching objects');
+      setError(err instanceof Error ? err.message : "Error fetching objects");
     } finally {
       setLoading(false);
     }
@@ -178,7 +188,7 @@ export function useDynamicFields(parentId?: string) {
       const data = await client.listDynamicFields(parentId);
       setFields(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error fetching fields');
+      setError(err instanceof Error ? err.message : "Error fetching fields");
     } finally {
       setLoading(false);
     }
@@ -202,7 +212,7 @@ export function useDryRunTransaction() {
   const dryRun = useCallback(
     async (txBytes: string, signerAddress: string) => {
       if (!isConnected) {
-        throw new Error('Cliente no está conectado');
+        throw new Error("Cliente no está conectado");
       }
 
       setLoading(true);
@@ -214,14 +224,14 @@ export function useDryRunTransaction() {
         return data;
       } catch (err) {
         const errorMsg =
-          err instanceof Error ? err.message : 'Error running dry run';
+          err instanceof Error ? err.message : "Error running dry run";
         setError(errorMsg);
         throw err;
       } finally {
         setLoading(false);
       }
     },
-    [isConnected, client]
+    [isConnected, client],
   );
 
   return { result, loading, error, dryRun };
@@ -245,7 +255,7 @@ export function useMovePackage(packageId?: string) {
       const data = await client.getMovePackage(packageId);
       setPkg(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error fetching package');
+      setError(err instanceof Error ? err.message : "Error fetching package");
     } finally {
       setLoading(false);
     }
@@ -276,7 +286,7 @@ export function useSuiNSResolver(name?: string) {
       const data = await client.resolveSuiNSName(name);
       setRecord(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error resolving name');
+      setError(err instanceof Error ? err.message : "Error resolving name");
     } finally {
       setLoading(false);
     }
@@ -293,7 +303,10 @@ export function useSuiNSResolver(name?: string) {
 export function useCheckpointSubscription(enabled: boolean = false) {
   const client = useSuiGrpcClient();
   const isConnected = useGrpcConnected();
-  const [latestCheckpoint, setLatestCheckpoint] = useState<Record<string, unknown> | null>(null);
+  const [latestCheckpoint, setLatestCheckpoint] = useState<Record<
+    string,
+    unknown
+  > | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -311,12 +324,14 @@ export function useCheckpointSubscription(enabled: boolean = false) {
           (checkpoint) => {
             setLatestCheckpoint(checkpoint);
           },
-          ['sequence_number', 'digest', 'summary.timestamp']
+          ["sequence_number", "digest", "summary.timestamp"],
         );
         setLoading(false);
       } catch (err) {
         setError(
-          err instanceof Error ? err.message : 'Error subscribing to checkpoints'
+          err instanceof Error
+            ? err.message
+            : "Error subscribing to checkpoints",
         );
         setLoading(false);
       }

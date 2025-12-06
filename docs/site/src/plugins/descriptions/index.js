@@ -50,10 +50,10 @@ function firstParagraphFrom(body) {
       if (buf.length) break;
       continue;
     }
-    if (/^import\s+/.test(s)) continue;      // skip import lines
-    if (/^#{1,6}\s/.test(s)) continue;       // skip headings
+    if (/^import\s+/.test(s)) continue; // skip import lines
+    if (/^#{1,6}\s/.test(s)) continue; // skip headings
     if (/^{\s*@\w+:\s*.+}\s*$/.test(s)) continue; // skip directives
-    if (!/^[a-zA-Z]{1}/.test(s)) continue;   // must start with a letter (keeps your old intent)
+    if (!/^[a-zA-Z]{1}/.test(s)) continue; // must start with a letter (keeps your old intent)
     buf.push(s);
   }
   let paragraph = buf.join(" ").trim();
@@ -89,7 +89,7 @@ const descriptionPlugin = (context, options) => {
           typeof p[0] === "string" &&
           (p[0] === "classic" ||
             p[0] === "@docusaurus/preset-classic" ||
-            p[0].endsWith("preset-classic"))
+            p[0].endsWith("preset-classic")),
       );
 
       const docsPathConfig = presetTuple?.[1]?.docs?.path ?? "docs";
@@ -141,7 +141,10 @@ const descriptionPlugin = (context, options) => {
         const llmSection = data.section || createSection(id);
 
         let description = "";
-        if (typeof data.description !== "undefined" && data.description !== null) {
+        if (
+          typeof data.description !== "undefined" &&
+          data.description !== null
+        ) {
           description = String(data.description).trim();
         } else {
           description = firstParagraphFrom(content);
@@ -236,7 +239,10 @@ const descriptionPlugin = (context, options) => {
       }
 
       try {
-        fs.writeFileSync(path.join(outDir, "llms-full.txt"), llmsFull.join("\n\n"));
+        fs.writeFileSync(
+          path.join(outDir, "llms-full.txt"),
+          llmsFull.join("\n\n"),
+        );
       } catch {
         // ignore write errors
       }

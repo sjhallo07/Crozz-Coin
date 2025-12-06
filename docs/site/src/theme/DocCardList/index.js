@@ -1,9 +1,9 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-import React from 'react';
-import DocCardList from '@theme/DocCardList';
-import { useCurrentSidebarCategory } from '@docusaurus/theme-common';
+import React from "react";
+import DocCardList from "@theme/DocCardList";
+import { useCurrentSidebarCategory } from "@docusaurus/theme-common";
 
 // Renders the current sidebar category *if* we're inside DocsSidebarProvider,
 // otherwise falls back to a plain DocCardList using passed props (items/hideDescriptions/etc).
@@ -18,5 +18,3 @@ export default function DocCardListForCurrentSidebarCategory(props) {
     return <DocCardList {...props} />;
   }
 }
-
-

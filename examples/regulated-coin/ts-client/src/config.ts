@@ -12,10 +12,10 @@ export const ADMIN_SECRET_KEY = process.env.ADMIN_SECRET_KEY!;
 export const TREASURY_CAP_ID = process.env.TREASURY_CAP_ID!;
 export const DENY_CAP_ID = process.env.DENY_CAP_ID!;
 
-export const SUI_DENY_LIST_OBJECT_ID : string = '0x403';
-export const MODULE_NAME : string = process.env.MODULE_NAME!;
-export const COIN_NAME : string = process.env.COIN_NAME!;
-export const COIN_TYPE =`${PACKAGE_ID}::${MODULE_NAME}::${COIN_NAME}`;
+export const SUI_DENY_LIST_OBJECT_ID: string = "0x403";
+export const MODULE_NAME: string = process.env.MODULE_NAME!;
+export const COIN_NAME: string = process.env.COIN_NAME!;
+export const COIN_TYPE = `${PACKAGE_ID}::${MODULE_NAME}::${COIN_NAME}`;
 
 // console.log everything in the process.env object
 const keys = Object.keys(process.env);

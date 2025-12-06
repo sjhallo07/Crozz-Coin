@@ -1,3 +1,5 @@
+// Copyright (c) Mysten Labs, Inc.
+// SPDX-License-Identifier: Apache-2.0
 import {
   useSignAndExecuteTransaction,
   useSuiClient,
@@ -25,14 +27,13 @@ export function Greeting({ id }: { id: string }) {
   const [waitingForTxn, setWaitingForTxn] = useState(false);
 
   const executeMoveCall = () => {
-
     setWaitingForTxn(true);
 
     const tx = new Transaction();
 
     tx.moveCall({
       target: `${helloWorldPackageId}::greeting::update_text`,
-      arguments: [tx.object(id), tx.pure.string(newText)]
+      arguments: [tx.object(id), tx.pure.string(newText)],
     });
 
     signAndExecute(
@@ -64,7 +65,7 @@ export function Greeting({ id }: { id: string }) {
       <Flex direction="column" gap="2">
         <Text>Text: {getGreetingFields(data.data)?.text}</Text>
         <Flex direction="row" gap="2">
-          <TextField.Root 
+          <TextField.Root
             placeholder={getGreetingFields(data.data)?.text}
             value={newText}
             onChange={(e) => {
@@ -72,15 +73,8 @@ export function Greeting({ id }: { id: string }) {
             }}
             disabled={waitingForTxn}
           />
-          <Button
-            onClick={() => executeMoveCall()}
-            disabled={waitingForTxn}
-          >
-            {waitingForTxn? (
-              <ClipLoader size={20} />
-            ) : (
-              "Update"
-            )}
+          <Button onClick={() => executeMoveCall()} disabled={waitingForTxn}>
+            {waitingForTxn ? <ClipLoader size={20} /> : "Update"}
           </Button>
         </Flex>
       </Flex>
@@ -92,5 +86,5 @@ function getGreetingFields(data: SuiObjectData) {
     return null;
   }
 
-  return data.content.fields as { text: string; };
+  return data.content.fields as { text: string };
 }

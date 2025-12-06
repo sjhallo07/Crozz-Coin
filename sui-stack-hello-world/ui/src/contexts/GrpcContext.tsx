@@ -1,54 +1,72 @@
-import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
-import { SuiGrpcClient } from '../services/grpcClient';
-import { getGrpcConfig } from '../config/grpcConfig';
+// Copyright (c) Mysten Labs, Inc.
+// SPDX-License-Identifier: Apache-2.0
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  ReactNode,
+} from "react";
+import SuiGrpcClient from "../services/grpcClient";
+import { getGrpcConfig } from "../config/grpcConfig";
 
 interface GrpcContextType {
   client: SuiGrpcClient | null;
   isConnected: boolean;
   currentEndpoint: string;
-  environment: 'mainnet' | 'testnet' | 'devnet';
+  environment: "mainnet" | "testnet" | "devnet";
   error: string | null;
-  connectToEndpoint: (endpoint: string, environment?: 'mainnet' | 'testnet' | 'devnet') => Promise<void>;
+  connectToEndpoint: (
+    endpoint: string,
+    environment?: "mainnet" | "testnet" | "devnet",
+  ) => Promise<void>;
   disconnect: () => void;
-  switchEnvironment: (env: 'mainnet' | 'testnet' | 'devnet') => Promise<void>;
+  switchEnvironment: (env: "mainnet" | "testnet" | "devnet") => Promise<void>;
 }
 
 const GrpcContext = createContext<GrpcContextType | undefined>(undefined);
 
 export interface GrpcProviderProps {
   children: ReactNode;
-  defaultEnvironment?: 'mainnet' | 'testnet' | 'devnet';
+  defaultEnvironment?: "mainnet" | "testnet" | "devnet";
   autoConnect?: boolean;
 }
 
 export function GrpcProvider({
   children,
-  defaultEnvironment = 'devnet',
+  defaultEnvironment = "devnet",
   autoConnect = true,
 }: GrpcProviderProps) {
   const [client, setClient] = useState<SuiGrpcClient | null>(null);
   const [isConnected, setIsConnected] = useState(false);
-  const [currentEndpoint, setCurrentEndpoint] = useState('');
-  const [environment, setEnvironment] = useState<'mainnet' | 'testnet' | 'devnet'>(defaultEnvironment);
+  const [currentEndpoint, setCurrentEndpoint] = useState("");
+  const [environment, setEnvironment] = useState<
+    "mainnet" | "testnet" | "devnet"
+  >(defaultEnvironment);
   const [error, setError] = useState<string | null>(null);
 
   const connectToEndpoint = useCallback(
-    async (endpoint: string, env: 'mainnet' | 'testnet' | 'devnet' = defaultEnvironment) => {
+    async (
+      endpoint: string,
+      env: "mainnet" | "testnet" | "devnet" = defaultEnvironment,
+    ) => {
       try {
         setError(null);
-        
+
         // Validar que el endpoint sea válido
         if (!endpoint || endpoint.trim().length === 0) {
-          throw new Error('Endpoint no puede estar vacío');
+          throw new Error("Endpoint no puede estar vacío");
         }
 
         const newClient = new SuiGrpcClient(endpoint);
-        
+
         // Intentar una conexión de prueba
         try {
           await newClient.getServiceInfo();
         } catch (e) {
-          console.warn('Advertencia: No se pudo conectar a la información del servicio, pero el cliente se creó');
+          console.warn(
+            "Advertencia: No se pudo conectar a la información del servicio, pero el cliente se creó",
+          );
         }
 
         setClient(newClient);
@@ -56,30 +74,31 @@ export function GrpcProvider({
         setEnvironment(env);
         setIsConnected(true);
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : 'Error de conexión desconocido';
+        const errorMessage =
+          err instanceof Error ? err.message : "Error de conexión desconocido";
         setError(errorMessage);
         setIsConnected(false);
         setClient(null);
-        console.error('Error conectando a gRPC:', err);
+        console.error("Error conectando a gRPC:", err);
       }
     },
-    [defaultEnvironment]
+    [defaultEnvironment],
   );
 
   const disconnect = useCallback(() => {
     setClient(null);
     setIsConnected(false);
-    setCurrentEndpoint('');
+    setCurrentEndpoint("");
     setError(null);
   }, []);
 
   const switchEnvironment = useCallback(
-    async (env: 'mainnet' | 'testnet' | 'devnet') => {
+    async (env: "mainnet" | "testnet" | "devnet") => {
       const config = getGrpcConfig(env);
       const endpoint = `https://${config.endpoint}:${config.port}`;
       await connectToEndpoint(endpoint, env);
     },
-    [connectToEndpoint]
+    [connectToEndpoint],
   );
 
   // Auto-conectar al montar
@@ -109,7 +128,7 @@ export function GrpcProvider({
 export function useGrpcContext(): GrpcContextType {
   const context = useContext(GrpcContext);
   if (!context) {
-    throw new Error('useGrpcContext debe usarse dentro de un GrpcProvider');
+    throw new Error("useGrpcContext debe usarse dentro de un GrpcProvider");
   }
   return context;
 }
@@ -120,7 +139,7 @@ export function useGrpcContext(): GrpcContextType {
 export function useSuiGrpcClient(): SuiGrpcClient {
   const { client } = useGrpcContext();
   if (!client) {
-    throw new Error('Cliente gRPC no está conectado');
+    throw new Error("Cliente gRPC no está conectado");
   }
   return client;
 }

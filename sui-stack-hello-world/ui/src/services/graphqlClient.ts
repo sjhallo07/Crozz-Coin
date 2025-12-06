@@ -1,10 +1,7 @@
-/**
- * Sui GraphQL RPC Client
- * Handles all GraphQL operations for Sui Network
- * Documentation: https://docs.sui.io/concepts/data-access/graphql-rpc
- */
+// Copyright (c) Mysten Labs, Inc.
+// SPDX-License-Identifier: Apache-2.0
 
-import { GraphQLError } from 'graphql';
+import { GraphQLError } from "graphql";
 
 export interface GraphQLResponse<T> {
   data?: T;
@@ -25,23 +22,23 @@ export interface GraphQLRequestOptions {
 }
 
 export class SuiGraphQLClient {
-  private endpoints: Record<'devnet' | 'testnet' | 'mainnet', string> = {
-    devnet: 'https://graphql.devnet.sui.io/graphql',
-    testnet: 'https://graphql.testnet.sui.io/graphql',
-    mainnet: 'https://graphql.mainnet.sui.io/graphql',
+  private endpoints: Record<"devnet" | "testnet" | "mainnet", string> = {
+    devnet: "https://graphql.devnet.sui.io/graphql",
+    testnet: "https://graphql.testnet.sui.io/graphql",
+    mainnet: "https://graphql.mainnet.sui.io/graphql",
   };
 
   private currentEndpoint: string;
   private timeout: number = 30000;
 
-  constructor(environment: 'devnet' | 'testnet' | 'mainnet' = 'testnet') {
+  constructor(environment: "devnet" | "testnet" | "mainnet" = "testnet") {
     this.currentEndpoint = this.endpoints[environment];
   }
 
   /**
    * Switch to a different Sui network environment
    */
-  switchEnvironment(environment: 'devnet' | 'testnet' | 'mainnet'): void {
+  switchEnvironment(environment: "devnet" | "testnet" | "mainnet"): void {
     this.currentEndpoint = this.endpoints[environment];
   }
 
@@ -65,18 +62,18 @@ export class SuiGraphQLClient {
   async query<T = any>(
     query: string,
     variables?: Record<string, any>,
-    options?: GraphQLRequestOptions
+    options?: GraphQLRequestOptions,
   ): Promise<GraphQLResponse<T>> {
     const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     };
 
     if (options?.showUsage) {
-      headers['x-sui-rpc-show-usage'] = 'true';
+      headers["x-sui-rpc-show-usage"] = "true";
     }
 
     if (options?.rpcVersion) {
-      headers['x-sui-rpc-version'] = options.rpcVersion;
+      headers["x-sui-rpc-version"] = options.rpcVersion;
     }
 
     const body = {
@@ -88,11 +85,11 @@ export class SuiGraphQLClient {
       const controller = new AbortController();
       const timeoutId = setTimeout(
         () => controller.abort(),
-        options?.timeout || this.timeout
+        options?.timeout || this.timeout,
       );
 
       const response = await fetch(this.currentEndpoint, {
-        method: 'POST',
+        method: "POST",
         headers,
         body: JSON.stringify(body),
         signal: controller.signal,
@@ -102,25 +99,25 @@ export class SuiGraphQLClient {
 
       if (!response.ok) {
         throw new Error(
-          `GraphQL request failed: ${response.status} ${response.statusText}`
+          `GraphQL request failed: ${response.status} ${response.statusText}`,
         );
       }
 
       const data: GraphQLResponse<T> = await response.json();
 
       if (data.errors) {
-        console.error('GraphQL Errors:', data.errors);
+        console.error("GraphQL Errors:", data.errors);
       }
 
       return data;
     } catch (error) {
       if (error instanceof Error) {
-        if (error.name === 'AbortError') {
-          throw new Error('GraphQL request timeout');
+        if (error.name === "AbortError") {
+          throw new Error("GraphQL request timeout");
         }
         throw error;
       }
-      throw new Error('Unknown error during GraphQL request');
+      throw new Error("Unknown error during GraphQL request");
     }
   }
 
@@ -191,7 +188,7 @@ export class SuiGraphQLClient {
       toAddress?: string;
       sentAddress?: string;
       receivedAddress?: string;
-    }
+    },
   ) {
     const query = `
       query ($first: Int, $after: String, $filter: TransactionBlockFilter) {
@@ -236,9 +233,13 @@ export class SuiGraphQLClient {
     if (after) variables.after = after;
     if (filter) variables.filter = filter;
 
-    return this.query(query, Object.keys(variables).length > 0 ? variables : undefined, {
-      showUsage: true,
-    });
+    return this.query(
+      query,
+      Object.keys(variables).length > 0 ? variables : undefined,
+      {
+        showUsage: true,
+      },
+    );
   }
 
   /**
@@ -294,10 +295,7 @@ export class SuiGraphQLClient {
   /**
    * Get coin balance information
    */
-  async getCoinBalance(
-    owner: string,
-    coinType: string = '0x2::sui::SUI'
-  ) {
+  async getCoinBalance(owner: string, coinType: string = "0x2::sui::SUI") {
     const query = `
       query ($owner: SuiAddress!, $coinType: String) {
         owner(address: $owner) {
@@ -320,21 +318,13 @@ export class SuiGraphQLClient {
       }
     `;
 
-    return this.query(
-      query,
-      { owner, coinType },
-      { showUsage: true }
-    );
+    return this.query(query, { owner, coinType }, { showUsage: true });
   }
 
   /**
    * Get owned objects
    */
-  async getOwnedObjects(
-    owner: string,
-    first?: number,
-    after?: string
-  ) {
+  async getOwnedObjects(owner: string, first?: number, after?: string) {
     const query = `
       query ($owner: SuiAddress!, $first: Int, $after: String) {
         owner(address: $owner) {
@@ -375,7 +365,7 @@ export class SuiGraphQLClient {
     const query = `
       query {
         serviceConfig {
-          retention(type: "${queryType}", field: "${field}"${filter ? `, filter: "${filter}"` : ''}) {
+          retention(type: "${queryType}", field: "${field}"${filter ? `, filter: "${filter}"` : ""}) {
             first {
               sequenceNumber
             }
@@ -398,7 +388,7 @@ export class SuiGraphQLClient {
     fieldName: {
       type: string;
       bcs: string;
-    }
+    },
   ) {
     const query = `
       query ($objectId: SuiAddress!, $fieldName: DynamicFieldName!) {
@@ -445,7 +435,7 @@ export class SuiGraphQLClient {
   async custom<T = any>(
     query: string,
     variables?: Record<string, any>,
-    options?: GraphQLRequestOptions
+    options?: GraphQLRequestOptions,
   ): Promise<GraphQLResponse<T>> {
     return this.query<T>(query, variables, options);
   }

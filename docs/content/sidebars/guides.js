@@ -82,7 +82,6 @@ const guides = [
 			'guides/developer/coin/in-game-token',
 			'guides/developer/coin/loyalty',
 			'guides/developer/coin/vesting-strategies',
-
 		],
 	},
 	{
