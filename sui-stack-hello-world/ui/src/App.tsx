@@ -25,6 +25,8 @@ import { OrdersInfo } from "./OrdersInfo";
 import { SwapsInfo } from "./SwapsInfo";
 import { FlashLoansInfo } from "./FlashLoansInfo";
 import { StakingGovernanceInfo } from "./StakingGovernanceInfo";
+import { DeepBookSdkInfo } from "./DeepBookSdkInfo";
+import { DeepBookMarginSdkInfo } from "./DeepBookMarginSdkInfo";
 import { GraphQLProvider } from "./contexts/GraphQLContext";
 import { GraphQLExplorer } from "./components/GraphQLExplorer";
 
@@ -102,24 +104,26 @@ function App() {
               Pre Sale Coming Soon
             </Text>
 
-              {currentAccount && isOnTestnet && <CoinManager />}
-              {currentAccount && isOnTestnet && <CurrencyManager />}
-              {currentAccount && isOnTestnet && <ClosedLoopInfo />}
-              {currentAccount && isOnTestnet && <ActionRequestInfo />}
-              {currentAccount && isOnTestnet && <SpendingInfo />}
-              {currentAccount && isOnTestnet && <TokenPolicyInfo />}
-              {currentAccount && isOnTestnet && <CoinTokenComparison />}
-              {currentAccount && isOnTestnet && <KioskInfo />}
-              {currentAccount && isOnTestnet && <KioskAppsInfo />}
-              {currentAccount && isOnTestnet && <DeepBookInfo />}
-                {currentAccount && isOnTestnet && <DeepBookDesignInfo />}
-                {currentAccount && isOnTestnet && <BalanceManagerInfo />}
-                {currentAccount && isOnTestnet && <PermissionlessPoolInfo />}
-                {currentAccount && isOnTestnet && <QueryPoolInfo />}
-                  {currentAccount && isOnTestnet && <OrdersInfo />}
-                  {currentAccount && isOnTestnet && <SwapsInfo />}
-                  {currentAccount && isOnTestnet && <FlashLoansInfo />}
-                  {currentAccount && isOnTestnet && <StakingGovernanceInfo />}
+            {currentAccount && isOnTestnet && <CoinManager />}
+            {currentAccount && isOnTestnet && <CurrencyManager />}
+            {currentAccount && isOnTestnet && <ClosedLoopInfo />}
+            {currentAccount && isOnTestnet && <ActionRequestInfo />}
+            {currentAccount && isOnTestnet && <SpendingInfo />}
+            {currentAccount && isOnTestnet && <TokenPolicyInfo />}
+            {currentAccount && isOnTestnet && <CoinTokenComparison />}
+            {currentAccount && isOnTestnet && <KioskInfo />}
+            {currentAccount && isOnTestnet && <KioskAppsInfo />}
+            {currentAccount && isOnTestnet && <DeepBookInfo />}
+            {currentAccount && isOnTestnet && <DeepBookDesignInfo />}
+            {currentAccount && isOnTestnet && <BalanceManagerInfo />}
+            {currentAccount && isOnTestnet && <PermissionlessPoolInfo />}
+            {currentAccount && isOnTestnet && <QueryPoolInfo />}
+            {currentAccount && isOnTestnet && <OrdersInfo />}
+            {currentAccount && isOnTestnet && <SwapsInfo />}
+            {currentAccount && isOnTestnet && <FlashLoansInfo />}
+            {currentAccount && isOnTestnet && <StakingGovernanceInfo />}
+            {currentAccount && isOnTestnet && <DeepBookSdkInfo />}
+              {currentAccount && isOnTestnet && <DeepBookMarginSdkInfo />}
           </Flex>
 
           {currentAccount ? (
