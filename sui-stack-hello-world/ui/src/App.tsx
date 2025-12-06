@@ -7,6 +7,24 @@ import { SUI_TESTNET_CHAIN } from "@mysten/wallet-standard";
 import { useState } from "react";
 import { Greeting } from "./Greeting";
 import { CreateGreeting } from "./CreateGreeting";
+import { CoinManager } from "./CoinManager";
+import { CurrencyManager } from "./CurrencyManager";
+import { ClosedLoopInfo } from "./ClosedLoopInfo";
+import { ActionRequestInfo } from "./ActionRequestInfo";
+import { TokenPolicyInfo } from "./TokenPolicyInfo";
+import { SpendingInfo } from "./SpendingInfo";
+import { CoinTokenComparison } from "./CoinTokenComparison";
+import { KioskInfo } from "./KioskInfo";
+import { KioskAppsInfo } from "./KioskAppsInfo";
+import { DeepBookInfo } from "./DeepBookInfo";
+import { DeepBookDesignInfo } from "./DeepBookDesignInfo";
+import { BalanceManagerInfo } from "./BalanceManagerInfo";
+import { PermissionlessPoolInfo } from "./PermissionlessPoolInfo";
+import { QueryPoolInfo } from "./QueryPoolInfo";
+import { OrdersInfo } from "./OrdersInfo";
+import { SwapsInfo } from "./SwapsInfo";
+import { FlashLoansInfo } from "./FlashLoansInfo";
+import { StakingGovernanceInfo } from "./StakingGovernanceInfo";
 import { GraphQLProvider } from "./contexts/GraphQLContext";
 import { GraphQLExplorer } from "./components/GraphQLExplorer";
 
@@ -83,16 +101,25 @@ function App() {
             <Text size="5" weight="bold" color="blue" align="center">
               Pre Sale Coming Soon
             </Text>
-            <Text
-              size="3"
-              color="gray"
-              align="center"
-              style={{ maxWidth: "600px" }}
-            >
-              A NEW BEGINNING - Welcome to the CROZZ Ecosystem, where blockchain
-              meets innovation. Connect your wallet to interact with our dApp on
-              Sui Testnet.
-            </Text>
+
+              {currentAccount && isOnTestnet && <CoinManager />}
+              {currentAccount && isOnTestnet && <CurrencyManager />}
+              {currentAccount && isOnTestnet && <ClosedLoopInfo />}
+              {currentAccount && isOnTestnet && <ActionRequestInfo />}
+              {currentAccount && isOnTestnet && <SpendingInfo />}
+              {currentAccount && isOnTestnet && <TokenPolicyInfo />}
+              {currentAccount && isOnTestnet && <CoinTokenComparison />}
+              {currentAccount && isOnTestnet && <KioskInfo />}
+              {currentAccount && isOnTestnet && <KioskAppsInfo />}
+              {currentAccount && isOnTestnet && <DeepBookInfo />}
+                {currentAccount && isOnTestnet && <DeepBookDesignInfo />}
+                {currentAccount && isOnTestnet && <BalanceManagerInfo />}
+                {currentAccount && isOnTestnet && <PermissionlessPoolInfo />}
+                {currentAccount && isOnTestnet && <QueryPoolInfo />}
+                  {currentAccount && isOnTestnet && <OrdersInfo />}
+                  {currentAccount && isOnTestnet && <SwapsInfo />}
+                  {currentAccount && isOnTestnet && <FlashLoansInfo />}
+                  {currentAccount && isOnTestnet && <StakingGovernanceInfo />}
           </Flex>
 
           {currentAccount ? (

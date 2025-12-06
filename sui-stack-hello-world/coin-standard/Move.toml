@@ -1,0 +1,9 @@
+[package]
+name = "coin-standard"
+edition = "2024.beta"
+
+[addresses]
+coin_standard = "0x0"
+
+[dependencies]
+sui = { git = "https://github.com/MystenLabs/sui", subdir = "crates/sui-framework/packages/sui-framework", rev = "main" }
