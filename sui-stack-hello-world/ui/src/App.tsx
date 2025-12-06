@@ -31,6 +31,7 @@ import { DisplayInfo } from "./DisplayInfo";
 import { PaymentKitInfo } from "./PaymentKitInfo";
 import { WalletStandardInfo } from "./WalletStandardInfo";
 import { ReferencesOverviewInfo } from "./ReferencesOverviewInfo";
+import { SlushWalletInfo } from "./SlushWalletInfo";
 import { GraphQLProvider } from "./contexts/GraphQLContext";
 import { GraphQLExplorer } from "./components/GraphQLExplorer";
 
@@ -131,6 +132,7 @@ function App() {
             {currentAccount && isOnTestnet && <DisplayInfo />}
             {currentAccount && isOnTestnet && <PaymentKitInfo />}
             {currentAccount && isOnTestnet && <WalletStandardInfo />}
+            {currentAccount && isOnTestnet && <SlushWalletInfo />}
             {currentAccount && isOnTestnet && <ReferencesOverviewInfo />}
           </Flex>
 

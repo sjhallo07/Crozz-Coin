@@ -597,6 +597,9 @@ importers:
       '@mysten/dapp-kit':
         specifier: 0.17.6
         version: 0.17.6(@tanstack/react-query@5.90.12(react@18.3.1))(@types/react-dom@18.3.7(@types/react@18.3.21))(@types/react@18.3.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3)
+      '@mysten/slush-wallet':
+        specifier: 0.1.23
+        version: 0.1.23(typescript@5.8.3)
       '@mysten/sui':
         specifier: 1.37.5
         version: 1.37.5(typescript@5.8.3)
@@ -9288,6 +9291,11 @@ snapshots:
       eslint: 8.57.1
       eslint-visitor-keys: 3.4.3
 
+  '@eslint-community/eslint-utils@4.7.0(eslint@9.39.1)':
+    dependencies:
+      eslint: 9.39.1
+      eslint-visitor-keys: 3.4.3
+
   '@eslint-community/eslint-utils@4.9.0(eslint@9.39.1)':
     dependencies:
       eslint: 9.39.1
@@ -13448,7 +13456,7 @@ snapshots:
 
   '@typescript-eslint/utils@8.48.1(eslint@9.39.1)(typescript@5.8.3)':
     dependencies:
-      '@eslint-community/eslint-utils': 4.9.0(eslint@9.39.1)
+      '@eslint-community/eslint-utils': 4.7.0(eslint@9.39.1)
       '@typescript-eslint/scope-manager': 8.48.1
       '@typescript-eslint/types': 8.48.1
       '@typescript-eslint/typescript-estree': 8.48.1(typescript@5.8.3)
