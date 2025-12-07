@@ -32,7 +32,7 @@ export function Greeting({ id }: { id: string }) {
   const [showDetails, setShowDetails] = useState(false);
   const [copiedId, setCopiedId] = useState(false);
 
-  const currentText = getGreetingFields(data?.data)?.text || "";
+  const currentText = getGreetingFields(data?.data ?? undefined)?.text || "";
   const charCount = currentText.length;
   const textLength = newText.length;
 
@@ -299,21 +299,21 @@ export function Greeting({ id }: { id: string }) {
             <Heading size="3" mb="2">
               How to Update
             </Heading>
-            <Flex direction="column" gap="2" as="ol" style={{ paddingLeft: "20px" }}>
-              <Text as="li" size="1">
-                Enter new text in the input field
+            <Flex direction="column" gap="2" style={{ paddingLeft: "20px" }}>
+              <Text size="1">
+                • Enter new text in the input field
               </Text>
-              <Text as="li" size="1">
-                Click the "Update" button
+              <Text size="1">
+                • Click the "Update" button
               </Text>
-              <Text as="li" size="1">
-                Approve the transaction in your wallet
+              <Text size="1">
+                • Approve the transaction in your wallet
               </Text>
-              <Text as="li" size="1">
-                Wait for confirmation on the blockchain
+              <Text size="1">
+                • Wait for confirmation on the blockchain
               </Text>
-              <Text as="li" size="1">
-                Your greeting will be updated!
+              <Text size="1">
+                • Your greeting will be updated!
               </Text>
             </Flex>
           </Box>
@@ -350,9 +350,7 @@ export function Greeting({ id }: { id: string }) {
             <Text size="1" weight="bold">
               Raw Object Data
             </Text>
-            <Text
-              as="pre"
-              size="1"
+            <pre
               style={{
                 overflow: "auto",
                 padding: "12px",
@@ -360,10 +358,11 @@ export function Greeting({ id }: { id: string }) {
                 borderRadius: "4px",
                 fontSize: "11px",
                 marginTop: "8px",
+                fontFamily: "monospace",
               }}
             >
               {JSON.stringify(data.data, null, 2)}
-            </Text>
+            </pre>
           </Card>
 
           <Box>
@@ -381,7 +380,7 @@ export function Greeting({ id }: { id: string }) {
                 <Text size="1" weight="bold">
                   Storage Rebate:
                 </Text>
-                <Text size="1">{data.data.storageBabelTxn?.storageRebate || "N/A"}</Text>
+                <Text size="1">{(data.data as any).storageRebate || "N/A"}</Text>
               </Flex>
             </Flex>
           </Box>

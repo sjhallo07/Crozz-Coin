@@ -177,21 +177,21 @@ export function CreateGreeting({
             <Heading size="3" mb="2">
               What Happens When You Create?
             </Heading>
-            <Flex direction="column" gap="2" as="ol" style={{ paddingLeft: "20px" }}>
-              <Text as="li" size="1">
-                <strong>Transaction created</strong> - A Move transaction is built
+            <Flex direction="column" gap="2" style={{ paddingLeft: "20px" }}>
+              <Text size="1">
+                • <strong>Transaction created</strong> - A Move transaction is built
               </Text>
-              <Text as="li" size="1">
-                <strong>Wallet approval</strong> - You approve it in your wallet
+              <Text size="1">
+                • <strong>Wallet approval</strong> - You approve it in your wallet
               </Text>
-              <Text as="li" size="1">
-                <strong>Blockchain execution</strong> - The transaction runs on Sui
+              <Text size="1">
+                • <strong>Blockchain execution</strong> - The transaction runs on Sui
               </Text>
-              <Text as="li" size="1">
-                <strong>Object created</strong> - Your greeting object is created with default text
+              <Text size="1">
+                • <strong>Object created</strong> - Your greeting object is created with default text
               </Text>
-              <Text as="li" size="1">
-                <strong>Ready to use</strong> - You can now update or manage it
+              <Text size="1">
+                • <strong>Ready to use</strong> - You can now update or manage it
               </Text>
             </Flex>
           </Box>

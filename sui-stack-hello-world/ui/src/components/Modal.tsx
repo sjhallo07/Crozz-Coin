@@ -33,11 +33,11 @@ export function Modal({
       <Dialog.Content style={sizeStyles[size]}>
         <Flex justify="between" align="center" gap="4">
           <Flex direction="column" gap="1" style={{ flex: 1 }}>
-            <Dialog.Title asChild>
+            <Dialog.Title>
               <Heading size="5">{title}</Heading>
             </Dialog.Title>
             {description && (
-              <Dialog.Description asChild>
+              <Dialog.Description>
                 <Text size="2" color="gray">
                   {description}
                 </Text>
@@ -45,7 +45,7 @@ export function Modal({
             )}
           </Flex>
           {showClose && (
-            <Dialog.Close asChild>
+            <Dialog.Close>
               <Button
                 variant="ghost"
                 size="1"

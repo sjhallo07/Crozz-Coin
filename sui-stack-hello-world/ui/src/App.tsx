@@ -34,6 +34,7 @@ import { ReferencesOverviewInfo } from "./ReferencesOverviewInfo";
 import { SlushWalletInfo } from "./SlushWalletInfo";
 import { GraphQLProvider } from "./contexts/GraphQLContext";
 import { GraphQLExplorer } from "./components/GraphQLExplorer";
+import { TestnetStatus } from "./components/TestnetStatus";
 
 function App() {
   const currentAccount = useCurrentAccount();
@@ -108,6 +109,8 @@ function App() {
             <Text size="5" weight="bold" color="blue" align="center">
               Pre Sale Coming Soon
             </Text>
+
+            {currentAccount && <TestnetStatus />}
 
             {currentAccount && isOnTestnet && <CoinManager />}
             {currentAccount && isOnTestnet && <CurrencyManager />}
