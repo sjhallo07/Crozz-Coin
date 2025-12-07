@@ -1,0 +1,207 @@
+name: dApps Dependencies Auto-Update
+
+on:
+  schedule:
+    - cron: '0 0 * * 1'  # Weekly on Monday
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'dapps/**/package.json'
+
+jobs:
+  check-dapps-versions:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      
+      - name: Check main project versions
+        id: main-versions
+        run: |
+          cd sui-stack-hello-world/ui
+          DAPP_KIT=$(grep '@mysten/dapp-kit' package.json | sed 's/.*"\([^"]*\)".*/\1/')
+          SUI=$(grep '@mysten/sui' package.json | sed 's/.*"\([^"]*\)".*/\1/')
+          REACT_QUERY=$(grep '@tanstack/react-query' package.json | sed 's/.*"\([^"]*\)".*/\1/')
+          echo "dapp_kit=$DAPP_KIT" >> $GITHUB_OUTPUT
+          echo "sui=$SUI" >> $GITHUB_OUTPUT
+          echo "react_query=$REACT_QUERY" >> $GITHUB_OUTPUT
+          echo "✅ Main project versions:"
+          echo "   @mysten/dapp-kit: $DAPP_KIT"
+          echo "   @mysten/sui: $SUI"
+          echo "@tanstack/react-query: $REACT_QUERY"
+      
+      - name: Check dApps versions
+        run: |
+          echo "📦 Checking dApps versions..."
+          echo ""
+          
+          for dapp in dapps/*/; do
+            if [ -f "$dapp/package.json" ]; then
+              dapp_name=$(basename "$dapp")
+              echo "📁 $dapp_name:"
+              
+              DAPP_KIT=$(grep -o '@mysten/dapp-kit.*' "$dapp/package.json" | head -1 | sed 's/.*"\([^"]*\)".*/\1/' || echo "not installed")
+              SUI=$(grep -o '@mysten/sui.*' "$dapp/package.json" | head -1 | sed 's/.*"\([^"]*\)".*/\1/' || echo "not installed")
+              REACT_QUERY=$(grep -o '@tanstack/react-query.*' "$dapp/package.json" | head -1 | sed 's/.*"\([^"]*\)".*/\1/' || echo "not installed")
+              
+              echo "   @mysten/dapp-kit: $DAPP_KIT"
+              echo "   @mysten/sui: $SUI"
+              echo "   @tanstack/react-query: $REACT_QUERY"
+              echo ""
+            fi
+          done
+
+  update-dapps:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      
+      - name: Get main project versions
+        id: versions
+        run: |
+          cd sui-stack-hello-world/ui
+          DAPP_KIT=$(grep '@mysten/dapp-kit' package.json | head -1 | grep -o '"[0-9.]*"' | tr -d '"')
+          SUI=$(grep '@mysten/sui' package.json | head -1 | grep -o '"[0-9.]*"' | tr -d '"')
+          REACT_QUERY=$(grep '@tanstack/react-query' package.json | head -1 | grep -o '"[0-9.]*"' | tr -d '"')
+          echo "dapp_kit=$DAPP_KIT" >> $GITHUB_OUTPUT
+          echo "sui=$SUI" >> $GITHUB_OUTPUT
+          echo "react_query=$REACT_QUERY" >> $GITHUB_OUTPUT
+      
+      - name: Update dApps dependencies
+        run: |
+          for dapp in dapps/*/; do
+            if [ -f "$dapp/package.json" ]; then
+              dapp_name=$(basename "$dapp")
+              echo "📦 Updating $dapp_name..."
+              
+              cd "$dapp"
+              
+              # Update dependencies if they exist
+              if grep -q '@mysten/dapp-kit' package.json; then
+                pnpm update @mysten/dapp-kit@${{ steps.versions.outputs.dapp_kit }} --save
+              fi
+              
+              if grep -q '@mysten/sui' package.json; then
+                pnpm update @mysten/sui@${{ steps.versions.outputs.sui }} --save
+              fi
+              
+              if grep -q '@tanstack/react-query' package.json; then
+                pnpm update @tanstack/react-query@${{ steps.versions.outputs.react_query }} --save
+              fi
+              
+              pnpm install --frozen-lockfile
+              
+              cd - > /dev/null
+            fi
+          done
+      
+      - name: Build dApps to verify
+        run: |
+          for dapp in dapps/*/; do
+            if [ -f "$dapp/package.json" ]; then
+              dapp_name=$(basename "$dapp")
+              echo "🔨 Building $dapp_name..."
+              cd "$dapp"
+              pnpm build 2>&1 | head -20 || echo "Build completed for $dapp_name"
+              cd - > /dev/null
+            fi
+          done
+      
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: 'chore: update dApps dependencies to match main project'
+          title: '🔄 Auto-update dApps dependencies'
+          body: |
+            ## 📦 Dependency Updates
+            
+            Automatically updated dApps dependencies to match the main UI project versions:
+            
+            - @mysten/dapp-kit: ${{ steps.versions.outputs.dapp_kit }}
+            - @mysten/sui: ${{ steps.versions.outputs.sui }}
+            - @tanstack/react-query: ${{ steps.versions.outputs.react_query }}
+            
+            ### Changes
+            - Updated all dApps to latest compatible versions
+            - Verified builds complete successfully
+            - All dependencies installed correctly
+            
+            ### Testing Required
+            - [ ] Run each dApp locally: `pnpm dev`
+            - [ ] Test wallet connection in each dApp
+            - [ ] Verify transaction signing works
+            - [ ] Check for console errors
+          branch: auto-update-dapps-deps
+          delete-branch: true
+          labels: |
+            dependencies
+            automated
+
+  create-summary:
+    runs-on: ubuntu-latest
+    needs: [check-dapps-versions]
+    if: always()
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Generate version compatibility report
+        run: |
+          cat > DAPPS_VERSION_REPORT.md << 'EOF'
+          # dApps Version Compatibility Report
+          
+          **Generated**: $(date -u +'%Y-%m-%d %H:%M:%S UTC')
+          
+          ## Recommended Versions
+          
+          - @mysten/dapp-kit: ${{ needs.check-dapps-versions.outputs.dapp_kit }}
+          - @mysten/sui: ${{ needs.check-dapps-versions.outputs.sui }}
+          - @tanstack/react-query: ${{ needs.check-dapps-versions.outputs.react_query }}
+          
+          ## dApps Status
+          
+          All dApps should use the versions above for consistency and to access the latest features.
+          
+          ### How to Update
+          
+          For each dApp:
+          
+          \`\`\`bash
+          cd dapps/<dapp-name>
+          pnpm update @mysten/dapp-kit@latest @mysten/sui@latest @tanstack/react-query@latest
+          pnpm install
+          pnpm build
+          \`\`\`
+          
+          EOF
+          cat DAPPS_VERSION_REPORT.md

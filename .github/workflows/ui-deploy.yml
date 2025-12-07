@@ -1,0 +1,103 @@
+name: Deploy UI to Production
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'sui-stack-hello-world/ui/**'
+      - '.github/workflows/ui-deploy.yml'
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      deployments: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      
+      - name: Build application
+        run: |
+          cd sui-stack-hello-world/ui
+          pnpm build
+      
+      - name: Verify build
+        run: |
+          cd sui-stack-hello-world/ui
+          if [ ! -d "dist" ]; then
+            echo "Build directory not found!"
+            exit 1
+          fi
+          echo "Build verified: $(du -sh dist | cut -f1) total size"
+      
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./sui-stack-hello-world/ui/dist
+          cname: crozz-coin.example.com  # Update with your domain
+          enable_jekyll: false
+      
+      - name: Create deployment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const deployment = await github.rest.repos.createDeployment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: context.ref,
+              environment: 'production',
+              required_contexts: [],
+              auto_merge: false
+            });
+            
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: deployment.data.id,
+              state: 'success',
+              environment_url: 'https://crozz-coin.example.com',
+              description: 'Deployment successful'
+            });
+      
+      - name: Notify deployment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.repos.createCommitComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              commit_sha: context.sha,
+              body: '✅ **Production Deployment Successful**\n\n📦 Build Info:\n- Commit: ' + context.sha.substring(0, 7) + '\n- Branch: ' + context.ref + '\n- Time: ' + new Date().toISOString() + '\n\n🌐 Live URL: https://crozz-coin.example.com'
+            })
