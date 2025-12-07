@@ -8,7 +8,9 @@ import { useState } from "react";
 import { Greeting } from "./Greeting";
 import { CreateGreeting } from "./CreateGreeting";
 import { CoinManager } from "./CoinManager";
+import { CoinStandardInfo } from "./CoinStandardInfo";
 import { CurrencyManager } from "./CurrencyManager";
+import { CurrencyStandardInfo } from "./CurrencyStandardInfo";
 import { ClosedLoopInfo } from "./ClosedLoopInfo";
 import { ActionRequestInfo } from "./ActionRequestInfo";
 import { TokenPolicyInfo } from "./TokenPolicyInfo";
@@ -113,7 +115,9 @@ function App() {
             {currentAccount && <TestnetStatus />}
 
             {currentAccount && isOnTestnet && <CoinManager />}
+            {currentAccount && isOnTestnet && <CoinStandardInfo />}
             {currentAccount && isOnTestnet && <CurrencyManager />}
+            {currentAccount && isOnTestnet && <CurrencyStandardInfo />}
             {currentAccount && isOnTestnet && <ClosedLoopInfo />}
             {currentAccount && isOnTestnet && <ActionRequestInfo />}
             {currentAccount && isOnTestnet && <SpendingInfo />}
