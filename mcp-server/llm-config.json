@@ -1,0 +1,162 @@
+{
+  "assistant": {
+    "name": "Crozz-Coin AI Assistant",
+    "version": "1.0.0",
+    "capabilities": [
+      "fetch_documentation",
+      "analyze_structure",
+      "search_codebase",
+      "maintain_history",
+      "track_sequences",
+      "understand_context"
+    ]
+  },
+  "features": {
+    "documentation": {
+      "enabled": true,
+      "cacheEnabled": true,
+      "cachePath": "./docs-cache",
+      "supportedFormats": ["markdown", "html", "text"],
+      "maxCacheSize": 104857600
+    },
+    "fetching": {
+      "enabled": true,
+      "timeout": 30000,
+      "retries": 3,
+      "userAgent": "Crozz-Coin-AI-Assistant/1.0",
+      "allowedDomains": [
+        "docs.sui.io",
+        "github.com",
+        "raw.githubusercontent.com",
+        "*.rust-lang.org",
+        "*.mozilla.org"
+      ]
+    },
+    "history": {
+      "enabled": true,
+      "maxEntries": 10000,
+      "persistToFile": true,
+      "filePath": "./ai-history.json"
+    },
+    "sequences": {
+      "enabled": true,
+      "trackActions": true,
+      "trackGitContext": true,
+      "filePath": "./project-sequences.json"
+    },
+    "analysis": {
+      "markdown": {
+        "extractHeadings": true,
+        "extractCodeBlocks": true,
+        "extractLinks": true,
+        "buildStructure": true
+      },
+      "code": {
+        "detectLanguage": true,
+        "countFunctions": true,
+        "extractImports": true
+      }
+    },
+    "search": {
+      "enabled": true,
+      "fileTypes": ["md", "rs", "toml", "json", "txt"],
+      "maxResults": 100,
+      "includeContext": true
+    }
+  },
+  "llm": {
+    "provider": "local",
+    "model": "analysis",
+    "contextWindow": 8000,
+    "temperature": 0.7,
+    "maxTokens": 2000
+  },
+  "urlPatterns": {
+    "suiDocs": "https://docs.sui.io/**",
+    "rustDocs": "https://doc.rust-lang.org/**",
+    "github": "https://github.com/**",
+    "rawGithub": "https://raw.githubusercontent.com/**"
+  },
+  "commands": {
+    "fetch": {
+      "description": "Fetch and cache documentation from URL",
+      "usage": "fetch <url>",
+      "examples": [
+        "fetch https://docs.sui.io/guides/developer/getting-started",
+        "fetch https://raw.githubusercontent.com/MystenLabs/sui/main/README.md"
+      ]
+    },
+    "analyze": {
+      "description": "Analyze documentation structure",
+      "usage": "analyze <url>",
+      "examples": [
+        "analyze https://docs.sui.io/concepts/sui-move-concepts"
+      ]
+    },
+    "search": {
+      "description": "Search across project files",
+      "usage": "search <query>",
+      "examples": [
+        "search consensus",
+        "search transaction validation"
+      ]
+    },
+    "understand": {
+      "description": "Get contextual understanding of a topic",
+      "usage": "understand <topic>",
+      "examples": [
+        "understand sui consensus",
+        "understand move programming"
+      ]
+    },
+    "summarize": {
+      "description": "Summarize a project file",
+      "usage": "summarize <file>",
+      "examples": [
+        "summarize README.md",
+        "summarize crates/sui-core/Cargo.toml"
+      ]
+    },
+    "compare": {
+      "description": "Compare two files",
+      "usage": "compare <file1> <file2>",
+      "examples": [
+        "compare README.md docs/README.md"
+      ]
+    },
+    "history": {
+      "description": "Show conversation history",
+      "usage": "history [limit]",
+      "examples": [
+        "history",
+        "history 50"
+      ]
+    },
+    "sequences": {
+      "description": "Show project action sequences",
+      "usage": "sequences [action]",
+      "examples": [
+        "sequences",
+        "sequences fetch_documentation"
+      ]
+    },
+    "context": {
+      "description": "Show current project context",
+      "usage": "context",
+      "examples": ["context"]
+    },
+    "timeline": {
+      "description": "Show timeline of recent activities",
+      "usage": "timeline [days]",
+      "examples": [
+        "timeline",
+        "timeline 7"
+      ]
+    }
+  },
+  "dataRetention": {
+    "historyDays": 90,
+    "sequencesDays": 180,
+    "cacheDays": 30
+  }
+}

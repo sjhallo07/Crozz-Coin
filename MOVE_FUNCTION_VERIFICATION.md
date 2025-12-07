@@ -16,6 +16,7 @@ This document verifies that the Crozz-Coin frontend properly calls the Move pack
 ### 1. `new()` - Create a Greeting Object
 
 **Location in Move Package**:
+
 ```move
 module hello_world::greeting {
     public fun new(): Greeting {
@@ -68,6 +69,7 @@ const create = () => {
 ```
 
 **Verification** ✅:
+
 - ✅ Creates new `Transaction()`
 - ✅ Calls correct function: `greeting::new`
 - ✅ No arguments (correct - the function takes none)
@@ -80,6 +82,7 @@ const create = () => {
 ### 2. `update_text()` - Modify Greeting Text
 
 **Location in Move Package**:
+
 ```move
 module hello_world::greeting {
     public fun update_text(greeting: &mut Greeting, new_text: String) {
@@ -121,6 +124,7 @@ const executeMoveCall = () => {
 ```
 
 **Verification** ✅:
+
 - ✅ Creates new `Transaction()`
 - ✅ Calls correct function: `greeting::update_text`
 - ✅ First argument: `tx.object(id)` - the greeting object (mutable reference)
@@ -147,12 +151,14 @@ const { data, isPending, error, refetch } = useSuiClientQuery("getObject", {
 ```
 
 **Verification** ✅:
+
 - ✅ Uses `useSuiClientQuery()` hook from dapp-kit
 - ✅ Queries "getObject" RPC method
 - ✅ Requests `showContent: true` to see object data
 - ✅ Refetch available for manual updates
 
 **Display Logic**:
+
 ```typescript
 if (isPending) return <Text>Loading...</Text>;
 if (error) return <Text>Error: {error.message}</Text>;
@@ -162,6 +168,7 @@ const greeting = (data.data.content as { fields: { text: string } })?.fields?.te
 ```
 
 **Verification** ✅:
+
 - ✅ Proper loading state
 - ✅ Error display
 - ✅ Not found handling
@@ -179,6 +186,7 @@ export const TESTNET_HELLO_WORLD_PACKAGE_ID =
 ```
 
 **Verification** ✅:
+
 - ✅ Exported constant
 - ✅ Valid Sui object ID format (0x prefix + 64 hex characters)
 - ✅ Used by both CreateGreeting and Greeting components
@@ -198,6 +206,7 @@ const { networkConfig, useNetworkVariable, useNetworkVariables } =
 ```
 
 **Verification** ✅:
+
 - ✅ Testnet RPC endpoint via `getFullnodeUrl("testnet")`
 - ✅ Package ID exposed as network variable
 - ✅ `useNetworkVariable` hook available for components
@@ -213,6 +222,7 @@ target: `${helloWorldPackageId}::greeting::update_text`
 ```
 
 **Verification** ✅:
+
 - ✅ Properly injected in both components
 - ✅ Correct module and function names
 - ✅ Dynamic - updates if network variable changes
@@ -224,27 +234,34 @@ target: `${helloWorldPackageId}::greeting::update_text`
 ### Step-by-Step Flow
 
 1. **Create Transaction**
+
    ```typescript
    const tx = new Transaction();
    ```
+
    ✅ Creates new transaction builder
 
 2. **Add Move Call**
+
    ```typescript
    tx.moveCall({
      target: `${packageId}::greeting::new`,
      arguments: [],
    });
    ```
+
    ✅ Specifies function to call
 
 3. **Get Signing Hook**
+
    ```typescript
    const { mutate: signAndExecute } = useSignAndExecuteTransaction();
    ```
+
    ✅ Hook from @mysten/dapp-kit
 
 4. **Sign & Execute**
+
    ```typescript
    signAndExecute(
      { transaction: tx },
@@ -255,22 +272,27 @@ target: `${helloWorldPackageId}::greeting::update_text`
      },
    );
    ```
+
    ✅ Wallet handles signing
    ✅ Transaction executed on chain
 
 5. **Wait for Confirmation**
+
    ```typescript
    suiClient.waitForTransaction({
      digest: tx.digest,
      options: { showEffects: true },
    })
    ```
+
    ✅ Polls until transaction confirmed
 
 6. **Extract Results**
+
    ```typescript
    const objectId = result.effects?.created?.[0]?.reference?.objectId;
    ```
+
    ✅ Gets created/modified object from effects
 
 ---
@@ -280,11 +302,13 @@ target: `${helloWorldPackageId}::greeting::update_text`
 ### Arguments for `new()`
 
 **Move Function Signature**:
+
 ```move
 public fun new(): Greeting
 ```
 
 **Typescript Call**:
+
 ```typescript
 tx.moveCall({
   arguments: [],
@@ -293,17 +317,20 @@ tx.moveCall({
 ```
 
 **Verification** ✅:
+
 - Function takes no arguments ✅
 - Empty arguments array ✅
 
 ### Arguments for `update_text()`
 
 **Move Function Signature**:
+
 ```move
 public fun update_text(greeting: &mut Greeting, new_text: String)
 ```
 
 **TypeScript Call**:
+
 ```typescript
 tx.moveCall({
   target: `${helloWorldPackageId}::greeting::update_text`,
@@ -312,6 +339,7 @@ tx.moveCall({
 ```
 
 **Argument Mapping** ✅:
+
 | Move Parameter | TypeScript Argument | Type | Verification |
 |---|---|---|---|
 | `greeting: &mut Greeting` | `tx.object(id)` | Object reference | ✅ Correct - mutable reference |
@@ -324,6 +352,7 @@ tx.moveCall({
 ### Transaction Errors
 
 **Handled in Components**:
+
 ```typescript
 {
   onSuccess: (tx) => {
@@ -334,12 +363,14 @@ tx.moveCall({
 ```
 
 **Common Errors** (as noted in guide):
+
 1. "Unable to Process Transaction" - insufficient gas
 2. "Invalid package ID" - incorrect PACKAGE_ID
 3. "Module not found" - wrong module name
 4. "Function not found" - wrong function name
 
 **Verification** ✅:
+
 - ✅ Wallet displays error to user
 - ✅ App shows loading state
 - ✅ User can retry transaction
@@ -347,12 +378,14 @@ tx.moveCall({
 ### Query Errors
 
 **Handled in Greeting Component**:
+
 ```typescript
 if (error) return <Text>Error: {error.message}</Text>;
 if (!data.data) return <Text>Not found</Text>;
 ```
 
 **Verification** ✅:
+
 - ✅ Network errors handled
 - ✅ Object not found handled
 - ✅ User-friendly error display
@@ -364,6 +397,7 @@ if (!data.data) return <Text>Not found</Text>;
 ### Supported Wallets
 
 Via `@mysten/dapp-kit 0.19.11`:
+
 - ✅ Slush Wallet (mentioned in guide)
 - ✅ Sui Wallet
 - ✅ All Wallet Standard compatible wallets
@@ -384,6 +418,7 @@ export function App() {
 ```
 
 **Verification** ✅:
+
 - ✅ Official dapp-kit component
 - ✅ Handles wallet selection UI
 - ✅ Manages account state
@@ -397,6 +432,7 @@ const isOnTestnet = accountChains.includes(SUI_TESTNET_CHAIN);
 ```
 
 **Verification** ✅:
+
 - ✅ Gets current connected account
 - ✅ Detects active chains
 - ✅ Verifies testnet connection
@@ -415,26 +451,31 @@ const isOnTestnet = accountChains.includes(SUI_TESTNET_CHAIN);
 ## Best Practices Implemented
 
 ✅ **Modern API Usage**
+
 - Uses `Transaction` (not deprecated `TransactionBlock`)
 - Uses latest dapp-kit hooks
 - Uses latest @mysten/sui types
 
 ✅ **Error Handling**
+
 - Transaction errors caught by wallet
 - Query errors displayed to user
 - Not found states handled
 
 ✅ **Loading States**
+
 - Spinner shown during transaction
 - Loading text during object query
 - Proper state management
 
 ✅ **Type Safety**
+
 - TypeScript strict mode
 - Proper function argument types
 - Type-safe object queries
 
 ✅ **User Experience**
+
 - Clear wallet connection flow
 - Transaction confirmation UI
 - Real-time data updates

@@ -9,30 +9,35 @@
 ### Core Framework
 
 ✅ **Flexible Data Sources**
+
 - Remote checkpoint stores (HTTP/S3)
 - Local filesystem
 - Direct RPC endpoints
 - Support for all Sui networks (mainnet/testnet/devnet)
 
 ✅ **Intelligent Ingestion Layer**
+
 - Broadcaster for multi-pipeline distribution
 - Regulator for backpressure-based flow control
 - Watermark tracking for reliable progress
 - Batch processing with configurable sizes
 
 ✅ **Dual Processing Pipelines**
+
 - **Sequential**: Ordered processing with batching (latency vs throughput trade-off)
 - **Concurrent**: High-speed out-of-order processing (maximum throughput)
 - Customizable concurrency levels
 - Automatic watermark management
 
 ✅ **Extensible Storage**
+
 - PostgreSQL with Diesel ORM (production-ready)
 - MongoDB support (for document storage)
 - ClickHouse support (for analytics)
 - Custom storage implementation interface
 
 ✅ **Production Features**
+
 - Comprehensive error handling
 - Automatic retry mechanisms
 - Data pruning and retention policies
@@ -44,6 +49,7 @@
 ### 1. Installation
 
 Add to your `Cargo.toml`:
+
 ```toml
 [dependencies]
 sui-indexer = { path = "path/to/indexer" }
@@ -207,11 +213,13 @@ pub struct Watermark {
 ### Pipeline Types
 
 **Sequential**: Processes checkpoints in order with batching
+
 - ✅ Maintains transaction order
 - ✅ Easier debugging
 - ⚠️ Lower throughput
 
 **Concurrent**: Processes checkpoints in parallel
+
 - ✅ Maximum throughput
 - ✅ Best for independent data
 - ⚠️ No guaranteed order
@@ -388,18 +396,21 @@ cargo run --example dex_and_nft_indexer --release
 ## 📊 Performance Characteristics
 
 ### Sequential Pipeline
+
 - **Throughput**: 100-500 checkpoints/minute
 - **Latency**: ~100ms per checkpoint
 - **Memory**: ~50MB stable
 - **Best for**: Ordered data, state-dependent processing
 
 ### Concurrent Pipeline
+
 - **Throughput**: 500-5000 checkpoints/minute
 - **Latency**: ~10ms per checkpoint (parallel)
 - **Memory**: ~200MB with high concurrency
 - **Best for**: Independent records, high throughput
 
 ### Data Source Performance
+
 - **Remote Store**: 50-200 checkpoints/sec
 - **Local Files**: 200-1000 checkpoints/sec
 - **RPC Endpoint**: 10-50 checkpoints/sec
@@ -417,15 +428,18 @@ cargo run --example dex_and_nft_indexer --release
 ## 🐛 Troubleshooting
 
 ### High Memory Usage
+
 - Reduce batch size: `.with_batch_size(10)`
 - Reduce concurrent workers: `PipelineType::Concurrent { max_concurrent: 5 }`
 
 ### Slow Processing
+
 - Switch to concurrent pipeline
 - Increase batch size
 - Use faster RPC endpoint
 
 ### Data Loss
+
 - Ensure `commit()` uses transactions
 - Verify watermark updates
 - Check storage connection

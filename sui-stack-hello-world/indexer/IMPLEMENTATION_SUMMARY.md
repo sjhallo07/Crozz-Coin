@@ -11,6 +11,7 @@ A complete, production-ready custom indexing framework for Sui blockchain that e
 ### 1. Core Framework Components (2,000+ lines)
 
 #### `src/types.rs` (600+ lines)
+
 - **CheckpointData** - Core data structure representing blockchain state snapshots
 - **TransactionData** - Transaction details, inputs, commands
 - **Event** - Blockchain events with parsed JSON data
@@ -20,6 +21,7 @@ A complete, production-ready custom indexing framework for Sui blockchain that e
 - Support for all Sui data structures (coins, objects, dynamic fields)
 
 #### `src/data_source.rs` (400+ lines)
+
 - **RemoteStoreProvider** - HTTP/S3 checkpoint stores with caching
 - **LocalFileProvider** - Local filesystem support for testing
 - **RpcProvider** - Direct RPC endpoint integration
@@ -28,6 +30,7 @@ A complete, production-ready custom indexing framework for Sui blockchain that e
 - Error handling and connectivity verification
 
 #### `src/ingestion.rs` (350+ lines)
+
 - **Broadcaster** - Distributes checkpoints to multiple pipelines
 - **Regulator** - Smart flow control using backpressure
 - **PipelineSubscriber** - Subscription mechanism for pipelines
@@ -36,6 +39,7 @@ A complete, production-ready custom indexing framework for Sui blockchain that e
 - Progress monitoring and metrics
 
 #### `src/processor.rs` (400+ lines)
+
 - **Processor Trait** - Custom processing logic interface
 - **SequentialPipeline** - In-order processing with batching
 - **ConcurrentPipeline** - High-throughput parallel processing
@@ -44,6 +48,7 @@ A complete, production-ready custom indexing framework for Sui blockchain that e
 - Automatic watermark management
 
 #### `src/storage.rs` (350+ lines)
+
 - **StorageAdapter Trait** - Database abstraction layer
 - **PostgresAdapter** - Production PostgreSQL support with Diesel
 - **InMemoryStorage** - Testing and development storage
@@ -53,6 +58,7 @@ A complete, production-ready custom indexing framework for Sui blockchain that e
 - Support for MongoDB and ClickHouse (extensible)
 
 #### `src/lib.rs` (Orchestrator)
+
 - **Indexer** - Main orchestrator combining all layers
 - **IndexerBuilder** - Fluent API for configuration
 - **IndexerStatus** - Real-time status reporting
@@ -61,12 +67,14 @@ A complete, production-ready custom indexing framework for Sui blockchain that e
 ### 2. Example Implementations (550+ lines)
 
 #### `examples/dex_and_nft_indexer.rs`
+
 - **DexVolumeIndexer** - Track DEX trading volumes by pool
 - **NftActivityIndexer** - Monitor NFT collection activity
 - Complete working examples with error handling
 - Real-world usage patterns
 
 #### `examples/advanced_indexers.rs`
+
 - **BridgeActivityIndexer** - Cross-chain bridge tracking
 - **LendingProtocolIndexer** - Lending market monitoring
 - **ObjectLifecycleIndexer** - Object creation/mutation/deletion tracking
@@ -76,6 +84,7 @@ A complete, production-ready custom indexing framework for Sui blockchain that e
 ### 3. Comprehensive Documentation (1,000+ lines)
 
 #### `INDEXER_GUIDE.md` (750+ lines)
+
 - Complete conceptual guide
 - Quick start section
 - Implementation patterns
@@ -86,6 +95,7 @@ A complete, production-ready custom indexing framework for Sui blockchain that e
 - Production deployment guidance
 
 #### `README.md` (400+ lines)
+
 - Project overview
 - Architecture explanation
 - Feature list
@@ -135,30 +145,35 @@ A complete, production-ready custom indexing framework for Sui blockchain that e
 ## 💡 Key Features
 
 ### ✅ Flexible Data Sources
+
 - Remote checkpoint stores (HTTP/S3)
 - Local filesystem
 - Direct RPC endpoints
 - Support for all Sui networks
 
 ### ✅ Intelligent Ingestion
+
 - Broadcaster for multi-pipeline distribution
 - Regulator for backpressure-based flow control
 - Watermark tracking for reliable progress
 - Configurable batch sizes
 
 ### ✅ Dual Pipeline Types
+
 - **Sequential**: Ordered processing with batching
 - **Concurrent**: High-speed parallel processing
 - Automatic watermark management
 - Configurable concurrency levels
 
 ### ✅ Extensible Storage
+
 - PostgreSQL with Diesel ORM (production-ready)
 - MongoDB support (for documents)
 - ClickHouse support (for analytics)
 - Custom implementation interface
 
 ### ✅ Production Features
+
 - Comprehensive error handling
 - Automatic retry mechanisms
 - Data pruning and retention policies
@@ -222,36 +237,42 @@ indexer.start().await?;
 ## 📚 Use Cases Supported
 
 ### 1. DEX Trading Analytics
+
 - Track volumes by pool
 - Monitor swap events
 - Analyze trading patterns
 - Price discovery tracking
 
 ### 2. NFT Collection Monitoring
+
 - Track transfers and sales
 - Monitor collection activity
 - Analyze trading volumes
 - Detect suspicious patterns
 
 ### 3. Bridge Activity Tracking
+
 - Cross-chain volume aggregation
 - Bridge utilization monitoring
 - Multi-bridge comparisons
 - Fee analysis
 
 ### 4. Lending Protocol Analytics
+
 - Borrow/lend event tracking
 - Position monitoring
 - Risk assessment
 - Liquidation tracking
 
 ### 5. Object Lifecycle Tracking
+
 - Creation patterns
 - Mutation tracking
 - Destruction monitoring
 - Ownership changes
 
 ### 6. Analytics Dashboards
+
 - Historical data aggregation
 - Real-time metrics
 - Comparative analysis
@@ -260,22 +281,26 @@ indexer.start().await?;
 ## 🎯 Design Patterns
 
 ### Single Responsibility
+
 - Each layer has clear responsibility
 - Easy to understand and maintain
 - Testable components
 
 ### Trait-Based Extensibility
+
 - Custom Processor implementation
 - Custom StorageAdapter
 - Custom DataSourceProvider
 - Open for extension, closed for modification
 
 ### Builder Pattern
+
 - IndexerBuilder for easy configuration
 - DataSourceFactory for provider creation
 - StorageFactory for storage selection
 
 ### Async/Await Throughout
+
 - Non-blocking I/O operations
 - Efficient resource utilization
 - Scalable to thousands of pipelines
@@ -290,6 +315,7 @@ indexer.start().await?;
 ## 📦 Distribution
 
 All framework components are production-ready and can be:
+
 - Compiled to a library crate
 - Used in applications
 - Extended with custom implementations
@@ -298,12 +324,14 @@ All framework components are production-ready and can be:
 ## 🔗 Integration Points
 
 ### With Existing Sui Stack
+
 - Works alongside GraphQL integration
 - Compatible with JSON-RPC queries
 - Complements gRPC services
 - Independent data pipeline
 
 ### Database Options
+
 - PostgreSQL (recommended for production)
 - MongoDB (document storage)
 - ClickHouse (analytics)
@@ -312,12 +340,14 @@ All framework components are production-ready and can be:
 ## 📈 Performance Characteristics
 
 ### Sequential Pipeline
+
 - **100-500 checkpoints/minute**
 - **~100ms latency per checkpoint**
 - **~50MB memory usage**
 - Best for ordered data
 
 ### Concurrent Pipeline
+
 - **500-5000 checkpoints/minute**
 - **~10ms latency per checkpoint** (parallel)
 - **~200MB memory with high concurrency**
@@ -335,6 +365,7 @@ All framework components are production-ready and can be:
 ## 🔄 Next Steps
 
 ### Recommended Enhancements
+
 1. Add MongoDB storage adapter (template provided)
 2. Add ClickHouse storage adapter (template provided)
 3. Implement specialized processors for your use cases
@@ -343,6 +374,7 @@ All framework components are production-ready and can be:
 6. Add GraphQL API for querying indexed data
 
 ### Integration with Existing Systems
+
 - Combine with existing GraphQL RPC integration
 - Feed data to analytics dashboards
 - Build specialized search indexes
@@ -381,6 +413,7 @@ indexer/
 ## 🤝 Contributing
 
 The framework is designed to be extended:
+
 1. Implement custom `Processor` for your use cases
 2. Create new `DataSourceProvider` for custom sources
 3. Build new `StorageAdapter` for specific databases
@@ -389,6 +422,7 @@ The framework is designed to be extended:
 ## 📞 Support
 
 Refer to:
+
 - `INDEXER_GUIDE.md` for detailed guidance
 - `README.md` for quick reference
 - Code examples for working patterns

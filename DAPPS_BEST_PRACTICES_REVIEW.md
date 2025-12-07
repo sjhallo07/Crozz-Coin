@@ -6,9 +6,10 @@
 ## Executive Summary
 
 Analyzed all dApps in Crozz-Coin repository against Sui official dApp Kit best practices guide:
-https://docs.sui.io/guides/developer/sui-101/client-tssdk
+<https://docs.sui.io/guides/developer/sui-101/client-tssdk>
 
 **Overall Status**: ⚠️ NEEDS UPDATES
+
 - **kiosk**: ✅ EXCELLENT (uses latest patterns with createNetworkConfig)
 - **multisig-toolkit**: ⚠️ OUTDATED DEPENDENCIES (v0.14.53, current is 0.19.11)
 - **sponsored-transactions**: ⚠️ OUTDATED DEPENDENCIES (v0.14.53, current is 0.19.11)
@@ -32,16 +33,19 @@ https://docs.sui.io/guides/developer/sui-101/client-tssdk
 ### Version Gaps
 
 **@mysten/dapp-kit**:
+
 - Installed: 0.14.53 (released ~2024 Q2)
 - Current: 0.19.11 (released ~2024 Q4)
 - **Gap: 5 minor versions behind** ⚠️
 
 **@mysten/sui**:
+
 - Installed: 1.18.0
 - Current: 1.45.2
 - **Gap: 27 patch versions behind** ⚠️
 
 **@tanstack/react-query**:
+
 - Installed: 5.76.0
 - Current: 5.90.12
 - **Gap: 14 patch versions behind** ⚠️
@@ -55,6 +59,7 @@ https://docs.sui.io/guides/developer/sui-101/client-tssdk
 #### A. Provider Setup (Required)
 
 ✅ **Best Practice**: Wrap app with 3 Providers in correct order
+
 1. QueryClientProvider
 2. SuiClientProvider
 3. WalletProvider
@@ -62,6 +67,7 @@ https://docs.sui.io/guides/developer/sui-101/client-tssdk
 **Current Implementation Review**:
 
 ##### kiosk - ✅ CORRECT
+
 ```tsx
 // src/Root.tsx
 <QueryClientProvider client={queryClient}>
@@ -74,7 +80,9 @@ https://docs.sui.io/guides/developer/sui-101/client-tssdk
   </SuiClientProvider>
 </QueryClientProvider>
 ```
+
 **Status**: ✅ PERFECT
+
 - All 3 Providers in correct order
 - CSS imported ✅
 - Uses createNetworkConfig (latest pattern) ✅
@@ -82,6 +90,7 @@ https://docs.sui.io/guides/developer/sui-101/client-tssdk
 - Default network set to testnet ✅
 
 ##### multisig-toolkit - ✅ CORRECT (But outdated versions)
+
 ```tsx
 // src/main.tsx
 <QueryClientProvider client={queryClient}>
@@ -92,7 +101,9 @@ https://docs.sui.io/guides/developer/sui-101/client-tssdk
   </SuiClientProvider>
 </QueryClientProvider>
 ```
+
 **Status**: ⚠️ STRUCTURE OK, DEPENDENCIES OUTDATED
+
 - All 3 Providers in correct order ✅
 - CSS imported ✅
 - Uses createNetworkConfig ✅
@@ -100,6 +111,7 @@ https://docs.sui.io/guides/developer/sui-101/client-tssdk
 - **Needs version upgrades**
 
 ##### sponsored-transactions - ✅ CORRECT (But outdated versions)
+
 ```tsx
 // src/main.tsx
 <QueryClientProvider client={queryClient}>
@@ -113,7 +125,9 @@ https://docs.sui.io/guides/developer/sui-101/client-tssdk
   </SuiClientProvider>
 </QueryClientProvider>
 ```
+
 **Status**: ⚠️ STRUCTURE OK, DEPENDENCIES OUTDATED
+
 - All 3 Providers in correct order ✅
 - CSS imported ✅
 - Default network: testnet ✅
@@ -148,6 +162,7 @@ https://docs.sui.io/guides/developer/sui-101/client-tssdk
 **Status**: 🟡 GOOD STRUCTURE, NEEDS VERSION UPDATES
 
 #### Positives ✅
+
 - Provider setup is EXCELLENT with createNetworkConfig
 - Custom KioskClientContext for domain logic (best practice)
 - Uses Router pattern properly
@@ -155,12 +170,14 @@ https://docs.sui.io/guides/developer/sui-101/client-tssdk
 - TypeScript configuration likely correct
 - Error handling with Toaster component
 
-#### Issues ⚠️
+#### Issues ⚠️ (Kiosk)
+
 - @mysten/dapp-kit: 0.14.53 → should be 0.19.11
 - @mysten/sui: 1.18.0 → should be 1.45.2
 - @tanstack/react-query: 5.76.0 → should be 5.90.12
 
-#### Action Items
+#### Action Items (kiosk)
+
 1. Update @mysten/dapp-kit to 0.19.11
 2. Update @mysten/sui to 1.45.2
 3. Update @tanstack/react-query to 5.90.12
@@ -172,18 +189,21 @@ https://docs.sui.io/guides/developer/sui-101/client-tssdk
 **Status**: 🟡 GOOD STRUCTURE, NEEDS VERSION UPDATES
 
 #### Positives ✅
+
 - Provider setup correct with createNetworkConfig
 - Uses SuiClientProvider with proper networks
 - CSS imported correctly
 - TypeScript configuration likely correct
 
-#### Issues ⚠️
+#### Issues ⚠️ (Multisig-toolkit)
+
 - @mysten/dapp-kit: 0.14.53 → should be 0.19.11
 - @mysten/sui: 1.18.0 → should be 1.45.2
 - @tanstack/react-query: 5.76.0 → should be 5.90.12
 - Default network not explicitly set (should be testnet or mainnet)
 
-#### Action Items
+#### Action Items (multisig-toolkit)
+
 1. Update @mysten/dapp-kit to 0.19.11
 2. Update @mysten/sui to 1.45.2
 3. Update @tanstack/react-query to 5.90.12
@@ -195,19 +215,22 @@ https://docs.sui.io/guides/developer/sui-101/client-tssdk
 **Status**: 🟡 GOOD STRUCTURE, NEEDS VERSION UPDATES
 
 #### Positives ✅
+
 - Provider setup correct with manual networks config
 - Uses enableUnsafeBurner (good for testing)
 - Default network explicitly set to testnet ✅
 - CSS imported correctly
 - TypeScript configuration likely correct
 
-#### Issues ⚠️
+#### Issues ⚠️ (Sponsored-transactions)
+
 - @mysten/dapp-kit: 0.14.53 → should be 0.19.11
 - @mysten/sui: 1.18.0 → should be 1.45.2
 - @tanstack/react-query: 5.76.0 → should be 5.90.12
 - Uses manual networks config instead of createNetworkConfig ⚠️
 
-#### Action Items
+#### Action Items (sponsored-transactions)
+
 1. Update @mysten/dapp-kit to 0.19.11
 2. Update @mysten/sui to 1.45.2
 3. Update @tanstack/react-query to 5.90.12
@@ -219,15 +242,18 @@ https://docs.sui.io/guides/developer/sui-101/client-tssdk
 **Status**: 🔴 CLI ONLY, BUT OUTDATED
 
 #### Positives ✅
+
 - CLI utility (different use case)
 - Has @mysten/kiosk dependency
 
-#### Issues ⚠️
+#### Issues ⚠️ (Kiosk-cli)
+
 - @mysten/sui: 1.18.0 → should be 1.45.2
 - No @mysten/dapp-kit (not needed for CLI)
 - @mysten/kiosk: 0.9.34 (check if latest)
 
-#### Action Items
+#### Action Items (kiosk-cli)
+
 1. Update @mysten/sui to 1.45.2
 2. Verify @mysten/kiosk version
 
@@ -235,11 +261,13 @@ https://docs.sui.io/guides/developer/sui-101/client-tssdk
 
 **Status**: 🔴 NO PACKAGE.JSON
 
-#### Issues ⚠️
+#### Issues ⚠️ (Regulated-token)
+
 - No package.json found
 - Cannot determine if it's a valid dApp
 
-#### Action Items
+#### Action Items (regulated-token)
+
 1. Check if directory should exist
 2. If yes, create proper package.json
 3. If no, remove directory
@@ -250,15 +278,17 @@ https://docs.sui.io/guides/developer/sui-101/client-tssdk
 
 ### Step-by-Step Update Process
 
-#### For Each dApp (kiosk, multisig-toolkit, sponsored-transactions):
+#### For Each dApp (kiosk, multisig-toolkit, sponsored-transactions)
 
 **Step 1: Update Dependencies**
+
 ```bash
 cd dapps/<app-name>
 pnpm update @mysten/dapp-kit@latest @mysten/sui@latest @tanstack/react-query@latest
 ```
 
 **Step 2: Verify Changes**
+
 ```bash
 pnpm install
 npm run build 2>&1 | head -20
@@ -266,6 +296,7 @@ npx tsc --noEmit
 ```
 
 **Step 3: Test**
+
 ```bash
 pnpm dev
 # Open http://localhost:5173 or configured port
@@ -274,6 +305,7 @@ pnpm dev
 ```
 
 **Step 4: Commit**
+
 ```bash
 git add -A
 git commit -m "chore: update dapp dependencies to latest versions"
@@ -322,6 +354,7 @@ git commit -m "chore: update dapp dependencies to latest versions"
 ### Pattern 1: Network Configuration
 
 #### ✅ RECOMMENDED (Kiosk Pattern)
+
 ```tsx
 import { createNetworkConfig } from '@mysten/dapp-kit';
 import { getFullnodeUrl } from '@mysten/sui/client';
@@ -337,12 +370,14 @@ const { networkConfig } = createNetworkConfig({
 ```
 
 **Advantages**:
+
 - Uses helper function from official SDK
 - Clean separation of config
 - Easy to add/remove networks
 - Reusable config object
 
 #### ⚠️ MANUAL PATTERN (Sponsored Transactions)
+
 ```tsx
 const networks = {
   testnet: { url: getFullnodeUrl('testnet') }
@@ -352,6 +387,7 @@ const networks = {
 ```
 
 **Disadvantages**:
+
 - More verbose
 - Less maintainable if many networks
 - Still works, but not recommended pattern
@@ -359,6 +395,7 @@ const networks = {
 ### Pattern 2: QueryClient Setup
 
 #### ✅ GOOD (Multisig, Sponsored)
+
 ```tsx
 const queryClient = new QueryClient();
 
@@ -366,6 +403,7 @@ const queryClient = new QueryClient();
 ```
 
 #### ✅ ALSO GOOD (Kiosk with Shared Instance)
+
 ```tsx
 // Potentially imported from shared lib
 import { queryClient } from './lib/queryClient';
@@ -378,6 +416,7 @@ Both patterns are acceptable.
 ### Pattern 3: Custom Context Pattern
 
 #### ✅ EXCELLENT (Kiosk)
+
 ```tsx
 <WalletProvider>
   <KioskClientProvider>
@@ -387,6 +426,7 @@ Both patterns are acceptable.
 ```
 
 **Benefits**:
+
 - Separates concerns (wallet vs domain logic)
 - Easier to test
 - Better code organization
@@ -423,12 +463,14 @@ Both patterns are acceptable.
 **Root Cause**: dApps created with older template versions
 
 **Impact**:
+
 - Missing new features
 - Potential security patches
 - Performance improvements not included
 - TypeScript improvements missing
 
 **Solution**:
+
 ```bash
 # For each dApp
 cd dapps/<name>
@@ -444,11 +486,13 @@ pnpm build
 **Root Cause**: Not explicitly setting default network in some dApps
 
 **Impact**:
+
 - May connect to unexpected network
 - Could be confusing for developers
 
 **Solution**:
 Explicitly set `defaultNetwork` in SuiClientProvider:
+
 ```tsx
 <SuiClientProvider 
   defaultNetwork="testnet"  // Be explicit
@@ -463,11 +507,13 @@ Explicitly set `defaultNetwork` in SuiClientProvider:
 **Root Cause**: Different dApps using different patterns
 
 **Impact**:
+
 - Inconsistency across codebase
 - Slightly harder to maintain
 
 **Solution**:
 Use `createNetworkConfig` pattern everywhere:
+
 ```tsx
 import { createNetworkConfig } from '@mysten/dapp-kit';
 
@@ -485,14 +531,17 @@ const { networkConfig } = createNetworkConfig({
 **Root Cause**: Either incomplete setup or directory should be removed
 
 **Impact**:
+
 - Cannot install/run the dApp
 - Build system may fail
 - Affects monorepo consistency
 
 **Solution**:
+
 1. Check if it should exist in git history
 2. If yes, restore or recreate package.json
 3. If no, remove directory:
+
    ```bash
    rm -rf dapps/regulated-token
    ```
@@ -527,6 +576,7 @@ const { networkConfig } = createNetworkConfig({
 ### Immediate Actions (High Priority)
 
 1. **Update All dApps Dependencies**
+
    ```bash
    # For each: kiosk, multisig-toolkit, sponsored-transactions
    cd dapps/<name>
@@ -534,6 +584,7 @@ const { networkConfig } = createNetworkConfig({
    ```
 
 2. **Test All dApps**
+
    ```bash
    # For each dApp
    pnpm build  # Verify compilation
@@ -590,6 +641,7 @@ const { networkConfig } = createNetworkConfig({
 ## 10. Files to Update
 
 ### dapps/kiosk/package.json
+
 ```json
 {
   "@mysten/dapp-kit": "0.14.53" → "0.19.11",
@@ -599,6 +651,7 @@ const { networkConfig } = createNetworkConfig({
 ```
 
 ### dapps/multisig-toolkit/package.json
+
 ```json
 {
   "@mysten/dapp-kit": "0.14.53" → "0.19.11",
@@ -608,6 +661,7 @@ const { networkConfig } = createNetworkConfig({
 ```
 
 ### dapps/sponsored-transactions/package.json
+
 ```json
 {
   "@mysten/dapp-kit": "0.14.53" → "0.19.11",
@@ -617,6 +671,7 @@ const { networkConfig } = createNetworkConfig({
 ```
 
 ### dapps/kiosk-cli/package.json
+
 ```json
 {
   "@mysten/sui": "1.18.0" → "1.45.2"
@@ -628,6 +683,7 @@ const { networkConfig } = createNetworkConfig({
 ## 11. Testing After Update
 
 ### Wallet Connection Test
+
 ```typescript
 // All dApps should support:
 - ConnectButton rendering
@@ -638,6 +694,7 @@ const { networkConfig } = createNetworkConfig({
 ```
 
 ### Transaction Test
+
 ```typescript
 // All dApps should support:
 - Create transaction
@@ -648,6 +705,7 @@ const { networkConfig } = createNetworkConfig({
 ```
 
 ### Data Query Test
+
 ```typescript
 // All dApps should support:
 - Get owned objects
@@ -680,11 +738,13 @@ const { networkConfig } = createNetworkConfig({
 ## 13. Reference Documentation
 
 ### Official Sui Resources
+
 - [dApp Kit Documentation](https://sdk.mystenlabs.com/dapp-kit)
 - [Sui TypeScript SDK](https://sdk.mystenlabs.com/typescript)
 - [Client dApp Guide](https://docs.sui.io/guides/developer/sui-101/client-tssdk)
 
 ### This Document Resources
+
 - Best practices for dApp setup
 - Migration guides for each dApp
 - Testing procedures
@@ -702,6 +762,7 @@ const { networkConfig } = createNetworkConfig({
 ## Quick Reference
 
 ### Recommended Versions
+
 ```json
 {
   "@mysten/dapp-kit": "0.19.11",
@@ -714,6 +775,7 @@ const { networkConfig } = createNetworkConfig({
 ```
 
 ### Provider Template
+
 ```tsx
 import '@mysten/dapp-kit/dist/index.css';
 import { createNetworkConfig, SuiClientProvider, WalletProvider } from '@mysten/dapp-kit';

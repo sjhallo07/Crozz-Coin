@@ -1,0 +1,113 @@
+{
+  "server": {
+    "name": "crozz-coin-mcp-server",
+    "version": "1.0.0",
+    "description": "MCP Server for Crozz-Coin with chat and command functionality"
+  },
+  "features": {
+    "chat": {
+      "enabled": true,
+      "maxHistorySize": 1000,
+      "persistHistory": false,
+      "historyFile": "./chat-history.json"
+    },
+    "commands": {
+      "enabled": true,
+      "allowedDirectories": [
+        "/workspaces/Crozz-Coin"
+      ],
+      "maxBufferSize": 52428800,
+      "timeout": 300000
+    },
+    "build": {
+      "enabled": true,
+      "cargoPath": "cargo",
+      "defaultProfile": "dev"
+    },
+    "git": {
+      "enabled": true,
+      "allowedOperations": ["status", "log", "diff", "branch"]
+    },
+    "security": {
+      "restrictCommands": false,
+      "blockedCommands": [],
+      "requireAuth": false
+    }
+  },
+  "tools": {
+    "send_message": {
+      "enabled": true,
+      "description": "Send a chat message and store it in history"
+    },
+    "get_chat_history": {
+      "enabled": true,
+      "description": "Retrieve the chat history"
+    },
+    "clear_chat_history": {
+      "enabled": true,
+      "description": "Clear all chat history"
+    },
+    "execute_command": {
+      "enabled": true,
+      "description": "Execute a shell command in the project directory"
+    },
+    "build_project": {
+      "enabled": true,
+      "description": "Build the Crozz-Coin project using cargo"
+    },
+    "run_tests": {
+      "enabled": true,
+      "description": "Run tests for the Crozz-Coin project"
+    },
+    "git_status": {
+      "enabled": true,
+      "description": "Get git status of the repository"
+    },
+    "git_log": {
+      "enabled": true,
+      "description": "Get git commit history"
+    },
+    "git_diff": {
+      "enabled": true,
+      "description": "Show git diff for staged or unstaged changes"
+    },
+    "git_branch": {
+      "enabled": true,
+      "description": "List or manage git branches"
+    },
+    "list_files": {
+      "enabled": true,
+      "description": "List files in a directory"
+    },
+    "read_file": {
+      "enabled": true,
+      "description": "Read contents of a file"
+    },
+    "write_file": {
+      "enabled": true,
+      "description": "Write content to a file"
+    },
+    "cargo_check": {
+      "enabled": true,
+      "description": "Run cargo check to verify code compilation"
+    },
+    "cargo_clippy": {
+      "enabled": true,
+      "description": "Run cargo clippy for linting"
+    },
+    "cargo_fmt": {
+      "enabled": true,
+      "description": "Format code using cargo fmt"
+    },
+    "search_code": {
+      "enabled": true,
+      "description": "Search for text in code files"
+    }
+  },
+  "logging": {
+    "level": "info",
+    "toConsole": true,
+    "toFile": false,
+    "logFile": "./mcp-server.log"
+  }
+}

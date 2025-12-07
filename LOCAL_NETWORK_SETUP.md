@@ -7,11 +7,13 @@ Este documento te guía paso a paso para configurar y usar una red local de Sui 
 ### 1. Instalar Sui CLI
 
 **Opción A: macOS (con Homebrew)**
+
 ```bash
 brew install sui
 ```
 
 **Opción B: Linux/Ubuntu**
+
 ```bash
 # Instalar Rust (si no está instalado)
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -22,9 +24,10 @@ cargo install --locked --git https://github.com/MystenLabs/sui.git --branch main
 ```
 
 **Opción C: Desde binarios**
-Descarga desde: https://docs.sui.io/guides/developer/getting-started/sui-install
+Descarga desde: <https://docs.sui.io/guides/developer/getting-started/sui-install>
 
 ### 2. Verificar instalación
+
 ```bash
 sui --version
 # Debería mostrar: sui X.Y.Z
@@ -44,12 +47,14 @@ RUST_LOG="off,sui_node=info" sui start --with-faucet --force-regenesis --epoch-d
 ```
 
 **Explicación de flags:**
+
 - `--with-faucet`: Inicia servicio de faucet para obtener test SUI
 - `--force-regenesis`: Resetea el estado (blockchain limpio cada inicio)
 - `--epoch-duration-ms 5000`: Épocas de 5 segundos (útil para testing)
 - `RUST_LOG="off,sui_node=info"`: Reduce logging para mejor rendimiento
 
 **Espera hasta ver:**
+
 ```
 Fullnode RPC URL: http://127.0.0.1:9000
 Faucet URL: http://127.0.0.1:9123
@@ -107,6 +112,7 @@ sui client publish --gas-budget 100000000
 ```
 
 **Actualiza** `sui-stack-hello-world/ui/src/constants.ts`:
+
 ```typescript
 export const HELLO_WORLD_PACKAGE_ID = "TU_PACKAGE_ID_AQUI";
 export const NETWORK = "local"; // Cambia de "testnet" a "local"
@@ -256,12 +262,14 @@ sui client call --address 0x2 --module sui_system --function get_epoch
 ### GraphQL Explorer
 
 Si iniciaste con `--with-graphql`, visita:
-- http://127.0.0.1:9125 - GraphQL IDE interactivo
+
+- <http://127.0.0.1:9125> - GraphQL IDE interactivo
 
 ### Exploradores Externos
 
 Configura **Polymedia Explorer** para red local:
-1. Visita https://explorer.polymedia.app/
+
+1. Visita <https://explorer.polymedia.app/>
 2. Settings → Custom RPC
 3. Ingresa: `http://127.0.0.1:9000`
 
@@ -327,25 +335,28 @@ npm test
 
 ## 🔗 Enlaces Útiles
 
-- **Documentación oficial**: https://docs.sui.io/guides/developer/sui-101/local-network
-- **Sui CLI Reference**: https://docs.sui.io/references/cli
-- **TypeScript SDK**: https://sdk.mystenlabs.com/typescript
-- **Move by Example**: https://examples.sui.io/
+- **Documentación oficial**: <https://docs.sui.io/guides/developer/sui-101/local-network>
+- **Sui CLI Reference**: <https://docs.sui.io/references/cli>
+- **TypeScript SDK**: <https://sdk.mystenlabs.com/typescript>
+- **Move by Example**: <https://examples.sui.io/>
 
 ## 💡 Tips
 
 1. **Snapshots**: Guarda estado importante antes de cambios grandes
+
    ```bash
    cp -r ~/.sui/sui_config ~/.sui/sui_config.backup
    ```
 
 2. **Múltiples addresses**: Crea addresses de prueba
+
    ```bash
    sui client new-address ed25519
    sui client switch --address 0x...
    ```
 
 3. **Scripting**: Automatiza setup con scripts
+
    ```bash
    #!/bin/bash
    sui client switch --env local
@@ -354,13 +365,15 @@ npm test
    ```
 
 4. **Logs detallados**: Para debugging profundo
+
    ```bash
    RUST_LOG="info" sui start --with-faucet
    ```
 
-## 🎉 ¡Listo!
+## 🎉 ¡Listo
 
 Ahora tienes un entorno de desarrollo local completo para Sui. Puedes:
+
 - ✅ Desarrollar y testear contratos rápidamente
 - ✅ Iterar en dApp sin costos de testnet
 - ✅ Debuggear con logs detallados
@@ -368,6 +381,7 @@ Ahora tienes un entorno de desarrollo local completo para Sui. Puedes:
 - ✅ Testing E2E completo
 
 Para más ayuda, consulta los archivos en `ui/src/config/`:
+
 - `localNetworkGuide.ts` - Guía completa
 - `localNetworkConfig.ts` - Referencia de configuración
 - `localNetworkHelpers.ts` - Utilidades TypeScript

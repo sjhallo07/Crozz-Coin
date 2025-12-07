@@ -81,25 +81,33 @@ pub struct Watermark {
 ### Capas del Framework
 
 #### 1. Data Source Layer
+
 Proporciona acceso a datos de checkpoint desde múltiples fuentes:
+
 - **Remote Store** - Repositorio HTTP/S3 público (ejemplo: checkpoints.mainnet.sui.io)
 - **Local Files** - Sistema de archivos local (para testing)
 - **RPC Endpoint** - Conexión directa a nodo Sui (confiable y controlable)
 
 #### 2. Ingestion Layer
+
 Maneja el fetching y distribución confiable de datos:
+
 - **Broadcaster** - Distribuye checkpoints a múltiples pipelines
 - **Regulator** - Controla flujo de datos mediante backpressure
 - **Watermark Store** - Rastrea progreso por pipeline
 
 #### 3. Processing Layer
+
 Ejecuta lógica personalizada de transformación:
+
 - **Sequential Pipeline** - Procesamiento en-orden con batching
 - **Concurrent Pipeline** - Procesamiento de alta velocidad sin orden
 - **Processor Interface** - Implementa tu lógica de transformación
 
 #### 4. Storage Layer
+
 Almacena datos procesados:
+
 - **PostgreSQL** - ORM Diesel, connection pooling, migraciones
 - **Custom Database** - Implementa la interfaz para cualquier DB
 - **Watermark Management** - Rastrea progreso de procesamiento
@@ -506,12 +514,14 @@ IndexerBuilder::new("name")
 ### 1. Elige el Tipo de Pipeline Correcto
 
 **Sequential** es mejor para:
+
 - Procesamiento ordenado
 - Datos que dependen de orden
 - Operaciones con estado
 - Depuración
 
 **Concurrent** es mejor para:
+
 - Alto throughput
 - Datos independientes
 - Bajo latency
@@ -626,6 +636,7 @@ tokio::spawn({
 
 **Causa**: Batch size muy grande
 **Solución**:
+
 ```rust
 .with_batch_size(10)  // Reducir batch size
 ```
@@ -634,6 +645,7 @@ tokio::spawn({
 
 **Causa**: Sequential pipeline en datos que pueden ser concurrentes
 **Solución**:
+
 ```rust
 .with_pipeline_type(PipelineType::Concurrent { max_concurrent: 20 })
 ```
@@ -642,6 +654,7 @@ tokio::spawn({
 
 **Causa**: No confirmar cambios correctamente
 **Solución**:
+
 ```rust
 async fn commit(&self, data: &ProcessedData) 
     -> Result<(), Box<dyn std::error::Error>> {
@@ -657,6 +670,7 @@ async fn commit(&self, data: &ProcessedData)
 
 **Causa**: Nombres incorrectos de módulo/evento
 **Solución**:
+
 ```rust
 // Verificar nombres exactos en checkpoint
 for tx in &checkpoint.transactions {
@@ -669,14 +683,17 @@ for tx in &checkpoint.transactions {
 ## 📦 Endpoints de Data Source
 
 ### Mainnet
+
 - **Remote Store**: `https://checkpoints.mainnet.sui.io`
 - **RPC**: `https://fullnode.mainnet.sui.io:443`
 
 ### Testnet
+
 - **Remote Store**: `https://checkpoints.testnet.sui.io`
 - **RPC**: `https://fullnode.testnet.sui.io:443`
 
 ### Devnet
+
 - **RPC Only**: `https://fullnode.devnet.sui.io:443`
 - *Nota: No hay remote store para devnet*
 

@@ -1,0 +1,17 @@
+{
+  "name": "crozz-coin-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP Server for Crozz-Coin chat and command functionality",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "git-chat": "node git-chat.js",
+    "ai-assistant": "node ai-assistant.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "chalk": "^5.6.2"
+  }
+}
