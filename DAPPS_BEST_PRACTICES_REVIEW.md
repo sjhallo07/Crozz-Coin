@@ -161,7 +161,7 @@ Analyzed all dApps in Crozz-Coin repository against Sui official dApp Kit best p
 
 **Status**: 🟡 GOOD STRUCTURE, NEEDS VERSION UPDATES
 
-#### Positives ✅
+#### Positives ✅ (Kiosk)
 
 - Provider setup is EXCELLENT with createNetworkConfig
 - Custom KioskClientContext for domain logic (best practice)
@@ -188,7 +188,7 @@ Analyzed all dApps in Crozz-Coin repository against Sui official dApp Kit best p
 
 **Status**: 🟡 GOOD STRUCTURE, NEEDS VERSION UPDATES
 
-#### Positives ✅
+#### Positives ✅ (Multisig-toolkit)
 
 - Provider setup correct with createNetworkConfig
 - Uses SuiClientProvider with proper networks
@@ -214,7 +214,7 @@ Analyzed all dApps in Crozz-Coin repository against Sui official dApp Kit best p
 
 **Status**: 🟡 GOOD STRUCTURE, NEEDS VERSION UPDATES
 
-#### Positives ✅
+#### Positives ✅ (Sponsored-transactions)
 
 - Provider setup correct with manual networks config
 - Uses enableUnsafeBurner (good for testing)
@@ -241,7 +241,7 @@ Analyzed all dApps in Crozz-Coin repository against Sui official dApp Kit best p
 
 **Status**: 🔴 CLI ONLY, BUT OUTDATED
 
-#### Positives ✅
+#### Positives ✅ (Kiosk-cli)
 
 - CLI utility (different use case)
 - Has @mysten/kiosk dependency

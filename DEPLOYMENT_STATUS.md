@@ -8,16 +8,18 @@
 ## System Services Running
 
 ### 1. Vite Development Server ✅
+
 - **Process ID**: 183331
 - **Status**: Running
 - **Host**: 0.0.0.0 (network accessible)
 - **Port**: 5174
-- **URL Local**: http://localhost:5174/
-- **URL Network**: http://10.0.1.56:5174/
+- **URL Local**: <http://localhost:5174/>
+- **URL Network**: <http://10.0.1.56:5174/>
 - **Framework**: Vite 7.2.6
 - **Features**: Hot Module Replacement (HMR), React Fast Refresh
 
 ### 2. MCP Server (Model Context Protocol) ✅
+
 - **Status**: Ready (not running in background)
 - **Tools Enabled**: 17
 - **Version**: 1.0.0
@@ -25,6 +27,7 @@
 - **Purpose**: Provides tools for Git integration, AI assistance, documentation
 
 ### 3. Additional Services
+
 - **esbuild**: Active (bundling/compilation)
 - **VS Code Remote**: Running (development environment)
 - **TypeScript Server**: Running (type checking and intellisense)
@@ -34,6 +37,7 @@
 ## Application Status
 
 ### Frontend (React + TypeScript)
+
 - ✅ **Build Status**: Success
 - ✅ **TypeScript Errors**: 0
 - ✅ **Build Time**: 16.58s
@@ -45,9 +49,10 @@
   - **Total Gzip**: ~314 KB
 
 ### Network Configuration
+
 - ✅ **Network**: Testnet (Sui)
-- ✅ **RPC Endpoint**: https://fullnode.testnet.sui.io
-- ✅ **GraphQL Endpoint**: https://sui-testnet.mystenlabs.com/graphql
+- ✅ **RPC Endpoint**: <https://fullnode.testnet.sui.io>
+- ✅ **GraphQL Endpoint**: <https://sui-testnet.mystenlabs.com/graphql>
 - ✅ **Package ID**: TESTNET_HELLO_WORLD_PACKAGE_ID (configured in constants.ts)
 
 ---
@@ -55,6 +60,7 @@
 ## UI Components & Features
 
 ### Core Components
+
 1. **ConnectButton** - Wallet connection interface
 2. **CreateGreeting** - Create new greeting on chain
 3. **Greeting** - Display and update greeting
@@ -64,6 +70,7 @@
 7. **TestnetStatus** - Show network connection status
 
 ### Features Available
+
 - ✅ Wallet connection (supports all Wallet Standard wallets)
 - ✅ Create greeting transactions
 - ✅ Update greeting text
@@ -96,6 +103,7 @@
 ## How to Use
 
 ### 1. Open the Application
+
 ```bash
 # Navigate to the URL in browser:
 http://localhost:5174/
@@ -104,17 +112,20 @@ http://10.0.1.56:5174/
 ```
 
 ### 2. Connect Wallet
+
 - Click the **"Connect"** button in the top right
 - Select your wallet (Sui Wallet, Slush, etc.)
 - Approve the connection request
 
 ### 3. Create a Greeting
+
 - Click the **"Create Greeting"** button
 - Approve the transaction in your wallet
 - Wait for confirmation (~5-15 seconds)
 - The greeting object ID will be displayed
 
 ### 4. Update Greeting
+
 - Enter new text in the input field
 - Click the **"Update"** button
 - Approve the transaction
@@ -122,6 +133,7 @@ http://10.0.1.56:5174/
 - The greeting will be updated on chain
 
 ### 5. Explore Advanced Features
+
 - **Coin Manager**: View and manage SUI coins
 - **Events**: Monitor blockchain events
 - **DeepBook**: Explore trading pairs
@@ -133,37 +145,43 @@ http://10.0.1.56:5174/
 ## Required Setup
 
 ### Get Testnet SUI
+
 Before you can interact with the app, you need SUI on Testnet:
 
 1. **Open Sui Wallet**
 2. **Switch to Testnet** (in settings)
 3. **Request SUI from Faucet**:
-   - Visit: https://testnet-faucet.sui.io
+   - Visit: <https://testnet-faucet.sui.io>
    - Paste your wallet address
    - Claim SUI tokens
 
 ### Install Wallet Extensions
-- **Sui Wallet**: https://chromewebstore.google.com/detail/sui-wallet/opebgogknmjlkkyglnepdekfobfpekga
-- **Slush Wallet**: https://chromewebstore.google.com/detail/slush-wallet/dljghhjjlpddjnldnhplhjbhkgjilmf
+
+- **Sui Wallet**: <https://chromewebstore.google.com/detail/sui-wallet/opebgogknmjlkkyglnepdekfobfpekga>
+- **Slush Wallet**: <https://chromewebstore.google.com/detail/slush-wallet/dljghhjjlpddjnldnhplhjbhkgjilmf>
 
 ---
 
 ## Troubleshooting
 
 ### Port Already in Use
+
 If port 5174 is used, Vite will automatically use the next available port. Check the terminal output for the correct URL.
 
 ### Wallet Not Detected
+
 - Ensure wallet extension is installed
 - Refresh the browser (Ctrl+R or Cmd+R)
 - Check that wallet is on Testnet
 
 ### Transaction Failed
+
 1. Ensure you have enough SUI for gas fees
-2. Check Testnet status at: https://suistats.com/
+2. Check Testnet status at: <https://suistats.com/>
 3. Try again in a few moments
 
 ### No Greeting Display
+
 - Ensure greeting object ID is correct
 - Check that the object exists on Testnet
 - Verify network is set to Testnet in constants.ts
@@ -173,30 +191,35 @@ If port 5174 is used, Vite will automatically use the next available port. Check
 ## Running Services Commands
 
 ### Start Vite Dev Server
+
 ```bash
 cd /workspaces/Crozz-Coin/sui-stack-hello-world/ui
 pnpm dev --host 0.0.0.0
 ```
 
 ### Start MCP Server (17 tools)
+
 ```bash
 cd /workspaces/Crozz-Coin/mcp-server
 npm start
 ```
 
 ### Run Git Chat
+
 ```bash
 cd /workspaces/Crozz-Coin/mcp-server
 npm run git-chat
 ```
 
 ### Run AI Assistant
+
 ```bash
 cd /workspaces/Crozz-Coin/mcp-server
 npm run ai-assistant
 ```
 
 ### Build for Production
+
 ```bash
 cd /workspaces/Crozz-Coin/sui-stack-hello-world/ui
 pnpm build
@@ -207,18 +230,21 @@ pnpm build
 ## File Locations
 
 ### Configuration Files
+
 - **Network Config**: `sui-stack-hello-world/ui/src/networkConfig.ts`
 - **Constants**: `sui-stack-hello-world/ui/src/constants.ts`
 - **App Entry**: `sui-stack-hello-world/ui/src/App.tsx`
 - **Main Entry**: `sui-stack-hello-world/ui/src/main.tsx`
 
 ### Components
+
 - **Modal**: `sui-stack-hello-world/ui/src/components/Modal.tsx`
 - **Recommendations**: `sui-stack-hello-world/ui/src/components/RecommendationsPanel.tsx`
 - **Secondary Window**: `sui-stack-hello-world/ui/src/components/SecondaryWindow.tsx`
 - **Testnet Status**: `sui-stack-hello-world/ui/src/components/TestnetStatus.tsx`
 
 ### Move Smart Contracts
+
 - **Location**: `sui-stack-hello-world/move/hello_world/sources/`
 - **Functions**: `greeting::new()`, `greeting::update_text()`
 
@@ -263,10 +289,10 @@ pnpm build
 
 ## Support & Documentation
 
-- **Sui Docs**: https://docs.sui.io/
-- **dApp Kit Docs**: https://sdk.mystenlabs.com/dapp-kit
-- **Testnet Faucet**: https://testnet-faucet.sui.io/
-- **Sui Stats**: https://suistats.com/
+- **Sui Docs**: <https://docs.sui.io/>
+- **dApp Kit Docs**: <https://sdk.mystenlabs.com/dapp-kit>
+- **Testnet Faucet**: <https://testnet-faucet.sui.io/>
+- **Sui Stats**: <https://suistats.com/>
 
 ---
 

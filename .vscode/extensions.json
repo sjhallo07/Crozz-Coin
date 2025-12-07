@@ -7,6 +7,7 @@
         "ms-playwright.playwright",
         "dbaeumer.vscode-eslint",
         "move.move-analyzer",
-        "movebit.sui-move-analyzer"
+        "movebit.sui-move-analyzer",
+        "github.vscode-github-actions"
     ]
 }

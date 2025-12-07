@@ -145,16 +145,17 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `📦 **Version Information**
+body: |
+  📦 **Version Information**
 
-**Main Project**: ${{ steps.main-version.outputs.version }}
+  **Main Project**: ${{ steps.main-version.outputs.version }}
 
-**Key Dependencies**:
-- @mysten/dapp-kit: ${{ steps.deps.outputs.dapp_kit }}
-- @mysten/sui: ${{ steps.deps.outputs.sui }}
-- react: ${{ steps.deps.outputs.react }}
+  **Key Dependencies**:
+  - @mysten/dapp-kit: ${{ steps.deps.outputs.dapp_kit }}
+  - @mysten/sui: ${{ steps.deps.outputs.sui }}
+  - react: ${{ steps.deps.outputs.react }}
 
-**Status**: ✅ Version matrix generated and verified`
+  **Status**: ✅ Version matrix generated and verified
             })
 
   changelog-check:

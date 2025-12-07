@@ -19,6 +19,7 @@ This guide documents the new enhanced UI components with secondary windows, moda
 **Purpose**: Reusable modal dialog for displaying information and details
 
 **Features**:
+
 - ✅ Responsive sizing (small, medium, large)
 - ✅ Scrollable content for long information
 - ✅ Close button (X icon)
@@ -26,6 +27,7 @@ This guide documents the new enhanced UI components with secondary windows, moda
 - ✅ Built with Radix UI Dialog
 
 **Usage Example**:
+
 ```typescript
 import { Modal } from "./components/Modal";
 
@@ -51,6 +53,7 @@ function MyComponent() {
 ```
 
 **Props**:
+
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | open | boolean | - | Control modal visibility |
@@ -68,6 +71,7 @@ function MyComponent() {
 **Purpose**: Display contextual recommendations and tips
 
 **Features**:
+
 - ✅ 4 recommendation types: info, warning, success, tip
 - ✅ Color-coded badges and icons
 - ✅ Optional action buttons
@@ -75,6 +79,7 @@ function MyComponent() {
 - ✅ Icons from lucide-react
 
 **Usage Example**:
+
 ```typescript
 import { RecommendationsPanel } from "./components/RecommendationsPanel";
 
@@ -110,6 +115,7 @@ function MyComponent() {
 | tip | ⚡ Zap | Purple | Tips and tricks |
 
 **Props**:
+
 ```typescript
 interface Recommendation {
   type: "info" | "warning" | "success" | "tip";
@@ -134,6 +140,7 @@ interface RecommendationsPanelProps {
 **Purpose**: Floating information panel for global notifications
 
 **Features**:
+
 - ✅ Fixed position (bottom or right)
 - ✅ Expandable/collapsible panels
 - ✅ Minimize and close controls
@@ -141,6 +148,7 @@ interface RecommendationsPanelProps {
 - ✅ Auto-hide capability
 
 **Usage Example**:
+
 ```typescript
 import { SecondaryWindow } from "./components/SecondaryWindow";
 
@@ -167,6 +175,7 @@ function App() {
 ```
 
 **Props**:
+
 ```typescript
 interface SecondaryWindowProps {
   panels: InfoPanel[];
@@ -190,6 +199,7 @@ interface InfoPanel {
 ### Improved Greeting Component
 
 **New Features**:
+
 - ✅ Character count display
 - ✅ Copy object ID button
 - ✅ Info modal with complete documentation
@@ -229,6 +239,7 @@ interface InfoPanel {
 ### Improved CreateGreeting Component
 
 **New Features**:
+
 - ✅ Beautiful card layout
 - ✅ "Learn More" information button
 - ✅ Recommendations panel
@@ -286,6 +297,7 @@ function App() {
 ### 2. Component Dependencies
 
 **Required packages** (already installed):
+
 - @radix-ui/themes
 - @radix-ui/react-dialog
 - lucide-react
@@ -306,6 +318,7 @@ All components use **Radix UI theme variables** for consistent styling:
 | --gray-a2, --gray-6 | Neutral elements |
 
 **Custom Styling Example**:
+
 ```typescript
 <Box style={{
   background: "var(--blue-a2)",
@@ -420,6 +433,7 @@ describe("Modal", () => {
 ### Optimization Tips
 
 1. **Lazy Load Modals**
+
    ```typescript
    const [showInfo, setShowInfo] = useState(false);
    
@@ -431,6 +445,7 @@ describe("Modal", () => {
    ```
 
 2. **Memoize Recommendations**
+
    ```typescript
    const recommendations = useMemo(() => {
      // compute recommendations
@@ -438,6 +453,7 @@ describe("Modal", () => {
    ```
 
 3. **Debounce Actions**
+
    ```typescript
    const handleAction = useMemo(
      () => debounce(() => { /* action */ }, 300),
@@ -519,21 +535,25 @@ Potential improvements:
 The enhanced UI components provide:
 
 ✅ **Better User Experience**
+
 - Clear information through modals
 - Contextual recommendations
 - Floating information panels
 
 ✅ **Code Reusability**
+
 - Modal component for all dialogs
 - Recommendation panel for all tips
 - Consistent styling
 
 ✅ **Improved Functionality**
+
 - Secondary actions (copy, details, info)
 - Better error handling
 - Loading states
 
 ✅ **Professional Look**
+
 - Modern Radix UI components
 - Consistent design language
 - Responsive layout
@@ -545,8 +565,8 @@ All components are **production-ready** and can be used immediately in the Crozz
 **Status**: ✅ **IMPLEMENTATION COMPLETE**
 
 **Next Steps**:
+
 1. Build the application: `pnpm build`
 2. Run development server: `pnpm dev`
 3. Test all new modals and buttons
 4. Deploy to production when ready
-
