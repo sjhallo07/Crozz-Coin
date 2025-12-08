@@ -4,19 +4,21 @@
 
 DeepBook V3 implements a novel approach to governance where each pool has **independent governance** parameters and mechanisms. Users can stake DEEP tokens to participate in governance, earn trading fee rebates, and influence pool parameters.
 
-**Documentation**: https://docs.sui.io/standards/deepbookv3/staking-governance
+**Documentation**: [https://docs.sui.io/standards/deepbookv3/staking-governance](https://docs.sui.io/standards/deepbookv3/staking-governance)
 
 ## Staking Mechanism
 
 ### Stake DEEP Tokens
 
 **Flow**:
+
 1. Deposit DEEP tokens into the pool's `BalanceManager`
 2. Call `Pool.stake()` with the amount
 3. Stake becomes **active in the following epoch**
 4. If your stake ≥ `stake_required`, you earn maker/taker fee rebates that epoch
 
 **Activation Timeline**:
+
 - **Epoch N**: Call `stake()` → Stake is "pending"
 - **Epoch N+1**: Stake becomes "active" → Fee rebates start accruing
 - **Fee Reduction**: If your stake ≥ required stake, taker fees are reduced and maker fees are rebated

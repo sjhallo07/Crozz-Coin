@@ -158,7 +158,11 @@ export function DeepBookV3Staking() {
         </Box>
 
         {/* Tabs */}
-        <Tabs.Root value={activeTab} onValueChange={(v) => setActiveTab(v as any)}>
+        <Tabs.Root
+          value={activeTab}
+          onValueChange={(v) => setActiveTab(v as any)}
+          aria-label="DeepBook staking and governance options"
+        >
           <Tabs.List>
             <Tabs.Trigger value="stake">Stake & Unstake</Tabs.Trigger>
             <Tabs.Trigger value="governance">Governance</Tabs.Trigger>
@@ -459,24 +463,24 @@ export function DeepBookV3Staking() {
               overflowX: "auto",
             }}
           >
-            <div>// Stake DEEP in pool</div>
+            <div>{`// Stake DEEP in pool`}</div>
             <div>const tx = new Transaction();</div>
             <div>dbClient.pool.stake(poolId, stakeAmount)(tx);</div>
             <div></div>
-            <div>// Unstake all</div>
+            <div>{`// Unstake all`}</div>
             <div>dbClient.pool.unstake(poolId)(tx);</div>
             <div></div>
-            <div>// Submit governance proposal</div>
+            <div>{`// Submit governance proposal`}</div>
             <div>{"dbClient.governance.submitProposal(poolId, {"}</div>
             <div>&nbsp;&nbsp;takerFee: 25,</div>
             <div>&nbsp;&nbsp;makerFee: -15,</div>
             <div>&nbsp;&nbsp;stakeRequired: 1000</div>
             <div>{"})(tx);"}</div>
             <div></div>
-            <div>// Vote on proposal</div>
+            <div>{`// Vote on proposal`}</div>
             <div>dbClient.governance.vote(proposalId)(tx);</div>
             <div></div>
-            <div>// Claim trading fee rebates</div>
+            <div>{`// Claim trading fee rebates`}</div>
             <div>dbClient.pool.claimRebates(poolId)(tx);</div>
           </Box>
         </Box>
