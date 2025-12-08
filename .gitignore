@@ -9,17 +9,6 @@
 # OSX
 .DS_Store
 
-# IDE
-**/.history/
-**/.vscode/
-**/.idea/
-**/CLAUDE-local.md
-**/CLAUDE.local.md
-**/.claude/
-
-# OSX
-.DS_Store
-
 # Rust build directory
 **/target
 .pre-commit*
@@ -57,6 +46,9 @@ node_modules
 *.tsbuildinfo
 .turbo
 pnpm-debug.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Vite / bundler caches
 .vite
@@ -76,29 +68,40 @@ test-results/
 playwright-report/
 playwright/.cache/
 
-# logs
+# Logs
+*.log
 wallet.log.*
 sui.log.*
 .vercel
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-*.log
 
-# misc
-*.key
+# Environment files
 .env
 .env.*
 .env.*.local
 .env.local
+
+# Cache & misc
 .eslintcache
 .vscode-test
 checkpoints_dir/*
 light_client.yaml
 docs/content/references/sui-api/sui-graphql/*
 docs/content/references/framework/**
-
 lcov.info
-
 .sparse
 docs/content/documentation.json
+
+# IDE specific
+*.key
+.DS_Store
+*.swp
+*.swo
+*~
+
+# MCP Server specific
+mcp-server/node_modules/
+mcp-server/.env
+mcp-server/config.json.local
+
+# Dev server
+.turbo/
