@@ -1,4 +1,5 @@
 import { Transaction } from "@mysten/sui/transactions";
+import { isValidSuiObjectId } from "@mysten/sui/utils";
 import { useCurrentAccount, useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import { Box, Button, Flex, Heading, Separator, Text, TextField } from "@radix-ui/themes";
 import { useState } from "react";
@@ -8,10 +9,14 @@ export function CoinManager() {
   const account = useCurrentAccount();
   const { mutate: signAndExecute } = useSignAndExecuteTransaction();
 
-  const [packageId, setPackageId] = useState("");
+  const [packageId, setPackageId] = useState(() =>
+    localStorage.getItem("coin.packageId") || "",
+  );
   const [moduleName, setModuleName] = useState("coin_standard_demo");
   const [structName, setStructName] = useState("DemoCoin");
-  const [treasuryWrapperId, setTreasuryWrapperId] = useState("");
+  const [treasuryWrapperId, setTreasuryWrapperId] = useState(() =>
+    localStorage.getItem("coin.treasuryWrapperId") || "",
+  );
   const [mintAmount, setMintAmount] = useState("0");
   const [burnCoinId, setBurnCoinId] = useState("");
   const [loading, setLoading] = useState<"mint" | "burn" | null>(null);
@@ -33,6 +38,14 @@ export function CoinManager() {
     if (!ensureConnected()) return;
     if (!packageId || !treasuryWrapperId) {
       setStatus("Enter package ID and TreasuryWrapper ID to mint.");
+      return;
+    }
+    if (!isValidSuiObjectId(packageId)) {
+      setStatus("Package ID is not a valid Sui object id (0x...).");
+      return;
+    }
+    if (!isValidSuiObjectId(treasuryWrapperId)) {
+      setStatus("TreasuryWrapper ID is not a valid Sui object id (0x...).");
       return;
     }
     const amount = mintAmount.trim();
@@ -81,6 +94,18 @@ export function CoinManager() {
       setStatus("Enter package ID, TreasuryWrapper ID, and Coin ID to burn.");
       return;
     }
+    if (!isValidSuiObjectId(packageId)) {
+      setStatus("Package ID is not a valid Sui object id (0x...).");
+      return;
+    }
+    if (!isValidSuiObjectId(treasuryWrapperId)) {
+      setStatus("TreasuryWrapper ID is not a valid Sui object id (0x...).");
+      return;
+    }
+    if (!isValidSuiObjectId(burnCoinId)) {
+      setStatus("Coin ID to burn is not a valid Sui object id (0x...).");
+      return;
+    }
 
     setLoading("burn");
     setStatus("Submitting burn transaction...");
@@ -119,7 +144,11 @@ export function CoinManager() {
         <TextField.Root
           placeholder="Package ID"
           value={packageId}
-          onChange={(e) => setPackageId(e.target.value.trim())}
+          onChange={(e) => {
+            const v = e.target.value.trim();
+            setPackageId(v);
+            localStorage.setItem("coin.packageId", v);
+          }}
         />
         <Flex gap="3">
           <TextField.Root
@@ -140,7 +169,11 @@ export function CoinManager() {
         <TextField.Root
           placeholder="0x... TreasuryWrapper object"
           value={treasuryWrapperId}
-          onChange={(e) => setTreasuryWrapperId(e.target.value.trim())}
+          onChange={(e) => {
+            const v = e.target.value.trim();
+            setTreasuryWrapperId(v);
+            localStorage.setItem("coin.treasuryWrapperId", v);
+          }}
         />
 
         <Flex gap="3" align="center">

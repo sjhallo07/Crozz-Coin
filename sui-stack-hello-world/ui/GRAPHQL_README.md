@@ -72,6 +72,7 @@ async function queryEpoch() {
 ### Core Features
 
 ✅ **Full GraphQL RPC Support** - All Sui gRPC services via GraphQL
+
 - Epoch information and validators
 - Transaction blocks with pagination
 - Object queries and dynamic fields
@@ -79,6 +80,7 @@ async function queryEpoch() {
 - Service configuration and limits
 
 ✅ **React Hooks** - 8+ custom hooks for common operations
+
 - `useEpoch()` - Get current/specific epoch
 - `useTransactionBlocks()` - Paginate transactions
 - `useObject()` - Query object details
@@ -89,36 +91,42 @@ async function queryEpoch() {
 - `useGraphQLQuery()` - Generic query hook
 
 ✅ **Context Management** - Global state for GraphQL
+
 - Auto-connect to network on mount
 - Environment switching (devnet/testnet/mainnet)
 - Custom endpoint support
 - Error tracking and recovery
 
 ✅ **UI Components** - Interactive explorer
+
 - Environment selector
 - Query builder tabs
 - Real-time results
 - Usage tracking display
 
 ✅ **Pagination** - Full cursor-based pagination support
+
 - Forward pagination (`first`, `after`)
 - Backward pagination (`last`, `before`)
 - Cursor validation and consistency
 - Automatic page limit enforcement
 
 ✅ **Headers & Configuration**
+
 - Custom HTTP headers (`x-sui-rpc-show-usage`, `x-sui-rpc-version`)
 - Request timeouts
 - Query complexity tracking
 - Usage information extraction
 
 ✅ **Type Safety** - Full TypeScript support
+
 - 30+ type definitions
 - Enum types for status/owner
 - Connection and pagination types
 - Response wrapper types
 
 ✅ **Query Utilities** - Helper functions
+
 - GraphQL fragments for reuse
 - Query builders for complex queries
 - Address validation

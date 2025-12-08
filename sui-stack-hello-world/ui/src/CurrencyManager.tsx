@@ -1,4 +1,5 @@
 import { Transaction } from "@mysten/sui/transactions";
+import { isValidSuiObjectId } from "@mysten/sui/utils";
 import { useCurrentAccount, useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import { Box, Button, Flex, Heading, Separator, Text, TextField, Callout } from "@radix-ui/themes";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
@@ -9,10 +10,14 @@ export function CurrencyManager() {
   const account = useCurrentAccount();
   const { mutate: signAndExecute } = useSignAndExecuteTransaction();
 
-  const [packageId, setPackageId] = useState("");
+  const [packageId, setPackageId] = useState(() =>
+    localStorage.getItem("currency.packageId") || "",
+  );
   const [moduleName, setModuleName] = useState("currency_demo");
   const [structName, setStructName] = useState("CurrCoin");
-  const [treasuryWrapperId, setTreasuryWrapperId] = useState("");
+  const [treasuryCapId, setTreasuryCapId] = useState(() =>
+    localStorage.getItem("currency.treasuryCapId") || "",
+  );
   const [mintAmount, setMintAmount] = useState("0");
   const [burnCoinId, setBurnCoinId] = useState("");
   const [loading, setLoading] = useState<"mint" | "burn" | null>(null);
@@ -32,8 +37,16 @@ export function CurrencyManager() {
 
   const handleMint = () => {
     if (!ensureConnected()) return;
-    if (!packageId || !treasuryWrapperId) {
-      setStatus("Enter package ID and TreasuryWrapper ID to mint.");
+    if (!packageId || !treasuryCapId) {
+      setStatus("Enter package ID and TreasuryCap ID to mint.");
+      return;
+    }
+    if (!isValidSuiObjectId(packageId)) {
+      setStatus("Package ID is not a valid Sui object id (0x...).");
+      return;
+    }
+    if (!isValidSuiObjectId(treasuryCapId)) {
+      setStatus("TreasuryCap ID is not a valid Sui object id (0x...).");
       return;
     }
     const amount = mintAmount.trim();
@@ -53,9 +66,11 @@ export function CurrencyManager() {
     setStatus("Submitting mint transaction...");
 
     const tx = new Transaction();
+    // Standard coin::mint call with TreasuryCap
     const [newCoin] = tx.moveCall({
-      target: `${packageId}::${moduleName}::mint`,
-      arguments: [tx.object(treasuryWrapperId), tx.pure.u64(amountU64)],
+      target: "0x2::coin::mint",
+      arguments: [tx.object(treasuryCapId), tx.pure.u64(amountU64)],
+      typeArguments: [coinType],
     });
     tx.transferObjects([newCoin], tx.pure.address(account!.address));
 
@@ -76,8 +91,20 @@ export function CurrencyManager() {
 
   const handleBurn = () => {
     if (!ensureConnected()) return;
-    if (!packageId || !treasuryWrapperId || !burnCoinId) {
-      setStatus("Enter package ID, TreasuryWrapper ID, and Coin ID to burn.");
+    if (!packageId || !treasuryCapId || !burnCoinId) {
+      setStatus("Enter package ID, TreasuryCap ID, and Coin ID to burn.");
+      return;
+    }
+    if (!isValidSuiObjectId(packageId)) {
+      setStatus("Package ID is not a valid Sui object id (0x...).");
+      return;
+    }
+    if (!isValidSuiObjectId(treasuryCapId)) {
+      setStatus("TreasuryCap ID is not a valid Sui object id (0x...).");
+      return;
+    }
+    if (!isValidSuiObjectId(burnCoinId)) {
+      setStatus("Coin ID to burn is not a valid Sui object id (0x...).");
       return;
     }
 
@@ -85,9 +112,11 @@ export function CurrencyManager() {
     setStatus("Submitting burn transaction...");
 
     const tx = new Transaction();
+    // Standard coin::burn call with TreasuryCap
     tx.moveCall({
-      target: `${packageId}::${moduleName}::burn`,
-      arguments: [tx.object(treasuryWrapperId), tx.object(burnCoinId)],
+      target: "0x2::coin::burn",
+      arguments: [tx.object(treasuryCapId), tx.object(burnCoinId)],
+      typeArguments: [coinType],
     });
 
     signAndExecute(
@@ -119,8 +148,9 @@ export function CurrencyManager() {
           <ExclamationTriangleIcon />
         </Callout.Icon>
         <Callout.Text>
-          Best practice: keep your TreasuryCap/MetadataCap safe; if you set supply to fixed or burn-only,
-          you may lose minting ability. For OTW flows, remember to call finalize_registration after publish.
+          Currency Standard uses <code>coin_registry::new_currency</code> or <code>new_currency_with_otw</code>.
+          This manager mints/burns coins with standard <code>coin::mint</code> and <code>coin::burn</code> functions.
+          Registry: <code>0xc</code>. For creation, see "Create Currency" panels above.
         </Callout.Text>
       </Callout.Root>
 
@@ -128,7 +158,11 @@ export function CurrencyManager() {
         <TextField.Root
           placeholder="Package ID"
           value={packageId}
-          onChange={(e) => setPackageId(e.target.value.trim())}
+          onChange={(e) => {
+            const v = e.target.value.trim();
+            setPackageId(v);
+            localStorage.setItem("currency.packageId", v);
+          }}
         />
         <Flex gap="3">
           <TextField.Root
@@ -145,11 +179,15 @@ export function CurrencyManager() {
 
         <Separator my="2" size="4" />
 
-        <Text weight="bold">TreasuryWrapper ID</Text>
+        <Text weight="bold">TreasuryCap ID</Text>
         <TextField.Root
-          placeholder="0x... TreasuryWrapper object"
-          value={treasuryWrapperId}
-          onChange={(e) => setTreasuryWrapperId(e.target.value.trim())}
+          placeholder="0x... TreasuryCap object (from creation)"
+          value={treasuryCapId}
+          onChange={(e) => {
+            const v = e.target.value.trim();
+            setTreasuryCapId(v);
+            localStorage.setItem("currency.treasuryCapId", v);
+          }}
         />
 
         <Flex gap="3" align="center">

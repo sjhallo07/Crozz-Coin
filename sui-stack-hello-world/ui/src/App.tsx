@@ -37,6 +37,17 @@ import { SlushWalletInfo } from "./SlushWalletInfo";
 import { GraphQLProvider } from "./contexts/GraphQLContext";
 import { GraphQLExplorer } from "./components/GraphQLExplorer";
 import { TestnetStatus } from "./components/TestnetStatus";
+import { ObjectViewer } from "./components/ObjectViewer";
+import { GraphQLHealthPanel } from "./components/GraphQLHealthPanel";
+import { CreateCurrencyPanel } from "./components/CreateCurrencyPanel";
+import { CreateCurrencyOTWPanel } from "./components/CreateCurrencyOTWPanel";
+import { CreateDisplayPanel } from "./components/CreateDisplayPanel";
+import { UpdateDisplayPanel } from "./components/UpdateDisplayPanel";
+import { DisplayViewer } from "./components/DisplayViewer";
+import { PaymentURIGenerator } from "./components/PaymentURIGenerator";
+import { PaymentRegistryManager } from "./components/PaymentRegistryManager";
+import { EphemeralPaymentPanel } from "./components/EphemeralPaymentPanel";
+import { RegistryPaymentPanel } from "./components/RegistryPaymentPanel";
 
 function App() {
   const currentAccount = useCurrentAccount();
@@ -114,6 +125,8 @@ function App() {
 
             {currentAccount && <TestnetStatus />}
 
+            {currentAccount && isOnTestnet && <CreateCurrencyPanel />}
+            {currentAccount && isOnTestnet && <CreateCurrencyOTWPanel />}
             {currentAccount && isOnTestnet && <CoinManager />}
             {currentAccount && isOnTestnet && <CoinStandardInfo />}
             {currentAccount && isOnTestnet && <CurrencyManager />}
@@ -137,10 +150,19 @@ function App() {
             {currentAccount && isOnTestnet && <DeepBookSdkInfo />}
             {currentAccount && isOnTestnet && <DeepBookMarginSdkInfo />}
             {currentAccount && isOnTestnet && <DisplayInfo />}
+            {currentAccount && isOnTestnet && <CreateDisplayPanel />}
+            {currentAccount && isOnTestnet && <UpdateDisplayPanel />}
+            {currentAccount && isOnTestnet && <DisplayViewer />}
             {currentAccount && isOnTestnet && <PaymentKitInfo />}
+            {currentAccount && isOnTestnet && <PaymentURIGenerator />}
+            {currentAccount && isOnTestnet && <PaymentRegistryManager />}
+            {currentAccount && isOnTestnet && <EphemeralPaymentPanel />}
+            {currentAccount && isOnTestnet && <RegistryPaymentPanel />}
             {currentAccount && isOnTestnet && <WalletStandardInfo />}
             {currentAccount && isOnTestnet && <SlushWalletInfo />}
             {currentAccount && isOnTestnet && <ReferencesOverviewInfo />}
+            {currentAccount && isOnTestnet && <GraphQLHealthPanel />}
+            {currentAccount && isOnTestnet && <ObjectViewer />}
           </Flex>
 
           {currentAccount ? (
