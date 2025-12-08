@@ -49,6 +49,8 @@ import { PaymentURIGenerator } from "./components/PaymentURIGenerator";
 import { PaymentRegistryManager } from "./components/PaymentRegistryManager";
 import { EphemeralPaymentPanel } from "./components/EphemeralPaymentPanel";
 import { RegistryPaymentPanel } from "./components/RegistryPaymentPanel";
+import { DeepBookV3Info } from "./components/DeepBookV3Info";
+import { DeepBookV3BalanceManager } from "./components/DeepBookV3BalanceManager";
 
 function App() {
   const currentAccount = useCurrentAccount();
@@ -159,6 +161,8 @@ function App() {
             {currentAccount && isOnTestnet && <PaymentRegistryManager />}
             {currentAccount && isOnTestnet && <EphemeralPaymentPanel />}
             {currentAccount && isOnTestnet && <RegistryPaymentPanel />}
+            {currentAccount && isOnTestnet && <DeepBookV3Info />}
+            {currentAccount && isOnTestnet && <DeepBookV3BalanceManager />}
             {currentAccount && isOnTestnet && <WalletStandardInfo />}
             {currentAccount && isOnTestnet && <SlushWalletInfo />}
             {currentAccount && isOnTestnet && <ReferencesOverviewInfo />}

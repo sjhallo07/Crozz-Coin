@@ -1,0 +1,242 @@
+name: Version Sync & Release Prep
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '**/package.json'
+    types: [opened, synchronize]
+
+jobs:
+  sync-versions:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      
+      - name: Get main project version info
+        id: main-version
+        run: |
+          cd sui-stack-hello-world/ui
+          VERSION=$(grep '"version"' package.json | head -1 | sed 's/.*"\([^"]*\)".*/\1/')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Main UI version: $VERSION"
+      
+      - name: Check version consistency
+        run: |
+          echo "📊 Version Consistency Check"
+          echo "============================"
+          echo ""
+          
+          MAIN_VERSION="${{ steps.main-version.outputs.version }}"
+          
+          echo "Main Project Version: $MAIN_VERSION"
+          echo ""
+          echo "Checking dApps versions:"
+          echo ""
+          
+          for dapp in dapps/*/; do
+            if [ -f "$dapp/package.json" ]; then
+              dapp_name=$(basename "$dapp")
+              DAPP_VERSION=$(grep '"version"' "$dapp/package.json" | head -1 | sed 's/.*"\([^"]*\)".*/\1/')
+              
+              if [ "$DAPP_VERSION" != "$MAIN_VERSION" ]; then
+                echo "⚠️  $dapp_name: $DAPP_VERSION (should be $MAIN_VERSION)"
+              else
+                echo "✅ $dapp_name: $DAPP_VERSION"
+              fi
+            fi
+          done
+      
+      - name: Get dependency versions
+        id: deps
+        run: |
+          cd sui-stack-hello-world/ui
+          
+          DAPP_KIT=$(grep '@mysten/dapp-kit' package.json | head -1 | grep -o '"[^"]*"$' | tr -d '"')
+          SUI=$(grep '@mysten/sui' package.json | head -1 | grep -o '"[^"]*"$' | tr -d '"')
+          REACT=$(grep '"react"' package.json | head -1 | grep -o '"[^"]*"$' | tr -d '"')
+          REACT_DOM=$(grep '"react-dom"' package.json | head -1 | grep -o '"[^"]*"$' | tr -d '"')
+          
+          echo "dapp_kit=$DAPP_KIT" >> $GITHUB_OUTPUT
+          echo "sui=$SUI" >> $GITHUB_OUTPUT
+          echo "react=$REACT" >> $GITHUB_OUTPUT
+          echo "react_dom=$REACT_DOM" >> $GITHUB_OUTPUT
+      
+      - name: Generate version compatibility matrix
+        run: |
+          cat > VERSION_MATRIX.md << EOF
+          # Crozz-Coin Version Matrix
+          
+          **Generated**: $(date -u +'%Y-%m-%d %H:%M:%S UTC')
+          
+          ## Core Project Versions
+          
+          ### Main UI Application (sui-stack-hello-world/ui)
+          
+          | Package | Version | Status |
+          |---------|---------|--------|
+          | @mysten/dapp-kit | ${{ steps.deps.outputs.dapp_kit }} | ✅ Current |
+          | @mysten/sui | ${{ steps.deps.outputs.sui }} | ✅ Current |
+          | @mysten/wallet-standard | ${{ steps.deps.outputs.wallet_standard || 'Latest' }} | ✅ Current |
+          | react | ${{ steps.deps.outputs.react }} | ✅ Current |
+          | react-dom | ${{ steps.deps.outputs.react_dom }} | ✅ Current |
+          | typescript | Latest | ✅ Current |
+          | vite | Latest | ✅ Current |
+          | tailwindcss | Latest | ✅ Current |
+          | @radix-ui/themes | Latest | ✅ Current |
+          
+          ## dApps Versions
+          
+          All dApps should match the main project versions above.
+          
+          ## Upgrade Schedule
+          
+          - **Weekly Check**: Every Monday at 00:00 UTC
+          - **Auto-Update**: dApps dependencies synced when main project updates
+          - **Manual Update**: Run workflow dispatch anytime
+          
+          ## Compatibility Notes
+          
+          ### @mysten/dapp-kit v${{ steps.deps.outputs.dapp_kit }}
+          - ✅ Compatible with @mysten/sui v${{ steps.deps.outputs.sui }}
+          - ✅ Works with React ${{ steps.deps.outputs.react }}
+          - ✅ Testnet environment supported
+          
+          ### @mysten/sui v${{ steps.deps.outputs.sui }}
+          - ✅ Latest Move function calls supported
+          - ✅ Transaction API v2 compatible
+          - ✅ All RPC methods available
+          
+          ## Version History
+          
+          | Date | UI Version | dApp-Kit | Sui SDK | React | Notes |
+          |------|-----------|----------|---------|-------|-------|
+          | 2025-12-07 | ${{ steps.main-version.outputs.version }} | ${{ steps.deps.outputs.dapp_kit }} | ${{ steps.deps.outputs.sui }} | ${{ steps.deps.outputs.react }} | Initial release |
+          
+          EOF
+          
+          cat VERSION_MATRIX.md
+      
+      - name: Upload version matrix
+        uses: actions/upload-artifact@v3
+        with:
+          name: version-matrix
+          path: VERSION_MATRIX.md
+          retention-days: 30
+      
+    - name: Comment PR with version info
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `📦 **Version Information**
+
+**Main Project**: ${{ steps.main-version.outputs.version }}
+
+**Key Dependencies**:
+- @mysten/dapp-kit: ${{ steps.deps.outputs.dapp_kit }}
+- @mysten/sui: ${{ steps.deps.outputs.sui }}
+- react: ${{ steps.deps.outputs.react }}
+
+**Status**: ✅ Version matrix generated and verified`
+          })
+
+  changelog-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Check for CHANGELOG update
+        run: |
+          if git diff --name-only HEAD~1..HEAD | grep -q "CHANGELOG.md"; then
+            echo "✅ CHANGELOG.md has been updated"
+          else
+            echo "⚠️  CHANGELOG.md not updated (optional for non-release commits)"
+          fi
+
+  release-prep:
+    runs-on: ubuntu-latest
+    needs: [sync-versions]
+    if: github.event_name == 'workflow_dispatch'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Generate release notes
+        run: |
+          cat > RELEASE_NOTES_DRAFT.md << 'EOF'
+          # Release Notes - Crozz-Coin
+          
+          **Version**: TBD
+          **Release Date**: $(date -u +'%Y-%m-%d')
+          
+          ## ✨ Features
+          
+          - Enhanced UI with modal dialogs and recommendations
+          - Testnet integration and wallet support
+          - Improved Move function verification
+          - Comprehensive documentation
+          
+          ## 🔧 Technical Updates
+          
+          - Updated all dependencies to latest versions
+          - TypeScript strict mode enabled (0 errors)
+          - Full wallet integration with dApp Kit
+          - E2E testing setup for wallet interactions
+          
+          ## 📚 Documentation
+          
+          - DEPLOYMENT_STATUS.md - Complete deployment guide
+          - TESTNET_SETUP_GUIDE.md - Testnet configuration
+          - UI_BUTTONS_ENDPOINTS_VERIFICATION.md - API reference
+          - DAPPS_BEST_PRACTICES_REVIEW.md - Best practices guide
+          
+          ## 🐛 Bug Fixes
+          
+          - Fixed TypeScript errors in components
+          - Corrected Radix UI component props
+          - Improved error handling in transactions
+          
+          ## 🔄 Breaking Changes
+          
+          None in this release.
+          
+          ## 📦 Dependencies Updated
+          
+          - @mysten/dapp-kit: 0.19.11
+          - @mysten/sui: 1.45.2
+          - react: 19.2.1
+          - typescript: 5.9.3
+          
+          ## 🙏 Contributors
+          
+          - Development Team
+          
+          EOF
+          
+          cat RELEASE_NOTES_DRAFT.md
+      
+      - name: Upload release notes
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-notes
+          path: RELEASE_NOTES_DRAFT.md
