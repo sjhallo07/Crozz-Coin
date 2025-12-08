@@ -61,7 +61,7 @@ function App() {
   const activeChainLabel = accountChains[0];
 
   return (
-    <>
+    <GraphQLProvider defaultEnvironment="testnet" autoConnect={true}>
       <Flex
         position="sticky"
         px="4"
@@ -195,12 +195,10 @@ function App() {
         </Container>
 
         <Box style={{ marginTop: "40px" }}>
-          <GraphQLProvider defaultEnvironment="testnet" autoConnect={true}>
-            <GraphQLExplorer />
-          </GraphQLProvider>
+          <GraphQLExplorer />
         </Box>
       </Container>
-    </>
+    </GraphQLProvider>
   );
 }
 
