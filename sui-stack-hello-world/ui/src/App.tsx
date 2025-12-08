@@ -51,6 +51,7 @@ import { EphemeralPaymentPanel } from "./components/EphemeralPaymentPanel";
 import { RegistryPaymentPanel } from "./components/RegistryPaymentPanel";
 import { DeepBookV3Info } from "./components/DeepBookV3Info";
 import { DeepBookV3BalanceManager } from "./components/DeepBookV3BalanceManager";
+import { DeepBookV3Staking } from "./components/DeepBookV3Staking";
 
 function App() {
   const currentAccount = useCurrentAccount();
@@ -201,6 +202,7 @@ function App() {
 
         <Box style={{ marginTop: "40px", display: "flex", flexDirection: "column", gap: "12px" }}>
           <GraphQLConnectionPanel />
+          <DeepBookV3Staking />
           <GraphQLExplorer />
         </Box>
       </Container>
