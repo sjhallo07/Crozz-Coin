@@ -36,6 +36,7 @@ import { ReferencesOverviewInfo } from "./ReferencesOverviewInfo";
 import { SlushWalletInfo } from "./SlushWalletInfo";
 import { GraphQLProvider } from "./contexts/GraphQLContext";
 import { GraphQLExplorer } from "./components/GraphQLExplorer";
+import { GraphQLConnectionPanel } from "./components/GraphQLConnectionPanel";
 import { TestnetStatus } from "./components/TestnetStatus";
 import { ObjectViewer } from "./components/ObjectViewer";
 import { GraphQLHealthPanel } from "./components/GraphQLHealthPanel";
@@ -194,7 +195,8 @@ function App() {
           )}
         </Container>
 
-        <Box style={{ marginTop: "40px" }}>
+        <Box style={{ marginTop: "40px", display: "flex", flexDirection: "column", gap: "12px" }}>
+          <GraphQLConnectionPanel />
           <GraphQLExplorer />
         </Box>
       </Container>
