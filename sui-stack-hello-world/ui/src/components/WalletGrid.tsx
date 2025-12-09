@@ -1,16 +1,5 @@
-import { ConnectButton, useNetwork } from "@mysten/dapp-kit";
-import {
-  Badge,
-  Box,
-  Button,
-  Card,
-  Flex,
-  Grid,
-  Heading,
-  Link,
-  Separator,
-  Text,
-} from "@radix-ui/themes";
+import { ConnectButton } from "@mysten/dapp-kit";
+import { Badge, Box, Button, Card, Flex, Grid, Heading, Link, Separator, Text } from "@radix-ui/themes";
 
 const wallets = [
   {
@@ -40,22 +29,14 @@ const wallets = [
 ];
 
 export function WalletGrid() {
-  const { network, setNetwork } = useNetwork();
-
-  const forceTestnet = () => {
-    // Our dApp is configured for testnet; ensure provider uses it.
-    setNetwork("testnet");
-  };
-
   return (
     <Card
       mt="4"
-      p="4"
-      style={{ background: "var(--gray-a2)", borderRadius: 12, width: "100%" }}
+      style={{ background: "var(--gray-a2)", borderRadius: 12, width: "100%", padding: "16px" }}
     >
       <Flex justify="between" align="center" mb="3">
         <Heading size="4">Wallets & Network</Heading>
-        <Badge color="green" variant="soft">Current network: {network}</Badge>
+        <Badge color="green" variant="soft">Current network: Sui Testnet</Badge>
       </Flex>
 
       <Text size="2" color="gray" mb="3">
@@ -64,7 +45,7 @@ export function WalletGrid() {
 
       <Flex gap="3" wrap="wrap" align="center" mb="3">
         <ConnectButton />
-        <Button variant="surface" onClick={forceTestnet}>
+        <Button variant="surface" disabled title="Network locked to Testnet in this demo">
           Switch to Sui Testnet
         </Button>
       </Flex>
