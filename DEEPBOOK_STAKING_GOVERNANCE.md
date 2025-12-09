@@ -24,12 +24,14 @@ DeepBook V3 implements a novel approach to governance where each pool has **inde
 - **Fee Reduction**: If your stake ≥ required stake, taker fees are reduced and maker fees are rebated
 
 **Requirements**:
+
 - DEEP tokens must be available in the `BalanceManager`
 - One `BalanceManager` per user per pool
 
 ### Unstake
 
 **Flow**:
+
 1. Remove all active and inactive (pending) stake
 2. Any casted votes are removed
 3. Pending maker rebates for current epoch are **forfeited**
@@ -67,11 +69,13 @@ Each pool has three independent governance parameters:
 ### Submit Proposal
 
 **Requirements**:
+
 - Must have **non-zero active stake** in the pool
 - Must have ≥ minimum voting power (usually your staked DEEP amount)
 - **One proposal per user per epoch**
 
 **Proposal Structure**:
+
 ```typescript
 {
   takerFeeRate: number,        // New taker fee (bps)
@@ -81,25 +85,30 @@ Each pool has three independent governance parameters:
 ```
 
 **Maximum Proposals**:
+
 - Pool can hold maximum number of active proposals per epoch
 - If limit reached, lowest-voted proposal is removed
 - New proposal must have more voting power than lowest-voted proposal to be added
 
 **Auto-Vote**:
+
 - User automatically votes for their own proposal
 
 ### Vote on Proposal
 
 **Requirements**:
+
 - Must have **non-zero active stake** in the pool
 - Voting power = your staked DEEP amount
 
 **Voting Rules**:
+
 - **All voting power on one proposal**: You cannot split votes across proposals
 - **One vote per epoch**: If you vote on Proposal A, then vote on Proposal B, your vote moves from A to B
 - **Vote removal on unstake**: Unstaking removes your vote
 
 **Vote Removal on Unstake**:
+
 ```
 User stakes 1000 DEEP → votes for Proposal A (1000 voting power)
 User unstakes → Vote removed, voting power = 0
@@ -112,6 +121,7 @@ User unstakes → Vote removed, voting power = 0
 **Condition**: `your_stake >= pool.stake_required`
 
 **Rebate Types**:
+
 1. **Maker Fee Rebate**
    - Direct rebate on maker trades
    - Formula: `maker_fee_rebate × trading_volume`
@@ -121,6 +131,7 @@ User unstakes → Vote removed, voting power = 0
    - Formula: `taker_fee × trading_volume × discount_rate`
 
 **Rebate Tracking**:
+
 - Rebates accrue per epoch
 - Stored in `BalanceManager.rebates`
 - Claimable at epoch boundary
@@ -128,16 +139,19 @@ User unstakes → Vote removed, voting power = 0
 ### Claim Rebates
 
 **Flow**:
+
 1. Call `Pool.claimRebates()`
 2. All accumulated rebates transferred to `BalanceManager`
 3. Rebate balance reset to 0
 
 **Timing**:
+
 - Can be claimed anytime after accrual
 - Recommended: Claim at epoch boundary to ensure all rebates are finalized
 - Claiming doesn't require unstaking
 
 **Requirements**:
+
 - `BalanceManager` must have accumulated rebates > 0
 - Wallet must be connected to sign transaction
 
@@ -213,6 +227,7 @@ await suiClient.signAndExecuteTransaction({ transaction: tx, signer: dbAccount }
 Located in `src/components/DeepBookV3Staking.tsx`
 
 **Features**:
+
 - ✅ Stake/Unstake interface
 - ✅ Governance proposal submission UI
 - ✅ Vote on proposals UI
@@ -221,6 +236,7 @@ Located in `src/components/DeepBookV3Staking.tsx`
 - ✅ Code reference examples
 
 **Tabs**:
+
 1. **Stake & Unstake**: Manage your stake in a pool
 2. **Governance**: Submit proposals and vote
 3. **Rewards & Rebates**: Claim accumulated rebates
@@ -240,16 +256,19 @@ function MyPage() {
 ### Common Pool Configurations
 
 **Conservative Pool** (DeFi beginners):
+
 - Taker Fee: 50 bps (0.50%)
 - Maker Fee: -20 bps (0.20% rebate)
 - Stake Required: 100 DEEP
 
 **Liquid Pool** (Active trading):
+
 - Taker Fee: 25 bps (0.25%)
 - Maker Fee: -10 bps (0.10% rebate)
 - Stake Required: 500 DEEP
 
 **Incentivized Pool** (Market-making focus):
+
 - Taker Fee: 10 bps (0.10%)
 - Maker Fee: -50 bps (0.50% rebate)
 - Stake Required: 2000 DEEP
@@ -328,35 +347,40 @@ function MyPage() {
 ## Troubleshooting
 
 ### "Must have non-zero active stake"
+
 - **Cause**: Your stake hasn't activated yet (submit at wrong epoch)
 - **Fix**: Wait for next epoch, then submit proposal/vote
 - **Verify**: Check `BalanceManager.active_stake` field
 
 ### "Proposal not added - insufficient voting power"
+
 - **Cause**: More proposals exist with higher voting power
 - **Fix**: Stake more DEEP or wait for lower-power proposals to complete
 - **Check**: Query pool's max proposals and current proposals
 
 ### "Cannot unstake - insufficient balance"
+
 - **Cause**: `BalanceManager` doesn't have expected DEEP amount
 - **Fix**: Verify DEEP deposited and not allocated elsewhere
 - **Debug**: Check `BalanceManager.balance[DEEP]` field
 
 ### "Vote removed unexpectedly"
+
 - **Cause**: You (or someone controlling account) unstaked
 - **Fix**: Re-stake and re-submit vote
 - **Note**: Votes don't accumulate; changing vote cancels previous vote
 
 ## Related Resources
 
-- **Repository**: https://github.com/MystenLabs/deepbookv3
-- **Documentation**: https://docs.sui.io/standards/deepbookv3/staking-governance
-- **Design Docs**: https://docs.sui.io/standards/deepbookv3/design#governance
-- **TS SDK**: https://github.com/MystenLabs/ts-sdks
+- **Repository**: <https://github.com/MystenLabs/deepbookv3>
+- **Documentation**: <https://docs.sui.io/standards/deepbookv3/staking-governance>
+- **Design Docs**: <https://docs.sui.io/standards/deepbookv3/design#governance>
+- **TS SDK**: <https://github.com/MystenLabs/ts-sdks>
 
 ## Summary
 
 DeepBook V3 staking and governance provides a unique mechanism for community-driven pool parameter management. Users stake DEEP to:
+
 - Earn trading fee rebates
 - Participate in governance voting
 - Submit proposals for fee/stake changes

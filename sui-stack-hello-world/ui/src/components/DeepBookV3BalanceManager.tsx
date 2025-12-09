@@ -337,13 +337,13 @@ export function DeepBookV3BalanceManager() {
             }}
           >
             <div>const tx = new Transaction();</div>
-            <div>// Create</div>
+            <div>• Create</div>
             <div>tx.add(dbClient.balanceManager.createAndShareBalanceManager());</div>
-            <div>// Deposit</div>
+            <div>• Deposit</div>
             <div>dbClient.balanceManager.depositIntoManager('MANAGER_1', 'SUI', 1000)(tx);</div>
-            <div>// Withdraw</div>
+            <div>• Withdraw</div>
             <div>dbClient.balanceManager.withdrawAllFromManager('MANAGER_1', 'SUI', address)(tx);</div>
-            <div>// Query</div>
+            <div>• Query</div>
             <div>const bal = await dbClient.checkManagerBalance('MANAGER_1', 'SUI');</div>
           </Box>
         </Box>

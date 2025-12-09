@@ -359,6 +359,7 @@ export const ZkLoginSessionManager: React.FC<ZkLoginSessionManagerProps> = ({
 }) => {
   const [session, setSession] = useState<ZkLoginSession | undefined>();
   const [isValid, setIsValid] = useState(true);
+  const [now, setNow] = useState(() => Date.now());
 
   // Poll session validity
   useEffect(() => {
@@ -377,11 +378,16 @@ export const ZkLoginSessionManager: React.FC<ZkLoginSessionManagerProps> = ({
     return () => clearInterval(interval);
   }, [client, sessionId, onSessionExpired]);
 
+  useEffect(() => {
+    const tick = setInterval(() => setNow(Date.now()), 30000);
+    return () => clearInterval(tick);
+  }, []);
+
   if (!session || !isValid) {
     return <Text color="red">Session expired or invalid</Text>;
   }
 
-  const timeRemaining = session.expiresAt - Date.now();
+  const timeRemaining = session.expiresAt - now;
   const minutesRemaining = Math.floor(timeRemaining / 60000);
 
   return (

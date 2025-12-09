@@ -677,6 +677,10 @@ export function SuiAdvancedTopics() {
               <Badge variant="soft">→</Badge>
               <Text>Fee Markets: https://docs.sui.io/guides/developer/advanced/fee-markets</Text>
             </Flex>
+            <Flex gap="2" align="start">
+              <Badge variant="soft">→</Badge>
+              <Text>App Examples Hub: usa el panel "App Examples" para abrir Weather Oracle, Trustless Swap, Tic-Tac-Toe, Distributed Counter y más sin saturar el landing.</Text>
+            </Flex>
           </Flex>
         </Box>
       </Flex>

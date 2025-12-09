@@ -81,7 +81,11 @@ export function CoinManager() {
           setLoading(null);
         },
         onError: (err) => {
-          setStatus(`Mint failed: ${err.message}`);
+          const msg = err?.message ?? String(err);
+          const hint = msg.includes("TypeNotFound") || msg.includes("TypeArgumentError")
+            ? "Revisa packageId, module y struct: deben apuntar al paquete publicado en esta red y la función mint debe existir. Verifica también TreasuryWrapper del mismo paquete."
+            : "";
+          setStatus(`Mint failed: ${msg}${hint ? " — " + hint : ""}`);
           setLoading(null);
         },
       }
@@ -124,7 +128,11 @@ export function CoinManager() {
           setLoading(null);
         },
         onError: (err) => {
-          setStatus(`Burn failed: ${err.message}`);
+          const msg = err?.message ?? String(err);
+          const hint = msg.includes("TypeNotFound") || msg.includes("TypeArgumentError")
+            ? "Revisa packageId, module y struct: deben existir en esta red, y Coin ID/TreasuryWrapper deben pertenecer a ese paquete."
+            : "";
+          setStatus(`Burn failed: ${msg}${hint ? " — " + hint : ""}`);
           setLoading(null);
         },
       }

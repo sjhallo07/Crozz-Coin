@@ -307,18 +307,17 @@ export function useCheckpointSubscription(enabled: boolean = false) {
     string,
     unknown
   > | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(enabled && isConnected);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!enabled || !isConnected) return;
 
-    setLoading(true);
-    setError(null);
-
     let unsubscribe: (() => void) | null = null;
 
     (async () => {
+      setLoading(true);
+      setError(null);
       try {
         unsubscribe = await client.subscribeCheckpoints(
           (checkpoint) => {

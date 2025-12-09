@@ -8,6 +8,7 @@
         "dbaeumer.vscode-eslint",
         "move.move-analyzer",
         "movebit.sui-move-analyzer",
-        "github.vscode-github-actions"
+        "github.vscode-github-actions",
+        "metabob.metabob"
     ]
 }

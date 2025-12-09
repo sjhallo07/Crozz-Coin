@@ -131,7 +131,7 @@ export function useCooldown(
   cooldownDurationMs: number,
   updateIntervalMs: number = 100
 ): UseCooldownResult {
-  const [currentTime, setCurrentTime] = useState(Date.now());
+  const [currentTime, setCurrentTime] = useState(() => Date.now());
 
   useEffect(() => {
     // Check if already expired
@@ -208,7 +208,7 @@ export function useTimelock(
   unlockTimeMs: number,
   updateIntervalMs: number = 1000
 ): UseTimelockResult {
-  const [currentTime, setCurrentTime] = useState(Date.now());
+  const [currentTime, setCurrentTime] = useState(() => Date.now());
 
   useEffect(() => {
     // Check if already expired
@@ -282,7 +282,7 @@ export function useCountdown(
   targetTimeMs: number,
   updateIntervalMs: number = 1000
 ): UseCountdownResult {
-  const [currentTime, setCurrentTime] = useState(Date.now());
+  const [currentTime, setCurrentTime] = useState(() => Date.now());
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -336,7 +336,7 @@ export function useCountdown(
  * ```
  */
 export function useCurrentTime(updateIntervalMs: number = 1000): number {
-  const [currentTime, setCurrentTime] = useState(Date.now());
+  const [currentTime, setCurrentTime] = useState(() => Date.now());
 
   useEffect(() => {
     const interval = setInterval(() => {
