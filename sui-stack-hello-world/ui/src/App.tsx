@@ -55,6 +55,7 @@ import { DeepBookV3Staking } from "./components/DeepBookV3Staking";
 import { SuiAdvancedTopics } from "./components/SuiAdvancedTopics";
 import { AppExamplesHub } from "./components/AppExamplesHub";
 import { TokenFactoryPanel } from "./components/TokenFactoryPanel";
+import { NetworksInfo } from "./components/NetworksInfo";
 
 function App() {
   const currentAccount = useCurrentAccount();
@@ -166,6 +167,7 @@ function App() {
             {currentAccount && isOnTestnet && <PaymentRegistryManager />}
             {currentAccount && isOnTestnet && <EphemeralPaymentPanel />}
             {currentAccount && isOnTestnet && <RegistryPaymentPanel />}
+            {currentAccount && isOnTestnet && <NetworksInfo />}
             {currentAccount && isOnTestnet && <DeepBookV3Info />}
             {currentAccount && isOnTestnet && <DeepBookV3BalanceManager />}
             {currentAccount && isOnTestnet && <WalletStandardInfo />}
