@@ -54,6 +54,7 @@ import { DeepBookV3BalanceManager } from "./components/DeepBookV3BalanceManager"
 import { DeepBookV3Staking } from "./components/DeepBookV3Staking";
 import { SuiAdvancedTopics } from "./components/SuiAdvancedTopics";
 import { AppExamplesHub } from "./components/AppExamplesHub";
+import { TokenFactoryPanel } from "./components/TokenFactoryPanel";
 
 function App() {
   const currentAccount = useCurrentAccount();
@@ -134,6 +135,7 @@ function App() {
             {currentAccount && isOnTestnet && <CreateCurrencyPanel />}
             {currentAccount && isOnTestnet && <CreateCurrencyOTWPanel />}
             {currentAccount && isOnTestnet && <CoinManager />}
+            {currentAccount && isOnTestnet && <TokenFactoryPanel />}
             {currentAccount && isOnTestnet && <CoinStandardInfo />}
             {currentAccount && isOnTestnet && <CurrencyManager />}
             {currentAccount && isOnTestnet && <CurrencyStandardInfo />}
