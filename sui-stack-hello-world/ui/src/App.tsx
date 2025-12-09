@@ -56,6 +56,7 @@ import { SuiAdvancedTopics } from "./components/SuiAdvancedTopics";
 import { AppExamplesHub } from "./components/AppExamplesHub";
 import { TokenFactoryPanel } from "./components/TokenFactoryPanel";
 import { NetworksInfo } from "./components/NetworksInfo";
+import { WalletGrid } from "./components/WalletGrid";
 
 function App() {
   const currentAccount = useCurrentAccount();
@@ -130,6 +131,8 @@ function App() {
             <Text size="5" weight="bold" color="blue" align="center">
               Pre Sale Coming Soon
             </Text>
+
+            <WalletGrid />
 
             {currentAccount && <TestnetStatus />}
 
