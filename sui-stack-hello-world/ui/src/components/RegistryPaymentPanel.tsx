@@ -82,7 +82,7 @@ export function RegistryPaymentPanel() {
       return;
     }
 
-    if (useOptionalReceiver && receiverAddress && !isValidSuiObjectId(receiverAddress)) {
+    if (useOptionalReceiver && !isValidSuiObjectId(receiverAddress)) {
       setStatus("❌ Invalid receiver address");
       return;
     }
@@ -92,10 +92,20 @@ export function RegistryPaymentPanel() {
       return;
     }
 
-    setIsProcessing(true);
-    setStatus("🔄 Processing registry payment...");
+    // TEMPORARY: Payment Kit module (0x2::payment_kit) not deployed on testnet/mainnet yet
+    setStatus("❌ Payment Kit not available. Deploy payment_kit package at 0x2 first.");
+    return;
 
-    try {
+    setIsProcessing(true);
+    setStatus("❌ Payment Kit no disponible: el módulo 0x2::payment_kit no existe en testnet/mainnet. Necesitas desplegar tu propio package Payment Kit o usar un package existente.");
+    setIsProcessing(false);
+    return;
+
+    // TODO: Reemplazar "0x2::payment_kit" con tu packageId desplegado
+    // Ejemplo: const PAYMENT_KIT_PKG = "0xTU_PACKAGE_ID_AQUI";
+    /* DESHABILITADO HASTA QUE TENGAS PAYMENT KIT DESPLEGADO
+    *
+    * try {
       const tx = new Transaction();
 
       // Get Clock system object
@@ -113,7 +123,7 @@ export function RegistryPaymentPanel() {
 
       // Call process_registry_payment<T>
       const receipt = tx.moveCall({
-        target: "0x2::payment_kit::process_registry_payment",
+        target: "0x2::payment_kit::process_registry_payment", // CAMBIAR A TU PACKAGE
         typeArguments: [suiCoinType],
         arguments: [
           tx.object(registryId),
@@ -160,6 +170,9 @@ export function RegistryPaymentPanel() {
     } finally {
       setIsProcessing(false);
     }
+    *
+    * FIN BLOQUE COMENTADO
+    */
   };
 
   return (
