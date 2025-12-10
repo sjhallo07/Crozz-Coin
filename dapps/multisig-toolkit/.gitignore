@@ -7,10 +7,21 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Node.js (functional only)
 node_modules
+!node_modules/.pnpm
+!node_modules/@mysten
+!node_modules/vite
+!node_modules/react
 dist
 dist-ssr
 *.local
+
+# Cloud Storage (Cloudflare R2: Free, no credentials - formal snapshots only)
+storage/
+snapshots/
+*.r2-snapshot
+*.s3-snapshot
 
 # Editor directories and files
 .vscode/*
