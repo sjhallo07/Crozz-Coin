@@ -9,6 +9,7 @@
         "move.move-analyzer",
         "movebit.sui-move-analyzer",
         "github.vscode-github-actions",
-        "metabob.metabob"
+        "metabob.metabob",
+        "github.copilot-chat"
     ]
 }
