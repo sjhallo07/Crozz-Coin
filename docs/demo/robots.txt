@@ -1,0 +1,10 @@
+# robots.txt for CROZZ ECOSYSTEM Demo Site
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://sjhallo07.github.io/Crozz-Coin/demo/sitemap.xml
+
+# Crawl-delay (optional, prevents aggressive crawling)
+Crawl-delay: 1
