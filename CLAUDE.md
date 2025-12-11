@@ -3,11 +3,14 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this directory.
 
 ## Crate-specific CLAUDE.md files
+
 Always consult CLAUDE.md files in sub-crates. Instructions in local CLAUDE.md files override instructions
 in this file when they are in conflict.
 
 # Individual Preferences
+
 Individual preferences supercede and extend project preferences:
+
 - @CLAUDE.local.md
 
 ## Essential Development Commands
@@ -33,6 +36,7 @@ SUI_SKIP_SIMTESTS=1 cargo nextest run
 ```
 
 **Important Notes for Testing:**
+
 - When compiling or running tests in this repository, set timeout limits to at least 10 minutes due to the large codebase size
 - For faster iteration, use -p to select only the most relevant packages for testing. Use multiple `-p` flags if necessary, e.g. `cargo nextest run -p sui-types -p sui-core`
 - Use `cargo nextest --lib` to run only library tests and skip integration tests for faster feedback
@@ -84,7 +88,7 @@ sui/
    - Transactions affecting only owned objects can start execution before consensus
    - Shared object transactions require consensus ordering before execution
 
-4. **Storage Layer**: 
+4. **Storage Layer**:
    - Uses RocksDB for persistent storage
    - Separate stores for objects, transactions, and effects
    - Checkpointing system for state synchronization
@@ -95,6 +99,7 @@ sui/
    - Parallel execution for non-conflicting transactions
 
 ### Critical Development Notes
+
 1. **Testing Requirements**:
    - Always run tests before submitting changes
    - Framework changes require snapshot updates
@@ -108,6 +113,7 @@ sui/
 
 **Do NOT comment the obvious** - comments should not simply repeat what the code does.
 **When to comment**:
+
 - Non-obvious algorithms or business logic
 - Temporary exclusions, timeouts, or thresholds and their reasoning  
 - Complex calculations where the "why" isn't immediately clear
@@ -115,6 +121,7 @@ sui/
 - Assumptions about external state or preconditions
 
 **When NOT to comment**:
+
 - Simple variable assignments
 - Standard library usage
 - Self-descriptive function calls
