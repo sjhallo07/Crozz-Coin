@@ -6,8 +6,22 @@ import { createNetworkConfig } from "@mysten/dapp-kit";
 
 const { networkConfig, useNetworkVariable, useNetworkVariables } =
   createNetworkConfig({
+    localnet: {
+      url: import.meta.env.VITE_NETWORK === "localnet" 
+        ? "http://127.0.0.1:9000" 
+        : getFullnodeUrl("localnet"),
+      variables: {
+        helloWorldPackageId: TESTNET_HELLO_WORLD_PACKAGE_ID,
+      },
+    },
     testnet: {
-      url: getFullnodeUrl("testnet"),
+      url: import.meta.env.VITE_FULLNODE_URL || getFullnodeUrl("testnet"),
+      variables: {
+        helloWorldPackageId: TESTNET_HELLO_WORLD_PACKAGE_ID,
+      },
+    },
+    mainnet: {
+      url: import.meta.env.VITE_FULLNODE_URL || getFullnodeUrl("mainnet"),
       variables: {
         helloWorldPackageId: TESTNET_HELLO_WORLD_PACKAGE_ID,
       },

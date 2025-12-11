@@ -14,15 +14,27 @@ import { networkConfig } from "./networkConfig.ts";
 
 const queryClient = new QueryClient();
 
+// Get network from environment variable, default to testnet
+const defaultNetwork = (import.meta.env.VITE_SUI_NETWORK || "testnet") as "localnet" | "testnet" | "mainnet";
+
 if (typeof window !== "undefined") {
   const globalWindow = window as typeof window & {
     __slushWalletRegistration__?: ReturnType<typeof registerSlushWallet>;
   };
 
   if (!globalWindow.__slushWalletRegistration__) {
-    globalWindow.__slushWalletRegistration__ = registerSlushWallet(
-      "CROZZ Ecosystem",
-    );
+    try {
+      console.log("Registering Slush wallet...");
+      globalWindow.__slushWalletRegistration__ = registerSlushWallet(
+        "CROZZ Ecosystem",
+        {
+          origin: window.location.origin,
+        }
+      );
+      console.log("✓ Slush wallet registered successfully");
+    } catch (error) {
+      console.error("Failed to register Slush wallet:", error);
+    }
   }
 }
 
@@ -30,8 +42,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Theme appearance="dark">
       <QueryClientProvider client={queryClient}>
-        <SuiClientProvider networks={networkConfig} defaultNetwork="testnet">
-          <WalletProvider autoConnect>
+        <SuiClientProvider networks={networkConfig} defaultNetwork={defaultNetwork}>
+          <WalletProvider autoConnect={false}>
             <App />
           </WalletProvider>
         </SuiClientProvider>
