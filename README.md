@@ -20,6 +20,18 @@ Sui offers the following benefits and capabilities:
 
 Sui is the only blockchain today that can scale with the growth of web3 while achieving industry-leading performance, cost, programmability, and usability. Sui demonstrates capacity beyond the transaction processing capabilities of established systems – traditional and blockchain alike. Sui is the first internet-scale programmable blockchain platform, a foundational layer for web3.
 
+## 🚀 Crozz Ecosystem - dApp Deployment
+
+For comprehensive instructions on deploying decentralized applications (dApps) within the Crozz ecosystem, including:
+- Smart contract bytecode resources and deployment
+- Frontend UI development and configuration
+- Backend connection and RPC integration
+- Free hosting deployment options (Vercel, Netlify, GitHub Pages, Cloudflare)
+- Dashboard integration and client services
+- Testing, validation, and troubleshooting
+
+**See the [Complete dApp Deployment Guide](./COMPLETE_DAPP_DEPLOYMENT_GUIDE.md)**
+
 ## Sui Architecture
 
 ```mermaid
