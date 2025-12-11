@@ -2,6 +2,15 @@
 
 A quick-start template built on the Sui Stack. This hello world app demonstrates creating and sharing greeting messages that anyone can edit - like a collaborative document where users can create posts and others can modify the text.
 
+> 📚 **For comprehensive deployment instructions**, see the [Complete dApp Deployment Guide](../COMPLETE_DAPP_DEPLOYMENT_GUIDE.md) which covers:
+> - Bytecode resources and smart contract deployment
+> - UI development completion steps
+> - Frontend-backend connection patterns
+> - Multiple hosting deployment options (Vercel, Netlify, GitHub Pages, Cloudflare)
+> - File organization and node modules management
+> - Dashboard integration for client services
+> - Testing, validation, and troubleshooting
+
 ## Quick Start (Try it first!)
 
 Want to see it working immediately? The app comes pre-configured with a published package so you can explore the experience right away:
