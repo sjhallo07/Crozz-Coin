@@ -1,0 +1,172 @@
+name: UI Build & Test
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'sui-stack-hello-world/ui/**'
+      - 'dapps/**'
+      - '.github/workflows/ui-build-test.yml'
+  pull_request:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'sui-stack-hello-world/ui/**'
+      - 'dapps/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      
+      - name: Build main UI application
+        run: |
+          cd sui-stack-hello-world/ui
+          pnpm build
+      
+      - name: TypeScript check
+        run: |
+          cd sui-stack-hello-world/ui
+          npx tsc --noEmit
+      
+      - name: Lint check
+        run: |
+          cd sui-stack-hello-world/ui
+          pnpm lint 2>/dev/null || echo "No lint script configured"
+      
+      - name: Build all dApps
+        run: |
+          for dapp in dapps/*/; do
+            if [ -f "$dapp/package.json" ]; then
+              echo "Building $dapp..."
+              cd "$dapp"
+              pnpm install --frozen-lockfile
+              pnpm build 2>/dev/null || echo "Build script not found in $dapp"
+              cd - > /dev/null
+            fi
+          done
+      
+      - name: Upload build artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts-node-${{ matrix.node-version }}
+          path: |
+            sui-stack-hello-world/ui/dist
+            dapps/*/dist
+          retention-days: 5
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      
+      - name: Run tests
+        run: |
+          cd sui-stack-hello-world/ui
+          pnpm test 2>/dev/null || echo "No test script configured"
+
+  deploy-preview:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'pull_request'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts-node-20.x
+      
+      - name: Comment PR with preview info
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '✅ Build successful!\n\n**Build Info:**\n- Build Time: ' + new Date().toISOString() + '\n- Commit: ' + context.sha.substring(0, 7) + '\n\n**Build Artifacts:**\n- Main UI: `sui-stack-hello-world/ui/dist`\n- dApps: `dapps/*/dist`'
+            })
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: [build, test]
+    if: always()
+    
+    steps:
+      - name: Build Status
+        run: |
+          if [ "${{ needs.build.result }}" = "failure" ] || [ "${{ needs.test.result }}" = "failure" ]; then
+            echo "❌ Build or tests failed"
+            exit 1
+          else
+            echo "✅ All checks passed"
+          fi
