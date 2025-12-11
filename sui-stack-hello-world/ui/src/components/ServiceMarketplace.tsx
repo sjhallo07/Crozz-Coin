@@ -133,14 +133,23 @@ export function ServiceMarketplace() {
   const handleConfirmAccess = () => {
     if (!selectedService || !currentAccount) return;
 
+    // Check if marketplace IDs are configured
+    const packageId = import.meta.env.VITE_MARKETPLACE_PACKAGE_ID;
+    const marketplaceId = import.meta.env.VITE_MARKETPLACE_OBJECT_ID;
+    
+    if (!packageId || !marketplaceId) {
+      alert("Marketplace not configured. Please set VITE_MARKETPLACE_PACKAGE_ID and VITE_MARKETPLACE_OBJECT_ID in .env");
+      return;
+    }
+
     const tx = new Transaction();
     
     if (selectedService.price === 0) {
       // Access free service
       tx.moveCall({
-        target: `${process.env.VITE_MARKETPLACE_PACKAGE_ID || "0x0"}::marketplace::access_free_service`,
+        target: `${packageId}::marketplace::access_free_service`,
         arguments: [
-          tx.object("MARKETPLACE_ID"), // Would be replaced with actual marketplace ID
+          tx.object(marketplaceId),
           tx.pure.u64(selectedService.id),
         ],
       });
@@ -148,9 +157,9 @@ export function ServiceMarketplace() {
       // Access paid service - would need to split coins and pay
       const [coin] = tx.splitCoins(tx.gas, [selectedService.price * 1_000_000_000]); // Convert SUI to MIST
       tx.moveCall({
-        target: `${process.env.VITE_MARKETPLACE_PACKAGE_ID || "0x0"}::marketplace::access_paid_service`,
+        target: `${packageId}::marketplace::access_paid_service`,
         arguments: [
-          tx.object("MARKETPLACE_ID"),
+          tx.object(marketplaceId),
           tx.pure.u64(selectedService.id),
           coin,
         ],
@@ -178,12 +187,22 @@ export function ServiceMarketplace() {
       return;
     }
 
+    // Check if marketplace IDs are configured
+    const packageId = import.meta.env.VITE_MARKETPLACE_PACKAGE_ID;
+    const marketplaceId = import.meta.env.VITE_MARKETPLACE_OBJECT_ID;
+    const adminCapId = import.meta.env.VITE_ADMIN_CAP_ID;
+    
+    if (!packageId || !marketplaceId || !adminCapId) {
+      alert("Marketplace not fully configured. Admin features require VITE_ADMIN_CAP_ID to be set in .env");
+      return;
+    }
+
     const tx = new Transaction();
     tx.moveCall({
-      target: `${process.env.VITE_MARKETPLACE_PACKAGE_ID || "0x0"}::marketplace::register_service`,
+      target: `${packageId}::marketplace::register_service`,
       arguments: [
-        tx.object("ADMIN_CAP_ID"), // Admin capability
-        tx.object("MARKETPLACE_ID"),
+        tx.object(adminCapId),
+        tx.object(marketplaceId),
         tx.pure.string(newService.name),
         tx.pure.string(newService.description),
         tx.pure.u64(parseFloat(newService.price) * 1_000_000_000), // Convert SUI to MIST

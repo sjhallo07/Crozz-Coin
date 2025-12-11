@@ -11,6 +11,9 @@ use sui::sui::SUI;
 use sui::balance::{Self, Balance};
 use sui::table::{Self, Table};
 use sui::event;
+use sui::object;
+use sui::tx_context::{Self, TxContext};
+use sui::transfer;
 
 // Error codes
 const ENotAuthorized: u64 = 1;
