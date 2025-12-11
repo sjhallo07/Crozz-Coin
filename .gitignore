@@ -109,3 +109,6 @@ storage/archives/
 *.gcs-snapshot
 *.azure-snapshot
 *.r2-snapshot
+
+# Local Netlify folder
+.netlify
