@@ -72,6 +72,8 @@ export function PaymentRegistryManager() {
       return;
     }
 
+    const account = currentAccount;
+
     if (!registryName.trim()) {
       setStatus("❌ Registry name required");
       return;
@@ -83,7 +85,7 @@ export function PaymentRegistryManager() {
       return;
     }
 
-    setIsProcessing(true);
+    throw new Error("❌ Payment Kit module not deployed at 0x2. Please deploy payment_kit package first.");
     setStatus("🔄 Creating payment registry...");
 
     try {
@@ -98,7 +100,7 @@ export function PaymentRegistryManager() {
       });
 
       // Transfer both to sender
-      tx.transferObjects([registryObj, adminCapObj], currentAccount.address);
+      tx.transferObjects([registryObj, adminCapObj], account.address);
 
       signAndExecute(
         { transaction: tx },

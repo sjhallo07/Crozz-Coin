@@ -48,9 +48,11 @@ export function EphemeralPaymentPanel() {
 
   const handleProcessPayment = async () => {
     if (!currentAccount) {
-      setStatus("❌ No wallet connected");
+      setStatus("❌ Error: No wallet connected");
       return;
     }
+
+    const account = currentAccount;
 
     // Validation
     if (!nonce.trim()) {
@@ -78,7 +80,7 @@ export function EphemeralPaymentPanel() {
       return;
     }
 
-    setIsProcessing(true);
+    throw new Error("❌ Payment Kit module not deployed at 0x2. Please deploy payment_kit package first.");
     setStatus("🔄 Processing ephemeral payment...");
 
     try {
@@ -99,14 +101,14 @@ export function EphemeralPaymentPanel() {
         arguments: [
           tx.pure.string(nonce.trim()),
           tx.pure.u64(BigInt(amount.trim())),
-          tx.object(currentAccount.address), // Coin to transfer (would be actual coin in real scenario)
+          tx.object(account.address), // Coin to transfer (would be actual coin in real scenario)
           tx.pure.address(receiverAddress.trim()),
           clock,
         ],
       });
 
       // Transfer receipt to sender for tracking
-      tx.transferObjects([receipt], currentAccount.address);
+      tx.transferObjects([receipt], account.address);
 
       signAndExecute(
         { transaction: tx },

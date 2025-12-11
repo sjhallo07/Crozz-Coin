@@ -92,11 +92,7 @@ export function RegistryPaymentPanel() {
       return;
     }
 
-    // TEMPORARY: Payment Kit module (0x2::payment_kit) not deployed on testnet/mainnet yet
-    setStatus("❌ Payment Kit not available. Deploy payment_kit package at 0x2 first.");
-    return;
-
-    setIsProcessing(true);
+    throw new Error("❌ Payment Kit module not deployed at 0x2. Please deploy payment_kit package first.");
     setStatus("❌ Payment Kit no disponible: el módulo 0x2::payment_kit no existe en testnet/mainnet. Necesitas desplegar tu propio package Payment Kit o usar un package existente.");
     setIsProcessing(false);
     return;
