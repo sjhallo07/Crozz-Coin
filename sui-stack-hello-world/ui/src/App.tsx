@@ -58,6 +58,8 @@ import { AppExamplesHub } from "./components/AppExamplesHub";
 import { TokenFactoryPanel } from "./components/TokenFactoryPanel";
 import { NetworksInfo } from "./components/NetworksInfo";
 import { WalletGrid } from "./components/WalletGrid";
+import { ServiceMarketplace } from "./components/ServiceMarketplace";
+import { MarketplaceDashboard } from "./components/MarketplaceDashboard";
 
 function App() {
   const currentAccount = useCurrentAccount();
@@ -143,6 +145,8 @@ function App() {
 
             {currentAccount && <TestnetStatus />}
 
+            {currentAccount && isOnTestnet && <ServiceMarketplace />}
+            {currentAccount && isOnTestnet && <MarketplaceDashboard />}
             {currentAccount && isOnTestnet && <CreateCurrencyPanel />}
             {currentAccount && isOnTestnet && <CreateCurrencyOTWPanel />}
             {currentAccount && isOnTestnet && <CoinManager />}
