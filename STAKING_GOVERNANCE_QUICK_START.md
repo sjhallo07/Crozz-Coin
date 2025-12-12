@@ -297,6 +297,328 @@ const events = await client.queryEvents({
 console.log('Stake events:', events.data);
 ```
 
+## 📜 Smart Contract Functions
+
+### Greeting Module (`hello_world::greeting`)
+
+**Core Functions:**
+
+```move
+// Create a new shared greeting
+public fun new(ctx: &mut TxContext)
+
+// Update greeting text (max 280 characters)
+public fun update_text(greeting: &mut Greeting, new_text: string::String, ctx: &mut TxContext)
+
+// Update greeting (owner only)
+public fun update_text_owner_only(greeting: &mut Greeting, new_text: string::String, ctx: &mut TxContext)
+
+// Transfer ownership
+public fun transfer_ownership(greeting: &mut Greeting, new_owner: address, ctx: &mut TxContext)
+
+// Getter functions
+public fun text(greeting: &Greeting): string::String
+public fun owner(greeting: &Greeting): address
+public fun created_at(greeting: &Greeting): u64
+public fun update_count(greeting: &Greeting): u64
+```
+
+**Events Emitted:**
+- `GreetingCreated`: When a new greeting is created
+- `GreetingUpdated`: When greeting text is updated
+- `OwnershipTransferred`: When ownership changes
+
+### Token Creator Module (`token_factory::token_creator`)
+
+**Token Creation:**
+
+```move
+// Create a new token with full configuration
+public fun create_token(
+  name: String,
+  symbol: String,
+  decimals: u8,
+  description: String,
+  icon_url: String,
+  module_name: String,
+  initial_supply: u64,
+  is_mintable: bool,
+  is_freezable: bool,
+  is_pausable: bool,
+  treasury_cap_holder: address,
+  supply_recipient: address,
+  ctx: &mut TxContext,
+): (TokenMetadata, TokenConfig)
+```
+
+**Token Management:**
+
+```move
+// Pause/Unpause token transfers
+public fun pause_token(config: &mut TokenConfig, ctx: &mut TxContext)
+public fun unpause_token(config: &mut TokenConfig, ctx: &mut TxContext)
+
+// Freeze/Unfreeze addresses
+public fun freeze_address(config: &mut TokenConfig, address_to_freeze: address, ctx: &mut TxContext)
+public fun unfreeze_address(config: &mut TokenConfig, address_to_unfreeze: address, ctx: &mut TxContext)
+
+// Update metadata
+public fun update_metadata(
+  metadata: &mut TokenMetadata,
+  name: String,
+  description: String,
+  icon_url: String,
+  ctx: &mut TxContext,
+)
+
+// Lock metadata (make immutable)
+public fun lock_metadata(metadata: &mut TokenMetadata, ctx: &mut TxContext)
+```
+
+**Query Functions:**
+
+```move
+public fun get_name(metadata: &TokenMetadata): String
+public fun get_symbol(metadata: &TokenMetadata): String
+public fun get_decimals(metadata: &TokenMetadata): u8
+public fun get_description(metadata: &TokenMetadata): String
+public fun get_icon_url(metadata: &TokenMetadata): String
+public fun is_address_frozen(config: &TokenConfig, addr: address): bool
+public fun is_paused(config: &TokenConfig): bool
+public fun get_frozen_addresses(config: &TokenConfig): vector<address>
+```
+
+**Events Emitted:**
+- `TokenCreated`: When a new token is created
+- `TokenPaused`/`TokenUnpaused`: When token is paused/unpaused
+- `AddressFrozen`/`AddressUnfrozen`: When addresses are frozen/unfrozen
+
+## 💻 Frontend Functions Logic
+
+### Using Smart Contract Hooks
+
+Import the hooks in your component:
+
+```typescript
+import { useGreeting, useTokenCreator } from '@/hooks/useSmartContracts';
+
+export function MyComponent() {
+  const greeting = useGreeting({ packageId: 'YOUR_PACKAGE_ID' });
+  const tokenCreator = useTokenCreator({ packageId: 'YOUR_PACKAGE_ID' });
+
+  // Use the hooks...
+}
+```
+
+### Greeting Examples
+
+```typescript
+// Create a new greeting
+const handleCreateGreeting = async () => {
+  try {
+    await greeting.createGreeting();
+    console.log('Greeting created!');
+  } catch (err) {
+    console.error('Error:', err);
+  }
+};
+
+// Update greeting text
+const handleUpdateGreeting = async (greetingId: string, newText: string) => {
+  try {
+    // Text must be max 280 characters
+    if (newText.length > 280) {
+      throw new Error('Text too long');
+    }
+    await greeting.updateGreeting(greetingId, newText);
+    console.log('Greeting updated!');
+  } catch (err) {
+    console.error('Error:', err);
+  }
+};
+
+// Transfer ownership
+const handleTransferOwnership = async (greetingId: string, newOwner: string) => {
+  try {
+    await greeting.transferOwnership(greetingId, newOwner);
+    console.log('Ownership transferred!');
+  } catch (err) {
+    console.error('Error:', err);
+  }
+};
+```
+
+### Token Creator Examples
+
+```typescript
+// Create a new token
+const handleCreateToken = async () => {
+  try {
+    const tokenConfig = {
+      name: 'My Token',
+      symbol: 'MYTKN',
+      decimals: 6,
+      description: 'My custom token',
+      iconUrl: 'https://example.com/icon.png',
+      moduleName: 'my_token',
+      initialSupply: 1000000,
+      isMintable: true,
+      isFreezable: true,
+      isPausable: true,
+      treasuryCapHolder: userAddress,
+      supplyRecipient: userAddress,
+    };
+
+    await tokenCreator.createToken(tokenConfig);
+    console.log('Token created!');
+  } catch (err) {
+    console.error('Error:', err);
+  }
+};
+
+// Pause token transfers
+const handlePauseToken = async (configId: string) => {
+  try {
+    await tokenCreator.pauseToken(configId);
+    console.log('Token paused!');
+  } catch (err) {
+    console.error('Error (admin only):', err);
+  }
+};
+
+// Freeze an address
+const handleFreezeAddress = async (configId: string, addressToFreeze: string) => {
+  try {
+    await tokenCreator.freezeAddress(configId, addressToFreeze);
+    console.log('Address frozen!');
+  } catch (err) {
+    console.error('Error (admin only):', err);
+  }
+};
+
+// Update token metadata
+const handleUpdateMetadata = async (metadataId: string) => {
+  try {
+    await tokenCreator.updateMetadata(
+      metadataId,
+      'New Token Name',
+      'Updated description',
+      'https://example.com/new-icon.png'
+    );
+    console.log('Metadata updated!');
+  } catch (err) {
+    console.error('Error:', err);
+  }
+};
+
+// Lock metadata (make immutable)
+const handleLockMetadata = async (metadataId: string) => {
+  try {
+    await tokenCreator.lockMetadata(metadataId);
+    console.log('Metadata locked!');
+  } catch (err) {
+    console.error('Error:', err);
+  }
+};
+```
+
+### Complete Component Example
+
+```typescript
+import { useGreeting, useTokenCreator } from '@/hooks/useSmartContracts';
+import { useCurrentAccount } from '@mysten/dapp-kit';
+import { useState } from 'react';
+
+export function SmartContractDemo() {
+  const account = useCurrentAccount();
+  const greeting = useGreeting({ packageId: process.env.REACT_APP_PACKAGE_ID || '' });
+  const tokenCreator = useTokenCreator({ packageId: process.env.REACT_APP_PACKAGE_ID || '' });
+
+  const [greetingText, setGreetingText] = useState('');
+  const [greetingId, setGreetingId] = useState('');
+
+  if (!account) {
+    return <div>Please connect wallet</div>;
+  }
+
+  return (
+    <div className="smart-contract-demo">
+      <h2>Smart Contract Interaction</h2>
+
+      {/* Greeting Section */}
+      <section className="greeting-section">
+        <h3>Greeting Management</h3>
+
+        <button
+          onClick={() => greeting.createGreeting()}
+          disabled={greeting.loading}
+        >
+          {greeting.loading ? 'Creating...' : 'Create Greeting'}
+        </button>
+
+        <div className="input-group">
+          <input
+            type="text"
+            placeholder="Enter greeting ID"
+            value={greetingId}
+            onChange={(e) => setGreetingId(e.target.value)}
+            maxLength={64}
+          />
+          <input
+            type="text"
+            placeholder="Enter new greeting text (max 280 chars)"
+            value={greetingText}
+            onChange={(e) => setGreetingText(e.target.value)}
+            maxLength={280}
+          />
+          <button
+            onClick={() => greeting.updateGreeting(greetingId, greetingText)}
+            disabled={greeting.loading || !greetingId || !greetingText}
+          >
+            {greeting.loading ? 'Updating...' : 'Update Greeting'}
+          </button>
+        </div>
+
+        {greeting.error && (
+          <div className="error">{greeting.error.message}</div>
+        )}
+      </section>
+
+      {/* Token Section */}
+      <section className="token-section">
+        <h3>Token Management</h3>
+
+        <button
+          onClick={() =>
+            tokenCreator.createToken({
+              name: 'My Token',
+              symbol: 'MYTKN',
+              decimals: 6,
+              description: 'My custom token',
+              iconUrl: 'https://example.com/icon.png',
+              moduleName: 'my_token',
+              initialSupply: 1000000,
+              isMintable: true,
+              isFreezable: true,
+              isPausable: true,
+              treasuryCapHolder: account.address,
+              supplyRecipient: account.address,
+            })
+          }
+          disabled={tokenCreator.loading}
+        >
+          {tokenCreator.loading ? 'Creating...' : 'Create Token'}
+        </button>
+
+        {tokenCreator.error && (
+          <div className="error">{tokenCreator.error.message}</div>
+        )}
+      </section>
+    </div>
+  );
+}
+```
+
 ## ⚡ Performance
 
 - Staking transaction: ~2-3M gas
