@@ -477,3 +477,40 @@ mv ai-history.json ai-history.backup.json
 ---
 
 **🤖 Powered by AI. Built for Developers.**
+
+## 📦 Move Language Server Setup
+
+### Quick Installation
+
+The Move VSCode Extension from Mysten requires the `move-analyzer` language server:
+
+1. **Install the Move Extension**:
+   - Open VSCode and press `⇧` + `⌘` + `P` (macOS) or `Ctrl` + `Shift` + `P` (Linux/Windows)
+   - Type: `Extensions: Install Extensions`
+   - Search for `Mysten` and click **Install** on the "Move" extension
+
+2. **Install the Language Server**:
+   ```bash
+   mkdir -p ~/.sui/bin
+   cargo install --git https://github.com/MystenLabs/sui sui-move-lsp
+   cp ~/.cargo/bin/move-analyzer ~/.sui/bin/
+   ```
+
+3. **Verify Installation**:
+   ```bash
+   ls -la ~/.sui/bin/move-analyzer
+   ```
+
+4. **Restart VSCode** to enable all Move language features
+
+### Features Enabled
+- Code highlighting and syntax support
+- Go to definition and type hints
+- Compiler diagnostics
+- Building and testing Move packages
+- Trace debugging Move unit tests
+
+### Troubleshooting
+- Custom language server path: Set `move.server.path` in VSCode Settings
+- Custom Sui binary path: Set `move.sui.path` in VSCode Settings
+- Reinstall: Delete `~/.sui/bin/move-analyzer` and reinstall the extension

@@ -7,6 +7,7 @@ import { SUI_TESTNET_CHAIN } from "@mysten/wallet-standard";
 import { useState } from "react";
 import { Greeting } from "./Greeting";
 import { CreateGreeting } from "./CreateGreeting";
+import { Dashboard } from "./Dashboard";
 import { CoinManager } from "./CoinManager";
 import { CoinStandardInfo } from "./CoinStandardInfo";
 import { CurrencyManager } from "./CurrencyManager";
@@ -64,10 +65,16 @@ function App() {
     const hash = window.location.hash.slice(1);
     return isValidSuiObjectId(hash) ? hash : null;
   });
+  const [viewMode, setViewMode] = useState<"dashboard" | "original">("dashboard");
 
   const accountChains = currentAccount?.chains ?? [];
   const isOnTestnet = accountChains.includes(SUI_TESTNET_CHAIN);
   const activeChainLabel = accountChains[0];
+
+  // Show Dashboard by default
+  if (viewMode === "dashboard") {
+    return <Dashboard />;
+  }
 
   return (
     <GraphQLProvider defaultEnvironment="testnet" autoConnect={true}>
