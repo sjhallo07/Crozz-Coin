@@ -9,38 +9,47 @@ The Crozz Coin Admin RBAC (Role-Based Access Control) System provides comprehens
 ### Core Components
 
 #### 1. **AdminDashboard** (`src/components/AdminDashboard.tsx`)
+
 Main dashboard component displaying:
+
 - Current admin status with role indicator
 - Statistics cards (total admins, active permissions, smart contracts)
 - Tabbed interface with role management, smart contracts, permissions, and settings
 - Role-specific access controls
 
 **Features:**
+
 - View current role (User, Admin, or Super Admin)
 - Monitor ecosystem statistics
 - Access admin-only features based on permissions
 - Super admin system settings tab
 
 #### 2. **RoleUpgradePanel** (`src/components/RoleUpgradePanel.tsx`)
+
 Provides interface for non-admin users:
+
 - Display current role with restrictions
 - Show available roles and their capabilities
 - Request admin access button
 - Permission descriptions
 
 **Display Modes:**
+
 - Non-admin: Shows role upgrade request interface
 - Admin: Shows admin status and control panel
 - Super Admin: Unlocks advanced controls
 
 #### 3. **SmartContractExecutor** (`src/components/SmartContractExecutor.tsx`)
+
 Admin-only component for executing smart contract functions:
+
 - Function selection from discovered contracts
 - Dynamic parameter input based on function signature
 - Permission-based execution restrictions
 - Execution result modal with transaction details
 
 **Features:**
+
 - Gas usage tracking
 - Transaction ID display
 - Timestamp logging
@@ -49,9 +58,11 @@ Admin-only component for executing smart contract functions:
 ### State Management
 
 #### **useAdminStore** (`src/hooks/useAdminStore.ts`)
+
 Zustand store managing admin state:
 
 **State:**
+
 ```typescript
 {
   currentUser: AdminUser | null;
@@ -60,6 +71,7 @@ Zustand store managing admin state:
 ```
 
 **Methods:**
+
 - `setCurrentUser(user)` - Set current admin user
 - `setAdminUsers(users)` - Update admin user list
 - `hasPermission(permission)` - Check if user has permission
@@ -75,11 +87,13 @@ Zustand store managing admin state:
 ### Type Definitions
 
 #### **UserRole**
+
 ```typescript
 type UserRole = "user" | "admin" | "super_admin";
 ```
 
 #### **Permission**
+
 ```typescript
 type Permission =
   | "view_dashboard"
@@ -93,6 +107,7 @@ type Permission =
 ```
 
 #### **AdminUser**
+
 ```typescript
 interface AdminUser {
   address: string;
@@ -104,6 +119,7 @@ interface AdminUser {
 ```
 
 #### **SmartContractFunction**
+
 ```typescript
 interface SmartContractFunction {
   id: string;
@@ -119,6 +135,7 @@ interface SmartContractFunction {
 ```
 
 #### **ExecutionResult**
+
 ```typescript
 interface ExecutionResult {
   status: "success" | "error";
@@ -132,10 +149,12 @@ interface ExecutionResult {
 ## Permission Matrix
 
 ### User Role Permissions
+
 - `view_dashboard` - View main dashboard
 - `view_analytics` - View analytics and reports
 
 ### Admin Role Permissions
+
 - `view_dashboard` - View main dashboard
 - `manage_users` - Manage user accounts
 - `manage_greetings` - Create and modify greetings
@@ -143,6 +162,7 @@ interface ExecutionResult {
 - `execute_functions` - Execute smart contract functions
 
 ### Super Admin Role Permissions (All)
+
 - `view_dashboard`
 - `manage_users`
 - `manage_greetings`
@@ -159,6 +179,7 @@ interface ExecutionResult {
 Scans Move contract files to discover function signatures:
 
 **Key Features:**
+
 - Recursive directory scanning for `.move` files
 - Extract public function signatures
 - Parse parameters with types
@@ -166,12 +187,14 @@ Scans Move contract files to discover function signatures:
 - Generate function metadata
 
 **Usage:**
+
 ```typescript
 const scanner = new MoveContractScanner("/path/to/contracts");
 const functions = await scanner.discoverFunctions();
 ```
 
 **Methods:**
+
 - `discoverFunctions()` - Scan and discover all functions
 - `findMoveFiles(dir)` - Find all Move source files
 - `extractFunctionsFromFile(filePath)` - Extract functions from single file
@@ -197,6 +220,7 @@ The RBAC Dashboard appears as a tab in the dashboard navigation for admin users.
 All components use the Crozz Coin ecosystem theme:
 
 **Colors:**
+
 - Primary: `#8b5cf6` (Purple)
 - Accent: `#ec4899` (Pink)
 - Background: Dark gray (`rgba(30, 27, 75, 0.5)`)
@@ -204,6 +228,7 @@ All components use the Crozz Coin ecosystem theme:
 - Borders: `#3b3366` (Dark purple)
 
 **Typography:**
+
 - Headers: Radix UI Heading component
 - Body: Radix UI Text component
 - Consistent spacing with gap utilities
@@ -211,6 +236,7 @@ All components use the Crozz Coin ecosystem theme:
 ## Usage Examples
 
 ### Check User Permissions
+
 ```typescript
 const { currentUser, hasPermission } = useAdminStore();
 
@@ -220,6 +246,7 @@ if (hasPermission("execute_functions")) {
 ```
 
 ### Add Admin User
+
 ```typescript
 const { addAdminUser } = useAdminStore();
 
@@ -233,11 +260,13 @@ addAdminUser({
 ```
 
 ### Execute Smart Contract Function
+
 ```typescript
 <SmartContractExecutor functions={contractFunctions} />
 ```
 
 The component handles:
+
 - Function selection
 - Parameter validation
 - Execution with permission checks
@@ -246,6 +275,7 @@ The component handles:
 ## Default Admin User
 
 System initializes with a default super admin:
+
 - **Address**: `0x0000000000000000000000000000000000000000000000000000000000000000`
 - **Role**: `super_admin`
 - **Permissions**: All 8 permissions enabled
@@ -320,6 +350,7 @@ interface FunctionExecutorProps {
 ## Debugging
 
 Enable verbose logging by checking browser console for:
+
 - Admin store state changes
 - Permission checks
 - Function execution attempts
@@ -336,6 +367,7 @@ Enable verbose logging by checking browser console for:
 ## Contributing
 
 When extending the admin system:
+
 1. Update type definitions in `src/types/admin.ts`
 2. Add new methods to `useAdminStore.ts`
 3. Create corresponding UI components with Crozz Coin theme

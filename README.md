@@ -13,22 +13,23 @@
 
 Sui offers the following benefits and capabilities:
 
- * Unmatched scalability, instant settlement
- * A safe smart contract language accessible to mainstream developers
- * Ability to define rich and composable on-chain assets
- * Better user experience for web3 apps
+* Unmatched scalability, instant settlement
+* A safe smart contract language accessible to mainstream developers
+* Ability to define rich and composable on-chain assets
+* Better user experience for web3 apps
 
 Sui is the only blockchain today that can scale with the growth of web3 while achieving industry-leading performance, cost, programmability, and usability. Sui demonstrates capacity beyond the transaction processing capabilities of established systems – traditional and blockchain alike. Sui is the first internet-scale programmable blockchain platform, a foundational layer for web3.
 
 ## 🚀 Crozz Ecosystem - dApp Deployment
 
 For comprehensive instructions on deploying decentralized applications (dApps) within the Crozz ecosystem, including:
-- Smart contract bytecode resources and deployment
-- Frontend UI development and configuration
-- Backend connection and RPC integration
-- Free hosting deployment options (Vercel, Netlify, GitHub Pages, Cloudflare)
-- Dashboard integration and client services
-- Testing, validation, and troubleshooting
+
+* Smart contract bytecode resources and deployment
+* Frontend UI development and configuration
+* Backend connection and RPC integration
+* Free hosting deployment options (Vercel, Netlify, GitHub Pages, Cloudflare)
+* Dashboard integration and client services
+* Testing, validation, and troubleshooting
 
 **See the [Complete dApp Deployment Guide](./COMPLETE_DAPP_DEPLOYMENT_GUIDE.md)**
 
@@ -67,20 +68,19 @@ Sui is supported by several cutting-edge [peer-reviewed studies](https://github.
 
 Use the following links to learn more about Sui and the Sui ecosystem:
 
- * Learn more about working with Sui in the [Sui Documentation](https://docs.sui.io/).
- * Join the Sui community on [Sui Discord](https://discord.gg/sui).
- * Find out more about the Sui ecosystem on the [Sui Resources](https://sui.io/resources/) page.
- * Review information about Sui governance, [decentralization](https://suifoundation.org/decentralization), and [Developer Grants Program](https://sui.io/grants-hub) on the [Sui Foundation](https://sui.io/about) site.
+* Learn more about working with Sui in the [Sui Documentation](https://docs.sui.io/).
+* Join the Sui community on [Sui Discord](https://discord.gg/sui).
+* Find out more about the Sui ecosystem on the [Sui Resources](https://sui.io/resources/) page.
+* Review information about Sui governance, [decentralization](https://suifoundation.org/decentralization), and [Developer Grants Program](https://sui.io/grants-hub) on the [Sui Foundation](https://sui.io/about) site.
 
-
- ## How to Contribute
+## How to Contribute
 
  See the [Contributing Guide](CONTRIBUTING.md) for details on how to contribute to Sui.
 
- ## Code of Conduct
+## Code of Conduct
 
  See the [Code of Conduct](CODE_OF_CONDUCT.MD) for details on our code of conduct.
 
- ## License
+## License
 
  See the [LICENSE](LICENSE) file for more details.

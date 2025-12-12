@@ -1,0 +1,431 @@
+/* App Layout Styles - Global Navigation & Structure */
+
+:root {
+  /* Primary Colors - CROZZ Coin Branding */
+  --primary-purple: #8b5cf6;
+  --primary-pink: #ec4899;
+  --primary-dark: #1e1b4b;
+  --primary-darker: #0f0d1d;
+  
+  /* Secondary Colors */
+  --accent-cyan: #06b6d4;
+  --accent-blue: #3b82f6;
+  
+  /* Neutral Colors */
+  --neutral-light: #e0e7ff;
+  --neutral-text: #a0aec0;
+  --neutral-border: #3b3366;
+  --neutral-bg: rgba(30, 27, 75, 0.5);
+  
+  /* Gradients */
+  --gradient-main: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+  --gradient-dark: linear-gradient(135deg, #1e1b4b 0%, #0f0d1d 100%);
+  
+  /* Spacing */
+  --nav-height: 70px;
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(
+    180deg,
+    #0f0d1d 0%,
+    #1a1640 50%,
+    #0f0d1d 100%
+  );
+  color: var(--neutral-light);
+}
+
+.appLayout {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============ TOP NAVIGATION ============ */
+
+.topNav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(15, 13, 29, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--neutral-border);
+  height: var(--nav-height);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.navContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-lg);
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: 1.3rem;
+  font-weight: 700;
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform var(--transition-base);
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.logoIcon {
+  width: 28px;
+  height: 28px;
+  color: var(--primary-purple);
+}
+
+/* Desktop Menu */
+.desktopMenu {
+  display: none;
+  gap: var(--spacing-md);
+  align-items: center;
+  flex: 1;
+
+  @media (min-width: 768px) {
+    display: flex;
+  }
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: none;
+  border: none;
+  color: var(--neutral-text);
+  cursor: pointer;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: 0.5rem;
+  transition: all var(--transition-base);
+  font-size: 0.95rem;
+  font-weight: 500;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2;
+  }
+
+  &:hover {
+    color: var(--primary-pink);
+    background: rgba(236, 72, 153, 0.1);
+    transform: translateX(2px);
+  }
+
+  &.active {
+    color: var(--primary-pink);
+    background: rgba(236, 72, 153, 0.15);
+    border-left: 3px solid var(--primary-pink);
+    padding-left: calc(var(--spacing-md) - 3px);
+  }
+}
+
+/* Auth Section */
+.authSection {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-left: auto;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.roleTag {
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid var(--neutral-border);
+  color: var(--neutral-light);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.connectButton,
+.disconnectButton {
+  background: var(--gradient-main);
+  color: white;
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  transition: all var(--transition-base);
+  font-size: 0.9rem;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.disconnectButton {
+  background: rgba(139, 92, 246, 0.15);
+  color: var(--primary-pink);
+  border: 1px solid var(--neutral-border);
+
+  &:hover {
+    background: rgba(236, 72, 153, 0.15);
+    border-color: var(--primary-pink);
+  }
+}
+
+/* Mobile Menu Toggle */
+.menuToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid var(--neutral-border);
+  color: var(--neutral-light);
+  cursor: pointer;
+  padding: var(--spacing-sm);
+  border-radius: 0.5rem;
+  width: 40px;
+  height: 40px;
+  transition: all var(--transition-base);
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+
+  &:hover {
+    border-color: var(--primary-pink);
+    color: var(--primary-pink);
+    background: rgba(236, 72, 153, 0.1);
+  }
+}
+
+/* Mobile Menu */
+.mobileMenu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  background: rgba(30, 27, 75, 0.8);
+  border-top: 1px solid var(--neutral-border);
+  animation: slideDown 0.3s ease;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mobileMenuItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid var(--neutral-border);
+  color: var(--neutral-text);
+  cursor: pointer;
+  padding: var(--spacing-md);
+  border-radius: 0.5rem;
+  transition: all var(--transition-base);
+  font-weight: 600;
+  font-size: 0.95rem;
+
+  &:hover {
+    color: var(--primary-pink);
+    border-color: var(--primary-pink);
+    background: rgba(236, 72, 153, 0.15);
+  }
+
+  &.active {
+    color: var(--primary-pink);
+    background: rgba(236, 72, 153, 0.2);
+    border-color: var(--primary-pink);
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* ============ MAIN CONTENT ============ */
+
+.mainContent {
+  flex: 1;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* ============ PLACEHOLDER PAGE ============ */
+
+.placeholderPage {
+  min-height: calc(100vh - var(--nav-height));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--spacing-xl);
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: var(--spacing-md);
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  p {
+    font-size: 1.1rem;
+    color: var(--neutral-text);
+  }
+}
+
+/* ============ SCROLLBAR STYLING ============ */
+
+.mainContent::-webkit-scrollbar {
+  width: 8px;
+}
+
+.mainContent::-webkit-scrollbar-track {
+  background: rgba(139, 92, 246, 0.05);
+}
+
+.mainContent::-webkit-scrollbar-thumb {
+  background: var(--primary-purple);
+  border-radius: 4px;
+
+  &:hover {
+    background: var(--primary-pink);
+  }
+}
+
+/* ============ RESPONSIVE ============ */
+
+@media (max-width: 768px) {
+  .navContainer {
+    padding: 0 var(--spacing-md);
+    gap: var(--spacing-sm);
+  }
+
+  .logo {
+    font-size: 1.1rem;
+
+    span {
+      display: none;
+    }
+  }
+
+  .authSection {
+    display: flex;
+    gap: var(--spacing-sm);
+  }
+
+  .roleTag {
+    display: none;
+  }
+
+  .connectButton {
+    padding: var(--spacing-sm);
+    font-size: 0.8rem;
+
+    span {
+      display: none;
+    }
+  }
+}
+
+/* ============ ANIMATIONS ============ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.navItem {
+  animation: fadeIn 0.3s ease;
+}

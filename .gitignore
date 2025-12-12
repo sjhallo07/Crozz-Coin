@@ -48,6 +48,33 @@ node_modules/
 pnpm-debug.log*
 npm-debug.log*
 yarn-debug.log*
+dist/
+build/
+.env
+.env.local
+.env.*.local
+.cache/
+.next/
+
+# Logs
+logs
+*.log
+
+# Testing
+coverage/
+.nyc_output/
+
+# Build artifacts
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Development
+.vscode/settings.json
+.idea/
+*.sublime-project
+*.sublime-workspace
 yarn-error.log*
 
 # Vite / bundler caches
