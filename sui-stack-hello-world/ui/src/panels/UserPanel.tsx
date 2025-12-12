@@ -40,7 +40,7 @@ export function UserPanel({ adminAddresses }: UserPanelProps) {
   const [txResult, setTxResult] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
-  const { allGreetings = [], isLoading: greetingsLoading } = useQueryAllGreetings();
+  const { greetings: allGreetings = [], isLoading: greetingsLoading } = useQueryAllGreetings();
 
   const userGreetings = allGreetings.filter(
     (g: any) => g.owner?.toLowerCase() === currentAccount?.address.toLowerCase()
@@ -383,14 +383,14 @@ export function UserPanel({ adminAddresses }: UserPanelProps) {
             <Heading size="4" color="blue">
               Available User Functions
             </Heading>
-            <Box as="ul" style={{ paddingLeft: "20px" }}>
-              <Text as="li" size="2">
+            <Box as="div" style={{ paddingLeft: "20px" }}>
+              <Text as="div" size="2">
                 <strong>new()</strong> - Create a new greeting object
               </Text>
-              <Text as="li" size="2">
+              <Text as="div" size="2">
                 <strong>update_text_owner_only(id, text)</strong> - Update your own greeting
               </Text>
-              <Text as="li" size="2">
+              <Text as="div" size="2">
                 <strong>read functions</strong> - View all greetings and their metadata
               </Text>
             </Box>

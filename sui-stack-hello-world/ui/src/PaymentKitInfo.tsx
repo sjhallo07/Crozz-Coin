@@ -17,26 +17,26 @@ export function PaymentKitInfo() {
 
       <Heading size="3">Core capabilities</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Validates expected amount and transfers coins safely (any coin type).</Text></li>
-          <li><Text size="2">Optional <code>PaymentRegistry</code> for duplicate detection + receipt storage.</Text></li>
-          <li><Text size="2">Generates <code>PaymentReceipt</code> objects and emits events for tracking.</Text></li>
-          <li><Text size="2">Supports transaction URIs for wallet-friendly payment links.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Validates expected amount and transfers coins safely (any coin type).</Text></div>
+          <div><Text size="2">Optional <code>PaymentRegistry</code> for duplicate detection + receipt storage.</Text></div>
+          <div><Text size="2">Generates <code>PaymentReceipt</code> objects and emits events for tracking.</Text></div>
+          <div><Text size="2">Supports transaction URIs for wallet-friendly payment links.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Payment modes</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div>
             <Text size="2"><strong>Registry payments</strong> — use <code>process_registry_payment</code> with <code>PaymentRegistry</code> to enforce duplicate prevention and keep receipts; funds can stay in the registry or forward to receiver.</Text>
-          </li>
-          <li>
+          </div>
+          <div>
             <Text size="2"><strong>Ephemeral payments</strong> — use <code>process_ephemeral_payment</code> for one-off transfers (no duplicate checks, no stored records) but still get a receipt + event.</Text>
-          </li>
-        </ul>
+          </div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
@@ -51,10 +51,10 @@ export function PaymentKitInfo() {
 
       <Heading size="3">Receipts vs records</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2"><strong>PaymentReceipt</strong>: returned object with nonce, amount, coin type, receiver, timestamp, and payment type.</Text></li>
-          <li><Text size="2"><strong>PaymentRecord</strong>: internal registry table entry for duplicate detection; expires after configured epochs and can be deleted with <code>delete_payment_record</code> once expired.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2"><strong>PaymentReceipt</strong>: returned object with nonce, amount, coin type, receiver, timestamp, and payment type.</Text></div>
+          <div><Text size="2"><strong>PaymentRecord</strong>: internal registry table entry for duplicate detection; expires after configured epochs and can be deleted with <code>delete_payment_record</code> once expired.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
@@ -62,11 +62,11 @@ export function PaymentKitInfo() {
       <Heading size="3">Registry lifecycle</Heading>
       <Box asChild>
         <ol style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Create with <code>create_registry(namespace, name, ctx)</code>; yields <code>PaymentRegistry</code> + <code>RegistryAdminCap</code>.</Text></li>
-          <li><Text size="2">Process payments via <code>process_registry_payment</code> providing nonce, amount, coin, receiver?, clock.</Text></li>
-          <li><Text size="2">Configure via admin cap: <code>set_config_epoch_expiration_duration</code> (record retention) and <code>set_config_registry_managed_funds</code> (retain funds vs forward).</Text></li>
-          <li><Text size="2">Withdraw retained funds with <code>withdraw_from_registry</code> (requires admin cap).</Text></li>
-          <li><Text size="2">Clean up expired records with <code>delete_payment_record</code> using the original payment key.</Text></li>
+          <div><Text size="2">Create with <code>create_registry(namespace, name, ctx)</code>; yields <code>PaymentRegistry</code> + <code>RegistryAdminCap</code>.</Text></div>
+          <div><Text size="2">Process payments via <code>process_registry_payment</code> providing nonce, amount, coin, receiver?, clock.</Text></div>
+          <div><Text size="2">Configure via admin cap: <code>set_config_epoch_expiration_duration</code> (record retention) and <code>set_config_registry_managed_funds</code> (retain funds vs forward).</Text></div>
+          <div><Text size="2">Withdraw retained funds with <code>withdraw_from_registry</code> (requires admin cap).</Text></div>
+          <div><Text size="2">Clean up expired records with <code>delete_payment_record</code> using the original payment key.</Text></div>
         </ol>
       </Box>
 
@@ -77,21 +77,21 @@ export function PaymentKitInfo() {
         Format: <code>sui:&lt;address&gt;?amount=&lt;u64&gt;&amp;coinType=&lt;type&gt;&amp;nonce=&lt;uuid&gt;&amp;label=&lt;text&gt;&amp;icon=&lt;url&gt;&amp;message=&lt;text&gt;&amp;registry=&lt;id|name&gt;</code>.
       </Text>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Always URL-encode parameters; double colons become <code>%3A%3A</code>.</Text></li>
-          <li><Text size="2">If <code>registry</code> provided → route to <code>process_registry_payment</code>; else use ephemeral payment.</Text></li>
-          <li><Text size="2">Suggested defaults: coin type <code>0x2::sui::SUI</code> when omitted; generate nonce with UUIDv4.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Always URL-encode parameters; double colons become <code>%3A%3A</code>.</Text></div>
+          <div><Text size="2">If <code>registry</code> provided → route to <code>process_registry_payment</code>; else use ephemeral payment.</Text></div>
+          <div><Text size="2">Suggested defaults: coin type <code>0x2::sui::SUI</code> when omitted; generate nonce with UUIDv4.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Events & errors</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Events include nonce, amount, coin type, receiver, timestamp, registry info for off-chain analytics.</Text></li>
-          <li><Text size="2">Common errors: duplicate payment, amount mismatch, record not found/not expired, unauthorized admin, invalid/duplicate registry name.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Events include nonce, amount, coin type, receiver, timestamp, registry info for off-chain analytics.</Text></div>
+          <div><Text size="2">Common errors: duplicate payment, amount mismatch, record not found/not expired, unauthorized admin, invalid/duplicate registry name.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />

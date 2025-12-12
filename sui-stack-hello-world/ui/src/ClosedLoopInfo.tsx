@@ -19,35 +19,35 @@ export function ClosedLoopInfo() {
 
       <Heading size="3">Key differences from Coin</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Token has <code>key</code> only (no <code>store</code>), cannot be wrapped or stored as a dynamic field.</Text></li>
-          <li><Text size="2">Ownership is account-only; protected actions require policy approval.</Text></li>
-          <li><Text size="2">Conversions to/from Coin go through protected actions with policy checks.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Token has <code>key</code> only (no <code>store</code>), cannot be wrapped or stored as a dynamic field.</Text></div>
+          <div><Text size="2">Ownership is account-only; protected actions require policy approval.</Text></div>
+          <div><Text size="2">Conversions to/from Coin go through protected actions with policy checks.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Design & policy tips</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Define a <strong>TokenPolicy</strong> and rules per action (transfer, spend, to/from coin).</Text></li>
-          <li><Text size="2">Compose reusable rules (limits, KYC/allowlist, service-specific spend) and keep them small.</Text></li>
-          <li><Text size="2">Prefer deny/allow lists in policy rules over ad-hoc checks for better auditability.</Text></li>
-          <li><Text size="2">Document which actions are enabled; default protected actions are disabled until policy approves.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Define a <strong>TokenPolicy</strong> and rules per action (transfer, spend, to/from coin).</Text></div>
+          <div><Text size="2">Compose reusable rules (limits, KYC/allowlist, service-specific spend) and keep them small.</Text></div>
+          <div><Text size="2">Prefer deny/allow lists in policy rules over ad-hoc checks for better auditability.</Text></div>
+          <div><Text size="2">Document which actions are enabled; default protected actions are disabled until policy approves.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Operational best practices</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Separate authorities: policy admin vs. issuance/minter (if any conversion/mint path exists).</Text></li>
-          <li><Text size="2">Log and monitor policy updates; treat policy capabilities like prod secrets.</Text></li>
-          <li><Text size="2">Test protected flows: transfer, spend, to_coin/from_coin with failing and passing rules.</Text></li>
-          <li><Text size="2">For regulated/blocked scenarios, use explicit rules rather than custom Move aborts.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Separate authorities: policy admin vs. issuance/minter (if any conversion/mint path exists).</Text></div>
+          <div><Text size="2">Log and monitor policy updates; treat policy capabilities like prod secrets.</Text></div>
+          <div><Text size="2">Test protected flows: transfer, spend, to_coin/from_coin with failing and passing rules.</Text></div>
+          <div><Text size="2">For regulated/blocked scenarios, use explicit rules rather than custom Move aborts.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />

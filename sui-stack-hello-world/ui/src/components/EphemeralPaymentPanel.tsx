@@ -234,14 +234,14 @@ export function EphemeralPaymentPanel() {
           Key Characteristics
         </Text>
         <Box asChild>
-          <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-            <li><Text size="1">✓ No duplicate detection enforced</Text></li>
-            <li><Text size="1">✓ No persistent payment records (lower storage cost)</Text></li>
-            <li><Text size="1">✓ Funds transfer immediately to receiver</Text></li>
-            <li><Text size="1">✓ PaymentReceipt returned for tracking</Text></li>
-            <li><Text size="1">✓ Events emitted for off-chain monitoring</Text></li>
-            <li><Text size="1">✓ Lower gas costs than registry payments</Text></li>
-          </ul>
+          <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+            <div><Text size="1">✓ No duplicate detection enforced</Text></div>
+            <div><Text size="1">✓ No persistent payment records (lower storage cost)</Text></div>
+            <div><Text size="1">✓ Funds transfer immediately to receiver</Text></div>
+            <div><Text size="1">✓ PaymentReceipt returned for tracking</Text></div>
+            <div><Text size="1">✓ Events emitted for off-chain monitoring</Text></div>
+            <div><Text size="1">✓ Lower gas costs than registry payments</Text></div>
+          </div>
         </Box>
       </Box>
 

@@ -17,33 +17,33 @@ export function SwapsInfo() {
 
       <Heading size="3">Direct coin swaps (no manager)</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2"><code>swap_exact_amount</code> base→quote: set <code>base_in &gt; 0</code>, <code>quote_in = 0</code>; returns Base, Quote, DEEP coins.</Text></li>
-          <li><Text size="2"><code>swap_exact_amount</code> quote→base: set <code>quote_in &gt; 0</code>, <code>base_in = 0</code>; returns Base, Quote, DEEP coins.</Text></li>
-          <li><Text size="2">Underlying exact-quantity swap is called by both paths; one of base/quote must be zero.</Text></li>
-          <li><Text size="2">Some input may remain if not divisible by lot size.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2"><code>swap_exact_amount</code> base→quote: set <code>base_in &gt; 0</code>, <code>quote_in = 0</code>; returns Base, Quote, DEEP coins.</Text></div>
+          <div><Text size="2"><code>swap_exact_amount</code> quote→base: set <code>quote_in &gt; 0</code>, <code>base_in = 0</code>; returns Base, Quote, DEEP coins.</Text></div>
+          <div><Text size="2">Underlying exact-quantity swap is called by both paths; one of base/quote must be zero.</Text></div>
+          <div><Text size="2">Some input may remain if not divisible by lot size.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Manager-based swaps</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Exact base→quote with BalanceManager (assumes DEEP fees, manager holds DEEP).</Text></li>
-          <li><Text size="2">Exact quote→base with BalanceManager (assumes DEEP fees, manager holds DEEP).</Text></li>
-          <li><Text size="2">Exact quantity with BalanceManager: core helper both call into.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Exact base→quote with BalanceManager (assumes DEEP fees, manager holds DEEP).</Text></div>
+          <div><Text size="2">Exact quote→base with BalanceManager (assumes DEEP fees, manager holds DEEP).</Text></div>
+          <div><Text size="2">Exact quantity with BalanceManager: core helper both call into.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Simulation</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2"><code>get_amount_out</code>: simulate swap; returns exact DEEP required.</Text></li>
-          <li><Text size="2">You can overestimate DEEP input in the real swap; unused DEEP is refunded.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2"><code>get_amount_out</code>: simulate swap; returns exact DEEP required.</Text></div>
+          <div><Text size="2">You can overestimate DEEP input in the real swap; unused DEEP is refunded.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />

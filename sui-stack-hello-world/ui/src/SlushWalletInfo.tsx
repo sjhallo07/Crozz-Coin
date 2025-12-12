@@ -17,11 +17,11 @@ export function SlushWalletInfo() {
 
       <Heading size="3">Key capabilities</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Detects dApps via Wallet Standard discovery and exposes previously authorized accounts on load.</Text></li>
-          <li><Text size="2">Supports signing + execution flows (<code>sui:signTransaction</code>, <code>sui:signAndExecuteTransaction</code>, personal messages) with session persistence.</Text></li>
-          <li><Text size="2">Runs as a Chrome/Chromium extension or hosted popup (<Link href="https://my.slush.app" target="_blank">my.slush.app</Link>) when extension is absent.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Detects dApps via Wallet Standard discovery and exposes previously authorized accounts on load.</Text></div>
+          <div><Text size="2">Supports signing + execution flows (<code>sui:signTransaction</code>, <code>sui:signAndExecuteTransaction</code>, personal messages) with session persistence.</Text></div>
+          <div><Text size="2">Runs as a Chrome/Chromium extension or hosted popup (<Link href="https://my.slush.app" target="_blank">my.slush.app</Link>) when extension is absent.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
@@ -29,9 +29,9 @@ export function SlushWalletInfo() {
       <Heading size="3">Connect flow in this dApp</Heading>
       <Box asChild>
         <ol style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Click <strong>Connect Wallet</strong>; Slush appears in the wallet picker (extension or hosted modal).</Text></li>
-          <li><Text size="2">Approve the connection request. Previously authorized sessions are restored automatically.</Text></li>
-          <li><Text size="2">Use the buttons below to call Sui Move functions; Slush prompts for each transaction or message signature.</Text></li>
+          <div><Text size="2">Click <strong>Connect Wallet</strong>; Slush appears in the wallet picker (extension or hosted modal).</Text></div>
+          <div><Text size="2">Approve the connection request. Previously authorized sessions are restored automatically.</Text></div>
+          <div><Text size="2">Use the buttons below to call Sui Move functions; Slush prompts for each transaction or message signature.</Text></div>
         </ol>
       </Box>
 
@@ -39,11 +39,11 @@ export function SlushWalletInfo() {
 
       <Heading size="3">Developer integration snippet</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Import <code>registerSlushWallet</code> from <code>@mysten/slush-wallet</code> and register once on app bootstrap.</Text></li>
-          <li><Text size="2">Guard the call with <code>if (typeof window !== "undefined")</code> to avoid SSR build-time access to browser APIs.</Text></li>
-          <li><Text size="2">A sample is implemented in <code>src/main.tsx</code> so Slush's hosted fallback is available when the extension is missing.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Import <code>registerSlushWallet</code> from <code>@mysten/slush-wallet</code> and register once on app bootstrap.</Text></div>
+          <div><Text size="2">Guard the call with <code>if (typeof window !== "undefined")</code> to avoid SSR build-time access to browser APIs.</Text></div>
+          <div><Text size="2">A sample is implemented in <code>src/main.tsx</code> so Slush's hosted fallback is available when the extension is missing.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />

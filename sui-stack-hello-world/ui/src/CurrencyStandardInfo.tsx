@@ -18,104 +18,104 @@ export function CurrencyStandardInfo() {
 
       <Heading size="3">Creation flows</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div>
             <Text size="2">
               <strong>Standard:</strong> <code>new_currency</code> (requires <code>key</code> ability). Immediately derives
               a shared <code>Currency&lt;T&gt;</code> when <code>finalize</code> is called.
             </Text>
-          </li>
-          <li>
+          </div>
+          <div>
             <Text size="2">
               <strong>One-Time Witness:</strong> <code>new_currency_with_otw</code> (requires OTW proof). After init you must
               call <code>finalize_registration</code> in a separate transaction to promote it into the registry.
             </Text>
-          </li>
-          <li>
+          </div>
+          <div>
             <Text size="2">
               Both flows produce <code>CurrencyInitializer</code> which you can mutate—mark regulated, set fixed supply,
               or burn-only—before finalization.
             </Text>
-          </li>
-        </ul>
+          </div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Supply & regulation</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div>
             <Text size="2">
               Supply states are <strong>Unknown</strong>, <strong>Fixed</strong>, or <strong>BurnOnly</strong>. Switching is one-way:
               you cannot revert from Fixed/BurnOnly back to Unknown.
             </Text>
-          </li>
-          <li>
+          </div>
+          <div>
             <Text size="2">
               Regulated coins capture deny-cap provenance inside <code>RegulatedState</code>; you can migrate legacy states via
               <code>migrate_regulated_state_by_metadata</code> or <code>_by_cap</code>.
             </Text>
-          </li>
-          <li>
+          </div>
+          <div>
             <Text size="2">
               Burning via <code>coin_registry::burn</code> / <code>burn_balance</code> only works for BurnOnly supply; otherwise
               require TreasuryCap in the <code>coin</code> module.
             </Text>
-          </li>
-        </ul>
+          </div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Metadata governance</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div>
             <Text size="2">
               <code>MetadataCap</code> gates updates to name, symbol, description, and icon. It can be claimed once and optionally
               deleted to freeze metadata permanently.
             </Text>
-          </li>
-          <li>
+          </div>
+          <div>
             <Text size="2">
               Legacy <code>CoinMetadata</code> can be migrated with <code>migrate_legacy_metadata</code>; once claimed, you must use
               <code>set_*</code> helpers instead of legacy updates.
             </Text>
-          </li>
-          <li>
+          </div>
+          <div>
             <Text size="2">
               Dynamic fields (Bag + VecMap) allow extensibility—use them for custom analytics, attestations, or off-chain
               proof references without altering the base struct.
             </Text>
-          </li>
-        </ul>
+          </div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Migration roadmap</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div>
             <Text size="2">
               Map legacy constructors: <code>coin::create_currency</code> → <code>coin_registry::new_currency_with_otw</code> and
               <code>coin::create_regulated_currency_v2</code> → <code>new_currency_with_otw</code> + <code>make_regulated</code>.
             </Text>
-          </li>
-          <li>
+          </div>
+          <div>
             <Text size="2">
               After migration, persist <code>TreasuryCap</code> IDs inside <code>Currency</code> using <code>set_treasury_cap_id</code> to ensure
               indexers and wallets locate supply controllers.
             </Text>
-          </li>
-          <li>
+          </div>
+          <div>
             <Text size="2">
               Consider emitting events when finalizing or migrating so dApps can reconcile registry state with off-chain
               inventory systems.
             </Text>
-          </li>
-        </ul>
+          </div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />

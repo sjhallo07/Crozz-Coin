@@ -1,7 +1,7 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
-// Fix: useQuery must be imported from @tanstack/react-query, not @mysten/dapp-kit
 import { useQuery } from "@tanstack/react-query";
+import { useSuiClient } from "@mysten/dapp-kit";
 import { useNetworkVariable } from "../networkConfig";
 
 export interface GreetingObject {
@@ -23,7 +23,7 @@ export function useQueryAllGreetings() {
 
       try {
         const objects = await client.getOwnedObjects({
-          owner: "0x0", // Query all objects of this type
+          owner: "0x0",
           filter: {
             MatchAll: [
               {
@@ -38,7 +38,7 @@ export function useQueryAllGreetings() {
         });
 
         return (objects.data || [])
-          .map((obj) => {
+          .map((obj: any) => {
             if (obj.data?.content?.dataType === "moveObject") {
               const content = obj.data.content as any;
               const fields = content.fields as any;
@@ -58,12 +58,8 @@ export function useQueryAllGreetings() {
         return [];
       }
     },
-    refetchInterval: 5000, // Refetch every 5 seconds
+    enabled: !!helloWorldPackageId,
   });
 
-  return {
-    allGreetings: data || [],
-    isLoading,
-    error,
-  };
+  return { greetings: data || [], isLoading, error };
 }

@@ -44,14 +44,14 @@ export function WalletConnectSection() {
             <Text size="2" color="gray" as="p">
               Connect your wallet to get started. You can access:
             </Text>
-            <Box as="ul" style={{ marginTop: "8px", paddingLeft: "20px", textAlign: "left" }}>
-              <Text as="li" size="2" color="gray">
+            <Box as="div" style={{ marginTop: "8px", paddingLeft: "20px", textAlign: "left" }}>
+              <Text as="div" size="2" color="gray">
                 User dashboard to create and manage greetings
               </Text>
-              <Text as="li" size="2" color="gray">
+              <Text as="div" size="2" color="gray">
                 Admin panel with full contract control
               </Text>
-              <Text as="li" size="2" color="gray">
+              <Text as="div" size="2" color="gray">
                 Configuration management for smart contract
               </Text>
             </Box>

@@ -18,64 +18,64 @@ export function ReferencesOverviewInfo() {
 
       <Heading size="3">RPC & GraphQL</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2"><strong>Sui RPC</strong>: Framework and RPC docs for blockchain code internals.</Text></li>
-          <li><Text size="2"><strong>GraphQL for Sui RPC</strong>: Public service enabling efficient network interaction (recommended for new projects).</Text></li>
-          <li><Text size="2"><strong>JSON-RPC</strong>: Legacy reference for projects not yet migrated to GraphQL.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2"><strong>Sui RPC</strong>: Framework and RPC docs for blockchain code internals.</Text></div>
+          <div><Text size="2"><strong>GraphQL for Sui RPC</strong>: Public service enabling efficient network interaction (recommended for new projects).</Text></div>
+          <div><Text size="2"><strong>JSON-RPC</strong>: Legacy reference for projects not yet migrated to GraphQL.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Move resources</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2"><strong>Sui Framework</strong>: Move modules for Sui logic and standards (auto-generated from code comments).</Text></li>
-          <li><Text size="2"><strong>The Move Book</strong>: Comprehensive guide to Move on Sui.</Text></li>
-          <li><Text size="2"><strong>The Move Reference</strong>: Architecture and syntax documentation.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2"><strong>Sui Framework</strong>: Move modules for Sui logic and standards (auto-generated from code comments).</Text></div>
+          <div><Text size="2"><strong>The Move Book</strong>: Comprehensive guide to Move on Sui.</Text></div>
+          <div><Text size="2"><strong>The Move Reference</strong>: Architecture and syntax documentation.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">CLI tools</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2"><strong>Sui Client CLI</strong>: Generate addresses, access networks (base commands for feature sets).</Text></li>
-          <li><Text size="2"><strong>Sui Client PTB CLI</strong>: Build, preview, execute programmable transaction blocks from terminal.</Text></li>
-          <li><Text size="2"><strong>Sui Move CLI</strong>: Access Sui Move functions on-chain.</Text></li>
-          <li><Text size="2"><strong>Sui Replay CLI</strong>: Access Sui Move functions on-chain (same as Move CLI).</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2"><strong>Sui Client CLI</strong>: Generate addresses, access networks (base commands for feature sets).</Text></div>
+          <div><Text size="2"><strong>Sui Client PTB CLI</strong>: Build, preview, execute programmable transaction blocks from terminal.</Text></div>
+          <div><Text size="2"><strong>Sui Move CLI</strong>: Access Sui Move functions on-chain.</Text></div>
+          <div><Text size="2"><strong>Sui Replay CLI</strong>: Access Sui Move functions on-chain (same as Move CLI).</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">IDE support (VSCode)</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div>
             <Text size="2">
               <strong>Move extension</strong>: Code navigation, completion, diagnostics for Move (
               <Link href="https://marketplace.visualstudio.com/items?itemName=mysten.move" target="_blank">install</Link>).
             </Text>
-          </li>
-          <li>
+          </div>
+          <div>
             <Text size="2">
               <strong>Move Trace Debugger</strong>: Debug execution traces directly in VS Code (
               <Link href="https://marketplace.visualstudio.com/items?itemName=mysten.move-trace-debug" target="_blank">install</Link>).
             </Text>
-          </li>
-        </ul>
+          </div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">SDKs</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2"><strong>Sui TypeScript SDK</strong>: Official TS SDK with its own microsite for interaction in TypeScript.</Text></li>
-          <li><Text size="2"><strong>Sui Rust SDK</strong>: Rust wrappers around Sui API; interact with Sui networks via Rust.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2"><strong>Sui TypeScript SDK</strong>: Official TS SDK with its own microsite for interaction in TypeScript.</Text></div>
+          <div><Text size="2"><strong>Sui Rust SDK</strong>: Rust wrappers around Sui API; interact with Sui networks via Rust.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />

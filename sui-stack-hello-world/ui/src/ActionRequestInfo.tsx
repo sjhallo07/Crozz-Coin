@@ -17,38 +17,38 @@ export function ActionRequestInfo() {
 
       <Heading size="3">Fields on ActionRequest</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">name: <code>transfer</code> | <code>spend</code> | <code>to_coin</code> | <code>from_coin</code> | custom</Text></li>
-          <li><Text size="2">amount: token amount involved</Text></li>
-          <li><Text size="2">sender: initiator</Text></li>
-          <li><Text size="2">recipient: present for transfer/custom actions</Text></li>
-          <li><Text size="2">spent_balance: present for spend actions</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">name: <code>transfer</code> | <code>spend</code> | <code>to_coin</code> | <code>from_coin</code> | custom</Text></div>
+          <div><Text size="2">amount: token amount involved</Text></div>
+          <div><Text size="2">sender: initiator</Text></div>
+          <div><Text size="2">recipient: present for transfer/custom actions</Text></div>
+          <div><Text size="2">spent_balance: present for spend actions</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Ways to confirm</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2"><strong>TreasuryCap</strong>: <code>token::confirm_with_treasury_cap</code> (admin/mint + bypass policy)</Text></li>
-          <li><Text size="2"><strong>TokenPolicy</strong>: shared policy, <code>token::confirm_request</code> / <code>confirm_request_mut</code> (enables public flows)</Text></li>
-          <li><Text size="2"><strong>TokenPolicyCap</strong>: <code>token::confirm_with_policy_cap</code> (cannot confirm spend)</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2"><strong>TreasuryCap</strong>: <code>token::confirm_with_treasury_cap</code> (admin/mint + bypass policy)</Text></div>
+          <div><Text size="2"><strong>TokenPolicy</strong>: shared policy, <code>token::confirm_request</code> / <code>confirm_request_mut</code> (enables public flows)</Text></div>
+          <div><Text size="2"><strong>TokenPolicyCap</strong>: <code>token::confirm_with_policy_cap</code> (cannot confirm spend)</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Best practices</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Keep admin paths separate: TreasuryCap for ops, TokenPolicy for user flows.</Text></li>
-          <li><Text size="2">Explicitly list allowed actions in TokenPolicy; default is deny.</Text></li>
-          <li><Text size="2">Add rules per action (limits, allowlists, KYC, service scopes). Test pass/fail cases.</Text></li>
-          <li><Text size="2">If allowing to_coin/from_coin, ensure policy guards conversions; otherwise you open the loop.</Text></li>
-          <li><Text size="2">Log/monitor confirmations; treat policy caps like production secrets.</Text></li>
-          <li><Text size="2">Use approvals (<code>token::add_approval</code>) to collect rule attestations before confirming.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Keep admin paths separate: TreasuryCap for ops, TokenPolicy for user flows.</Text></div>
+          <div><Text size="2">Explicitly list allowed actions in TokenPolicy; default is deny.</Text></div>
+          <div><Text size="2">Add rules per action (limits, allowlists, KYC, service scopes). Test pass/fail cases.</Text></div>
+          <div><Text size="2">If allowing to_coin/from_coin, ensure policy guards conversions; otherwise you open the loop.</Text></div>
+          <div><Text size="2">Log/monitor confirmations; treat policy caps like production secrets.</Text></div>
+          <div><Text size="2">Use approvals (<code>token::add_approval</code>) to collect rule attestations before confirming.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />

@@ -17,44 +17,44 @@ export function DeepBookSdkInfo() {
 
       <Heading size="3">Install</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2"><code>pnpm add @mysten/deepbook-v3</code> (or npm/yarn).</Text></li>
-          <li><Text size="2">Constants: <Link href="https://github.com/MystenLabs/ts-sdks/blob/main/packages/deepbook-v3/src/utils/constants.ts" target="_blank">utils/constants.ts</Link> holds latest package/pool/coin IDs.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2"><code>pnpm add @mysten/deepbook-v3</code> (or npm/yarn).</Text></div>
+          <div><Text size="2">Constants: <Link href="https://github.com/MystenLabs/ts-sdks/blob/main/packages/deepbook-v3/src/utils/constants.ts" target="_blank">utils/constants.ts</Link> holds latest package/pool/coin IDs.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Client setup</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Create <code>DeepBookClient</code> with <code>{`{ client: SuiClient, address, env }`}</code>; use Sui TS SDK for keypairs/signing.</Text></li>
-          <li><Text size="2">Provide <em>balanceManagers</em> map if you already have one; otherwise SDK can create+share then re-init.</Text></li>
-          <li><Text size="2">Keys: coins in <em>CoinMap</em>, pools in <em>PoolMap</em>, managers keyed by your labels (e.g., <code>MANAGER_1</code>).</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Create <code>DeepBookClient</code> with <code>{`{ client: SuiClient, address, env }`}</code>; use Sui TS SDK for keypairs/signing.</Text></div>
+          <div><Text size="2">Provide <em>balanceManagers</em> map if you already have one; otherwise SDK can create+share then re-init.</Text></div>
+          <div><Text size="2">Keys: coins in <em>CoinMap</em>, pools in <em>PoolMap</em>, managers keyed by your labels (e.g., <code>MANAGER_1</code>).</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Balance manager patterns</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Existing manager: pass <code>{`{ address, tradeCap }`}</code> map to constructor.</Text></li>
-          <li><Text size="2">Create manager: use <code>balanceManager.createAndShareBalanceManager()</code> in a Transaction; parse created objectId; re-init client with new map.</Text></li>
-          <li><Text size="2">Ensure <code>tradeCap</code> is provided when delegating trading.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Existing manager: pass <code>{`{ address, tradeCap }`}</code> map to constructor.</Text></div>
+          <div><Text size="2">Create manager: use <code>balanceManager.createAndShareBalanceManager()</code> in a Transaction; parse created objectId; re-init client with new map.</Text></div>
+          <div><Text size="2">Ensure <code>tradeCap</code> is provided when delegating trading.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Typical usage</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Read helpers: <code>checkManagerBalance</code>, <code>getLevel2Range</code>, etc.</Text></li>
-          <li><Text size="2">Balance ops: <code>depositIntoManager</code>, <code>withdrawAllFromManager</code>.</Text></li>
-          <li><Text size="2">Trading: place limit/market via SDK PTB builders; flash loans helpers available.</Text></li>
-          <li><Text size="2">Custom PTBs: compose SDK builders inside a <code>Transaction</code> then sign+execute with your keypair.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Read helpers: <code>checkManagerBalance</code>, <code>getLevel2Range</code>, etc.</Text></div>
+          <div><Text size="2">Balance ops: <code>depositIntoManager</code>, <code>withdrawAllFromManager</code>.</Text></div>
+          <div><Text size="2">Trading: place limit/market via SDK PTB builders; flash loans helpers available.</Text></div>
+          <div><Text size="2">Custom PTBs: compose SDK builders inside a <code>Transaction</code> then sign+execute with your keypair.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />

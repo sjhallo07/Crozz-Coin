@@ -17,44 +17,44 @@ export function DeepBookMarginSdkInfo() {
 
       <Heading size="3">Install & setup</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2"><code>pnpm add @mysten/deepbook-v3</code> (margin included).</Text></li>
-          <li><Text size="2">Create <code>DeepBookClient</code> with <code>marginManagers</code> map keyed by label (e.g., <code>MARGIN_MANAGER_1</code>).</Text></li>
-          <li><Text size="2">Each manager: <code>{`{ address, poolKey }`}</code> where <code>poolKey</code> is the margin pool (e.g., <code>SUI_DBUSDC</code>).</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2"><code>pnpm add @mysten/deepbook-v3</code> (margin included).</Text></div>
+          <div><Text size="2">Create <code>DeepBookClient</code> with <code>marginManagers</code> map keyed by label (e.g., <code>MARGIN_MANAGER_1</code>).</Text></div>
+          <div><Text size="2">Each manager: <code>{`{ address, poolKey }`}</code> where <code>poolKey</code> is the margin pool (e.g., <code>SUI_DBUSDC</code>).</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Margin manager patterns</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Existing: pass <code>{`{ address, poolKey }`}</code> map to constructor.</Text></li>
-          <li><Text size="2">Create: <code>marginManager.newMarginManager(poolKey)</code> in a Transaction; parse created objectId; re-init client with map.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Existing: pass <code>{`{ address, poolKey }`}</code> map to constructor.</Text></div>
+          <div><Text size="2">Create: <code>marginManager.newMarginManager(poolKey)</code> in a Transaction; parse created objectId; re-init client with map.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Leveraged ops</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Deposit collateral: <code>marginManager.deposit(managerKey, coin, amount)</code>.</Text></li>
-          <li><Text size="2">Borrow: <code>marginManager.borrowBase(managerKey, poolKey, qty)</code>.</Text></li>
-          <li><Text size="2">Place leveraged order: <code>poolProxy.placeLimitOrder({`{ poolKey, marginManagerKey, price, quantity, isBid, payWithDeep }`})</code>.</Text></li>
-          <li><Text size="2">Provide liquidity: mint <em>SupplierCap</em> → supply via <code>marginPool.supplyToMarginPool</code>.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Deposit collateral: <code>marginManager.deposit(managerKey, coin, amount)</code>.</Text></div>
+          <div><Text size="2">Borrow: <code>marginManager.borrowBase(managerKey, poolKey, qty)</code>.</Text></div>
+          <div><Text size="2">Place leveraged order: <code>poolProxy.placeLimitOrder({`{ poolKey, marginManagerKey, price, quantity, isBid, payWithDeep }`})</code>.</Text></div>
+          <div><Text size="2">Provide liquidity: mint <em>SupplierCap</em> → supply via <code>marginPool.supplyToMarginPool</code>.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Default coins/pools</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Testnet: DEEP, SUI, DBUSDC, DBUSDT (same as spot).</Text></li>
-          <li><Text size="2">Mainnet: DEEP, SUI, USDC, USDT, WETH.</Text></li>
-          <li><Text size="2">Override via <code>CoinMap</code> / <code>PoolMap</code> at construction if custom assets needed.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Testnet: DEEP, SUI, DBUSDC, DBUSDT (same as spot).</Text></div>
+          <div><Text size="2">Mainnet: DEEP, SUI, USDC, USDT, WETH.</Text></div>
+          <div><Text size="2">Override via <code>CoinMap</code> / <code>PoolMap</code> at construction if custom assets needed.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />

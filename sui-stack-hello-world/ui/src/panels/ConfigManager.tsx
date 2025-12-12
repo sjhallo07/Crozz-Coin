@@ -237,14 +237,14 @@ export function ConfigManager() {
             <Text size="2">
               These settings control the behavior of the greeting smart contract. Changes are stored locally and can be synchronized with the on-chain contract.
             </Text>
-            <Box as="ul" style={{ paddingLeft: "20px", marginTop: "8px" }}>
-              <Text as="li" size="2">
+            <Box as="div" style={{ paddingLeft: "20px", marginTop: "8px" }}>
+              <Text as="div" size="2">
                 <strong>Package ID:</strong> {helloWorldPackageId?.slice(0, 12)}...
               </Text>
-              <Text as="li" size="2">
+              <Text as="div" size="2">
                 Storage: LocalStorage
               </Text>
-              <Text as="li" size="2">
+              <Text as="div" size="2">
                 Last Modified: {new Date().toLocaleString()}
               </Text>
             </Box>

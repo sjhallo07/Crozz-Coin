@@ -232,15 +232,15 @@ export function CreateDisplayPanel() {
           Recommended Fields
         </Text>
         <Box asChild>
-          <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-            <li><Text size="1"><Code>name</Code>: Object name (e.g., <Code>{`{name}`}</Code>)</Text></li>
-            <li><Text size="1"><Code>description</Code>: Object description</Text></li>
-            <li><Text size="1"><Code>image_url</Code>: Full image URL (e.g., <Code>{`https://example.com/{id}.png`}</Code>)</Text></li>
-            <li><Text size="1"><Code>thumbnail_url</Code>: Smaller preview image</Text></li>
-            <li><Text size="1"><Code>link</Code>: Application URL (e.g., <Code>{`https://app.com/item/{id}`}</Code>)</Text></li>
-            <li><Text size="1"><Code>project_url</Code>: Project website</Text></li>
-            <li><Text size="1"><Code>creator</Code>: Creator name or address</Text></li>
-          </ul>
+          <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+            <div><Text size="1"><Code>name</Code>: Object name (e.g., <Code>{`{name}`}</Code>)</Text></div>
+            <div><Text size="1"><Code>description</Code>: Object description</Text></div>
+            <div><Text size="1"><Code>image_url</Code>: Full image URL (e.g., <Code>{`https://example.com/{id}.png`}</Code>)</Text></div>
+            <div><Text size="1"><Code>thumbnail_url</Code>: Smaller preview image</Text></div>
+            <div><Text size="1"><Code>link</Code>: Application URL (e.g., <Code>{`https://app.com/item/{id}`}</Code>)</Text></div>
+            <div><Text size="1"><Code>project_url</Code>: Project website</Text></div>
+            <div><Text size="1"><Code>creator</Code>: Creator name or address</Text></div>
+          </div>
         </Box>
       </Box>
 

@@ -17,13 +17,13 @@ export function PermissionlessPoolInfo() {
 
       <Heading size="3">Create a Pool</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2"><code>create_permissionless_pool()</code> builds the Pool; fails if pair already exists.</Text></li>
-          <li><Text size="2">Creation fee: <strong>500 DEEP</strong>.</Text></li>
-          <li><Text size="2">Tick size = <code>10^(9 - base_decimals + quote_decimals - decimal_desired)</code>; ensure decimal_desired ≤ 1bps of price (e.g., target 3 decimals requires 0.001/price ≤ 0.0001).</Text></li>
-          <li><Text size="2">Lot size (MIST of base): power of 10, ≥ 1,000, ≤ min size, ~ $0.01–$0.10 nominal.</Text></li>
-          <li><Text size="2">Min size (MIST of base): power of 10, ≥ lot size, ~ $0.10–$1.00 nominal.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2"><code>create_permissionless_pool()</code> builds the Pool; fails if pair already exists.</Text></div>
+          <div><Text size="2">Creation fee: <strong>500 DEEP</strong>.</Text></div>
+          <div><Text size="2">Tick size = <code>10^(9 - base_decimals + quote_decimals - decimal_desired)</code>; ensure decimal_desired ≤ 1bps of price (e.g., target 3 decimals requires 0.001/price ≤ 0.0001).</Text></div>
+          <div><Text size="2">Lot size (MIST of base): power of 10, ≥ 1,000, ≤ min size, ~ $0.01–$0.10 nominal.</Text></div>
+          <div><Text size="2">Min size (MIST of base): power of 10, ≥ lot size, ~ $0.10–$1.00 nominal.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
@@ -31,10 +31,10 @@ export function PermissionlessPoolInfo() {
       <Heading size="3">Enable DEEP fee discount</Heading>
       <Box asChild>
         <ol style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Pool must include <strong>USDC</strong> or <strong>SUI</strong> as base or quote.</Text></li>
-          <li><Text size="2">Run cron to call <code>add_deep_price_point()</code> every 1–10 minutes to refresh DEEP price for fee calc.</Text></li>
-          <li><Text size="2">Reference pool IDs: <code>DEEP/USDC</code> <code>0xf948...95ce</code>; <code>DEEP/SUI</code> <code>0xb663...fc22</code>.</Text></li>
-          <li><Text size="2">When enabled, paying fees in DEEP gets ~20% discount vs input-token fees.</Text></li>
+          <div><Text size="2">Pool must include <strong>USDC</strong> or <strong>SUI</strong> as base or quote.</Text></div>
+          <div><Text size="2">Run cron to call <code>add_deep_price_point()</code> every 1–10 minutes to refresh DEEP price for fee calc.</Text></div>
+          <div><Text size="2">Reference pool IDs: <code>DEEP/USDC</code> <code>0xf948...95ce</code>; <code>DEEP/SUI</code> <code>0xb663...fc22</code>.</Text></div>
+          <div><Text size="2">When enabled, paying fees in DEEP gets ~20% discount vs input-token fees.</Text></div>
         </ol>
       </Box>
 
@@ -42,9 +42,9 @@ export function PermissionlessPoolInfo() {
 
       <Heading size="3">Post-upgrade hygiene</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">After contract upgrades, call <code>update_allowed_versions()</code> with pool + registry to permit new versions.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">After contract upgrades, call <code>update_allowed_versions()</code> with pool + registry to permit new versions.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />

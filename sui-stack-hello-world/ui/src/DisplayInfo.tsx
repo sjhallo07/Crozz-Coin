@@ -17,23 +17,23 @@ export function DisplayInfo() {
 
       <Heading size="3">Core idea</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Template strings using <code>{`{property}`}</code> to substitute object fields.</Text></li>
-          <li><Text size="2">Create with <code>display::new&lt;T&gt;</code> (or <code>new_with_fields</code>) using a <code>Publisher</code> owned by the package.</Text></li>
-          <li><Text size="2">Update with <code>add_multiple</code>, <code>edit</code>, <code>remove</code>, then commit via <code>update_version</code> (emits event).</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Template strings using <code>{`{property}`}</code> to substitute object fields.</Text></div>
+          <div><Text size="2">Create with <code>display::new&lt;T&gt;</code> (or <code>new_with_fields</code>) using a <code>Publisher</code> owned by the package.</Text></div>
+          <div><Text size="2">Update with <code>add_multiple</code>, <code>edit</code>, <code>remove</code>, then commit via <code>update_version</code> (emits event).</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Recommended fields</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">name, description</Text></li>
-          <li><Text size="2">link, project_url</Text></li>
-          <li><Text size="2">image_url, thumbnail_url</Text></li>
-          <li><Text size="2">creator (or other provenance data)</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">name, description</Text></div>
+          <div><Text size="2">link, project_url</Text></div>
+          <div><Text size="2">image_url, thumbnail_url</Text></div>
+          <div><Text size="2">creator (or other provenance data)</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
@@ -41,10 +41,10 @@ export function DisplayInfo() {
       <Heading size="3">Example flow</Heading>
       <Box asChild>
         <ol style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Claim <code>Publisher</code> in module init (one-time witness).</Text></li>
-          <li><Text size="2">Build key/value vectors; include templated fields like <code>{`{name}`}</code>, <code>{`{id}`}</code>, <code>{`{image_url}`}</code>.</Text></li>
-          <li><Text size="2">Create <code>Display&lt;T&gt;</code>, call <code>update_version</code>, transfer Publisher/Display if desired.</Text></li>
-          <li><Text size="2">Clients query with <code>showDisplay: true</code> to get rendered metadata.</Text></li>
+          <div><Text size="2">Claim <code>Publisher</code> in module init (one-time witness).</Text></div>
+          <div><Text size="2">Build key/value vectors; include templated fields like <code>{`{name}`}</code>, <code>{`{id}`}</code>, <code>{`{image_url}`}</code>.</Text></div>
+          <div><Text size="2">Create <code>Display&lt;T&gt;</code>, call <code>update_version</code>, transfer Publisher/Display if desired.</Text></div>
+          <div><Text size="2">Clients query with <code>showDisplay: true</code> to get rendered metadata.</Text></div>
         </ol>
       </Box>
 
@@ -52,11 +52,11 @@ export function DisplayInfo() {
 
       <Heading size="3">Why it matters</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Standardized metadata for wallets/explorers without hardcoding off-chain JSON.</Text></li>
-          <li><Text size="2">Supports dynamic templating (e.g., URL composed from object id/fields).</Text></li>
-          <li><Text size="2">Optimizes on-chain storage by templating common fields (esp. large item sets).</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Standardized metadata for wallets/explorers without hardcoding off-chain JSON.</Text></div>
+          <div><Text size="2">Supports dynamic templating (e.g., URL composed from object id/fields).</Text></div>
+          <div><Text size="2">Optimizes on-chain storage by templating common fields (esp. large item sets).</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />

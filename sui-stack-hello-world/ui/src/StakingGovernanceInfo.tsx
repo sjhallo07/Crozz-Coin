@@ -17,40 +17,40 @@ export function StakingGovernanceInfo() {
 
       <Heading size="3">Stake / Unstake</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Stake: DEEP must be in <strong>BalanceManager</strong>; becomes active next epoch. Active stake ≥ stake_required unlocks reduced taker fees and maker rebate eligibility.</Text></li>
-          <li><Text size="2">Unstake: removes all active/inactive stake, clears votes, forfeits maker rebates for the epoch, and disables reduced taker fees for the remainder. Funds return to BalanceManager immediately.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Stake: DEEP must be in <strong>BalanceManager</strong>; becomes active next epoch. Active stake ≥ stake_required unlocks reduced taker fees and maker rebate eligibility.</Text></div>
+          <div><Text size="2">Unstake: removes all active/inactive stake, clears votes, forfeits maker rebates for the epoch, and disables reduced taker fees for the remainder. Funds return to BalanceManager immediately.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Proposals</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">One proposal per BalanceManager per epoch; submitting also casts your vote.</Text></li>
-          <li><Text size="2">Must have non-zero active stake; if max proposals reached, the lowest-vote proposal is evicted. If your voting power is below that floor, proposal is rejected.</Text></li>
-          <li><Text size="2">Params proposed: taker_fee, maker_fee, stake_required (per pool).</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">One proposal per BalanceManager per epoch; submitting also casts your vote.</Text></div>
+          <div><Text size="2">Must have non-zero active stake; if max proposals reached, the lowest-vote proposal is evicted. If your voting power is below that floor, proposal is rejected.</Text></div>
+          <div><Text size="2">Params proposed: taker_fee, maker_fee, stake_required (per pool).</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Voting</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Non-zero voting power required (depends on staked DEEP per governance formula).</Text></li>
-          <li><Text size="2">All voting power goes to a single proposal; re-voting moves your prior vote.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Non-zero voting power required (depends on staked DEEP per governance formula).</Text></div>
+          <div><Text size="2">All voting power goes to a single proposal; re-voting moves your prior vote.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Rebates</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Claim rebates for the BalanceManager if available. Requires rewards to claim; updates BalanceManager with claimed amounts.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Claim rebates for the BalanceManager if available. Requires rewards to claim; updates BalanceManager with claimed amounts.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />

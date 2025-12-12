@@ -45,13 +45,13 @@ export function DeepBookV3Info() {
             DeepBookV3 is a powerful decentralized exchange (DEX) protocol on Sui
             enabling market makers and traders to:
           </Text>
-          <ul style={{ marginTop: "8px", marginLeft: "20px", fontSize: "14px" }}>
-            <li>Place limit orders with customizable price levels</li>
-            <li>Execute flash loans without collateral</li>
-            <li>Access deep liquidity pools</li>
-            <li>Manage balance/custody through BalanceManager</li>
-            <li>Trade against permissionless pools</li>
-          </ul>
+          <div style={{ marginTop: "8px", marginLeft: "20px", fontSize: "14px" }}>
+            <div>Place limit orders with customizable price levels</div>
+            <div>Execute flash loans without collateral</div>
+            <div>Access deep liquidity pools</div>
+            <div>Manage balance/custody through BalanceManager</div>
+            <div>Trade against permissionless pools</div>
+          </div>
           <Text size="1" color="gray" style={{ marginTop: "12px" }}>
             <strong>SDK:</strong> @mysten/deepbook-v3 | 
             <strong style={{ marginLeft: "8px" }}>Docs:</strong>{" "}
@@ -231,13 +231,13 @@ export function DeepBookV3Info() {
                   <Text size="1" style={{ marginTop: "8px" }}>
                     By using DeepBook, you acknowledge:
                   </Text>
-                  <ul style={{ marginTop: "8px", marginLeft: "16px", fontSize: "13px" }}>
-                    <li>I have read and understood these risks</li>
-                    <li>I only trade with funds I can afford to lose</li>
-                    <li>I take full responsibility for losses</li>
-                    <li>I have tested extensively on devnet/testnet</li>
-                    <li>I have NOT hardcoded secrets or private keys</li>
-                  </ul>
+                  <div style={{ marginTop: "8px", marginLeft: "16px", fontSize: "13px" }}>
+                    <div>I have read and understood these risks</div>
+                    <div>I only trade with funds I can afford to lose</div>
+                    <div>I take full responsibility for losses</div>
+                    <div>I have tested extensively on devnet/testnet</div>
+                    <div>I have NOT hardcoded secrets or private keys</div>
+                  </div>
                 </Box>
               </Flex>
 

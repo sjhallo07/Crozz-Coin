@@ -17,54 +17,54 @@ export function BalanceManagerInfo() {
 
       <Heading size="3">Creation options</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2"><code>new()</code>: create then <strong>share</strong> in same txn (optionally with deposits).</Text></li>
-          <li><Text size="2"><code>new_with_custom_owner()</code>: same but set a custom owner; must share.</Text></li>
-          <li><Text size="2"><code>new_with_custom_owner_and_caps()</code>: custom owner + returns <em>DepositCap</em>, <em>WithdrawCap</em>, <em>TradeCap</em> in one call; share required.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2"><code>new()</code>: create then <strong>share</strong> in same txn (optionally with deposits).</Text></div>
+          <div><Text size="2"><code>new_with_custom_owner()</code>: same but set a custom owner; must share.</Text></div>
+          <div><Text size="2"><code>new_with_custom_owner_and_caps()</code>: custom owner + returns <em>DepositCap</em>, <em>WithdrawCap</em>, <em>TradeCap</em> in one call; share required.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Capabilities & limits</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Owner can mint <em>TradeCap</em> (trading only) to other addresses; no deposit/withdraw rights.</Text></li>
-          <li><Text size="2">Owner can mint <em>DepositCap</em> or <em>WithdrawCap</em> (fund moves) to others; no trading rights.</Text></li>
-          <li><Text size="2">Combined cap count (trade + withdraw + deposit) ≤ <strong>1000</strong>; revoke before minting beyond.</Text></li>
-          <li><Text size="2">Use <code>revoke_trade_cap</code> to revoke any of the three cap types.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Owner can mint <em>TradeCap</em> (trading only) to other addresses; no deposit/withdraw rights.</Text></div>
+          <div><Text size="2">Owner can mint <em>DepositCap</em> or <em>WithdrawCap</em> (fund moves) to others; no trading rights.</Text></div>
+          <div><Text size="2">Combined cap count (trade + withdraw + deposit) ≤ <strong>1000</strong>; revoke before minting beyond.</Text></div>
+          <div><Text size="2">Use <code>revoke_trade_cap</code> to revoke any of the three cap types.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Trading auth</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Every trade needs: shared <em>BalanceManager</em> + <em>TradeProof</em> + (optionally) pool inputs.</Text></li>
-          <li><Text size="2">TradeProof from owner: no equivocation risk; suited for HFT engines.</Text></li>
-          <li><Text size="2">TradeProof from <em>TradeCap</em> holder: simpler delegation but owned cap can equivocate—ensure trust.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Every trade needs: shared <em>BalanceManager</em> + <em>TradeProof</em> + (optionally) pool inputs.</Text></div>
+          <div><Text size="2">TradeProof from owner: no equivocation risk; suited for HFT engines.</Text></div>
+          <div><Text size="2">TradeProof from <em>TradeCap</em> holder: simpler delegation but owned cap can equivocate—ensure trust.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Deposits / withdrawals</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Owner-only deposit/withdraw functions move funds into/out of BalanceManager.</Text></li>
-          <li><Text size="2">Cap-based deposit/withdraw functions allow holders of <em>DepositCap</em>/<em>WithdrawCap</em> to move funds; no trading.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Owner-only deposit/withdraw functions move funds into/out of BalanceManager.</Text></div>
+          <div><Text size="2">Cap-based deposit/withdraw functions allow holders of <em>DepositCap</em>/<em>WithdrawCap</em> to move funds; no trading.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Other ops</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Set/unset referral on a TradeCap to link a <em>DeepBookReferral</em> for fee sharing.</Text></li>
-          <li><Text size="2">Register the BalanceManager with the registry to list it under the owner.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Set/unset referral on a TradeCap to link a <em>DeepBookReferral</em> for fee sharing.</Text></div>
+          <div><Text size="2">Register the BalanceManager with the registry to list it under the owner.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />

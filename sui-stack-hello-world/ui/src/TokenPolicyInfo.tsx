@@ -17,38 +17,38 @@ export function TokenPolicyInfo() {
 
       <Heading size="3">Core API</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2"><strong>new_policy</strong>(treasury_cap) → (TokenPolicy, TokenPolicyCap)</Text></li>
-          <li><Text size="2"><strong>share_policy</strong>(policy)</Text></li>
-          <li><Text size="2"><strong>allow / disallow</strong>(policy, cap, action: String)</Text></li>
-          <li><Text size="2"><strong>add_rule_for_action / remove_rule_for_action</strong>(policy, cap, action, Rule)</Text></li>
-          <li><Text size="2"><strong>confirm_request / confirm_request_mut</strong> (for ActionRequest, spend uses *_mut)</Text></li>
-          <li><Text size="2"><strong>flush</strong>(policy, treasury_cap) to consume spent balances</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2"><strong>new_policy</strong>(treasury_cap) → (TokenPolicy, TokenPolicyCap)</Text></div>
+          <div><Text size="2"><strong>share_policy</strong>(policy)</Text></div>
+          <div><Text size="2"><strong>allow / disallow</strong>(policy, cap, action: String)</Text></div>
+          <div><Text size="2"><strong>add_rule_for_action / remove_rule_for_action</strong>(policy, cap, action, Rule)</Text></div>
+          <div><Text size="2"><strong>confirm_request / confirm_request_mut</strong> (for ActionRequest, spend uses *_mut)</Text></div>
+          <div><Text size="2"><strong>flush</strong>(policy, treasury_cap) to consume spent balances</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Design & rule tips</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Keep actions explicit: default is deny; call <code>allow</code> per action you want public.</Text></li>
-          <li><Text size="2">Attach rules per action (allowlist/denylist, spending limits, KYC, service scopes).</Text></li>
-          <li><Text size="2">Test confirm_request pass/fail paths for each rule combo before production.</Text></li>
-          <li><Text size="2">If enabling to_coin/from_coin, guard with rules; otherwise you open the loop.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Keep actions explicit: default is deny; call <code>allow</code> per action you want public.</Text></div>
+          <div><Text size="2">Attach rules per action (allowlist/denylist, spending limits, KYC, service scopes).</Text></div>
+          <div><Text size="2">Test confirm_request pass/fail paths for each rule combo before production.</Text></div>
+          <div><Text size="2">If enabling to_coin/from_coin, guard with rules; otherwise you open the loop.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Operational best practices</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Separate capabilities: TreasuryCap for issuance/admin; TokenPolicyCap for policy changes.</Text></li>
-          <li><Text size="2">Share the TokenPolicy; keep the TokenPolicyCap private (treat like prod secret).</Text></li>
-          <li><Text size="2">Log/monitor policy updates (allow/disallow/rule changes); review before enabling new actions.</Text></li>
-          <li><Text size="2">Use <code>flush</code> with TreasuryCap to handle spent balances if spend rules apply.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Separate capabilities: TreasuryCap for issuance/admin; TokenPolicyCap for policy changes.</Text></div>
+          <div><Text size="2">Share the TokenPolicy; keep the TokenPolicyCap private (treat like prod secret).</Text></div>
+          <div><Text size="2">Log/monitor policy updates (allow/disallow/rule changes); review before enabling new actions.</Text></div>
+          <div><Text size="2">Use <code>flush</code> with TreasuryCap to handle spent balances if spend rules apply.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />

@@ -17,33 +17,33 @@ export function DeepBookInfo() {
 
       <Heading size="3">Tokenomics (DEEP)</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Trading fees payable in DEEP or input tokens; DEEP fee tier ~20% lower (governance-set).</Text></li>
-          <li><Text size="2">Staking DEEP: taker incentives (fees down to ~0.25 bps stable / 2.5 bps volatile) and maker rebates by volume.</Text></li>
-          <li><Text size="2">DEEP token: <code>0xdeeb7a46...::deep::DEEP</code> (see suivision link).</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Trading fees payable in DEEP or input tokens; DEEP fee tier ~20% lower (governance-set).</Text></div>
+          <div><Text size="2">Staking DEEP: taker incentives (fees down to ~0.25 bps stable / 2.5 bps volatile) and maker rebates by volume.</Text></div>
+          <div><Text size="2">DEEP token: <code>0xdeeb7a46...::deep::DEEP</code> (see suivision link).</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Order flow & matching</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Supports market and limit orders (bids/asks). Matching engine pools multiple contra orders to satisfy size.</Text></li>
-          <li><Text size="2">Parallel execution + low fees → low-latency on-chain CLOB.</Text></li>
-          <li><Text size="2">Transparent ledger: on-chain bids/asks enable monitoring, dashboards, and fairness.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Supports market and limit orders (bids/asks). Matching engine pools multiple contra orders to satisfy size.</Text></div>
+          <div><Text size="2">Parallel execution + low fees → low-latency on-chain CLOB.</Text></div>
+          <div><Text size="2">Transparent ledger: on-chain bids/asks enable monitoring, dashboards, and fairness.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Features</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Flash loans, governance hooks, improved account abstraction.</Text></li>
-          <li><Text size="2">SDK abstracts PTBs for trading/integration; suits DEX frontends, wallets, and MM bots.</Text></li>
-          <li><Text size="2">Open source; proposals via Sui Improvement Proposals (SIPs).</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Flash loans, governance hooks, improved account abstraction.</Text></div>
+          <div><Text size="2">SDK abstracts PTBs for trading/integration; suits DEX frontends, wallets, and MM bots.</Text></div>
+          <div><Text size="2">Open source; proposals via Sui Improvement Proposals (SIPs).</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />

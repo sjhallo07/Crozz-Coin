@@ -17,21 +17,21 @@ export function FlashLoansInfo() {
 
       <Heading size="3">Borrow</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Borrow base: returns assets plus <em>FlashLoan</em> token to force in-PTB repayment.</Text></li>
-          <li><Text size="2">Borrow quote: same pattern for quote asset.</Text></li>
-          <li><Text size="2">Amount can be up to pool-owned balance.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Borrow base: returns assets plus <em>FlashLoan</em> token to force in-PTB repayment.</Text></div>
+          <div><Text size="2">Borrow quote: same pattern for quote asset.</Text></div>
+          <div><Text size="2">Amount can be up to pool-owned balance.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />
 
       <Heading size="3">Repay</Heading>
       <Box asChild>
-        <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-          <li><Text size="2">Return base loan: unwraps <em>FlashLoan</em> only when funds are repaid; otherwise the PTB reverts.</Text></li>
-          <li><Text size="2">Return quote loan: same for quote.</Text></li>
-        </ul>
+        <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+          <div><Text size="2">Return base loan: unwraps <em>FlashLoan</em> only when funds are repaid; otherwise the PTB reverts.</Text></div>
+          <div><Text size="2">Return quote loan: same for quote.</Text></div>
+        </div>
       </Box>
 
       <Separator my="2" size="4" />

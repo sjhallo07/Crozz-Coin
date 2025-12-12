@@ -330,12 +330,12 @@ export function PaymentURIGenerator() {
               <Text size="2">
                 This URI is ready to be:
               </Text>
-              <ul style={{ margin: "8px 0 0 0", paddingLeft: "20px" }}>
-                <li><Text size="1">Encoded into a QR code</Text></li>
-                <li><Text size="1">Shared as a link</Text></li>
-                <li><Text size="1">Embedded in emails or messages</Text></li>
-                <li><Text size="1">Parsed by wallets supporting Payment Kit</Text></li>
-              </ul>
+              <div style={{ margin: "8px 0 0 0", paddingLeft: "20px" }}>
+                <div><Text size="1">Encoded into a QR code</Text></div>
+                <div><Text size="1">Shared as a link</Text></div>
+                <div><Text size="1">Embedded in emails or messages</Text></div>
+                <div><Text size="1">Parsed by wallets supporting Payment Kit</Text></div>
+              </div>
             </Callout.Text>
           </Callout.Root>
         </>

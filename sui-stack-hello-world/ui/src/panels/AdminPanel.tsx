@@ -43,7 +43,7 @@ export function AdminPanel({
   const [txResult, setTxResult] = useState<string | null>(null);
   const [showAddAdminDialog, setShowAddAdminDialog] = useState(false);
 
-  const { allGreetings = [], isLoading: greetingsLoading } = useQueryAllGreetings();
+  const { greetings: allGreetings = [], isLoading: greetingsLoading } = useQueryAllGreetings();
 
   const handleCreateGreeting = () => {
     if (!createText.trim()) {
@@ -377,17 +377,17 @@ export function AdminPanel({
             <Heading size="4" color="blue">
               Available Admin Functions
             </Heading>
-            <Box as="ul" style={{ paddingLeft: "20px" }}>
-              <Text as="li" size="2">
+            <Box as="div" style={{ paddingLeft: "20px" }}>
+              <Text as="div" size="2">
                 <strong>new()</strong> - Create a new greeting object
               </Text>
-              <Text as="li" size="2">
+              <Text as="div" size="2">
                 <strong>update_text(id, text)</strong> - Update greeting text
               </Text>
-              <Text as="li" size="2">
+              <Text as="div" size="2">
                 <strong>transfer_ownership(id, address)</strong> - Transfer to another owner
               </Text>
-              <Text as="li" size="2">
+              <Text as="div" size="2">
                 <strong>update_text_owner_only(id, text)</strong> - Owner-restricted update
               </Text>
             </Box>

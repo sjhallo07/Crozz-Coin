@@ -236,15 +236,15 @@ export function DisplayViewer() {
           Common Display Fields
         </Text>
         <Box asChild>
-          <ul style={{ margin: 0, paddingInlineStart: "18px" }}>
-            <li><Text size="1"><Code>name</Code>: Object name</Text></li>
-            <li><Text size="1"><Code>description</Code>: Object description</Text></li>
-            <li><Text size="1"><Code>image_url</Code>: Main image URL</Text></li>
-            <li><Text size="1"><Code>thumbnail_url</Code>: Thumbnail for previews</Text></li>
-            <li><Text size="1"><Code>link</Code>: Application link</Text></li>
-            <li><Text size="1"><Code>project_url</Code>: Project website</Text></li>
-            <li><Text size="1"><Code>creator</Code>: Creator info</Text></li>
-          </ul>
+          <div style={{ margin: 0, paddingInlineStart: "18px" }}>
+            <div><Text size="1"><Code>name</Code>: Object name</Text></div>
+            <div><Text size="1"><Code>description</Code>: Object description</Text></div>
+            <div><Text size="1"><Code>image_url</Code>: Main image URL</Text></div>
+            <div><Text size="1"><Code>thumbnail_url</Code>: Thumbnail for previews</Text></div>
+            <div><Text size="1"><Code>link</Code>: Application link</Text></div>
+            <div><Text size="1"><Code>project_url</Code>: Project website</Text></div>
+            <div><Text size="1"><Code>creator</Code>: Creator info</Text></div>
+          </div>
         </Box>
       </Box>
     </Card>
