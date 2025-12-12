@@ -7,6 +7,7 @@ import {
   Settings,
   Lock,
   BarChart3,
+  Shield,
 } from "lucide-react";
 
 interface DashboardNavProps {
@@ -34,6 +35,12 @@ export function DashboardNav({
       value: "user",
       icon: <Users size={16} />,
       available: role === "user" || role === "admin",
+    },
+    {
+      label: "RBAC Dashboard",
+      value: "rbac",
+      icon: <Shield size={16} />,
+      available: role === "admin",
     },
     {
       label: "Admin Panel",

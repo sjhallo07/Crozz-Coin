@@ -10,6 +10,9 @@ import { ConfigManager } from "./panels/ConfigManager";
 import { WalletConnectSection } from "./components/WalletConnectSection";
 import { RoleSelector } from "./components/RoleSelector";
 import { DashboardNav } from "./components/DashboardNav";
+import { AdminDashboard } from "./components/AdminDashboard";
+import { useAdminStore } from "./hooks/useAdminStore";
+import type { SmartContractFunction } from "./types/admin";
 
 export type UserRole = "admin" | "user" | "guest";
 
@@ -221,6 +224,13 @@ export function Dashboard() {
               {(state.role === "user" || state.role === "admin") && (
                 <Tabs.Content value="user">
                   <UserPanel adminAddresses={adminAddresses} />
+                </Tabs.Content>
+              )}
+
+              {/* Admin Roles & Permissions Dashboard */}
+              {state.role === "admin" && (
+                <Tabs.Content value="rbac">
+                  <AdminDashboard contractFunctions={[]} />
                 </Tabs.Content>
               )}
 
