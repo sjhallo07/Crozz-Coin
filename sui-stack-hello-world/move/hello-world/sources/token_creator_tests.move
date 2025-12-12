@@ -5,7 +5,6 @@
 module token_factory::token_creator_tests {
   use token_factory::token_creator::{
     Self,
-    TokenMetadata,
     TokenConfig,
   };
   use std::string;

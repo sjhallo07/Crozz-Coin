@@ -362,9 +362,9 @@ event ProposalExecutedEvent {
 
 ## Helpful Links
 
-- **Sui Docs**: https://docs.sui.io
-- **Sui SDK**: https://github.com/MystenLabs/sui
-- **Move Book**: https://move-language.github.io/move/
+- **Sui Docs**: <https://docs.sui.io>
+- **Sui SDK**: <https://github.com/MystenLabs/sui>
+- **Move Book**: <https://move-language.github.io/move/>
 
 ---
 

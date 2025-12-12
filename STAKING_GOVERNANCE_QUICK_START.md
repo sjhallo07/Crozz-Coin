@@ -16,6 +16,7 @@ export default function StakingPage() {
 ### Step 2: Update Navigation
 
 Add link to staking page:
+
 ```typescript
 // components/Navigation.tsx
 <Link href="/staking">
@@ -54,18 +55,21 @@ const builder = new StakingTransactionBuilder(config);
 ## 🎯 Main Features
 
 ### Staking
+
 - Stake minimum 1 CROZ
 - Earn 5% APY
 - Withdraw anytime
 - Real-time reward accrual
 
 ### Governance
+
 - Create proposals (3 types)
 - Vote with staked power
 - 7-day voting period
 - 2-day execution delay
 
 ### Parameters
+
 - Taker Fee: 0.5% (adjustable)
 - Maker Fee: 0.25% (adjustable)
 - Reward Rate: 5% (adjustable)
@@ -95,6 +99,7 @@ Documentation:
 ## 💡 Common Tasks
 
 ### Stake Tokens
+
 ```typescript
 const tx = stakingBuilder.buildStakeTransaction(
   tx,
@@ -104,6 +109,7 @@ const tx = stakingBuilder.buildStakeTransaction(
 ```
 
 ### Claim Rewards
+
 ```typescript
 const tx = stakingBuilder.buildClaimRewardsTransaction(
   tx,
@@ -113,6 +119,7 @@ const tx = stakingBuilder.buildClaimRewardsTransaction(
 ```
 
 ### Create Proposal
+
 ```typescript
 const tx = governanceBuilder.buildCreateProposalTransaction(
   tx,
@@ -125,6 +132,7 @@ const tx = governanceBuilder.buildCreateProposalTransaction(
 ```
 
 ### Vote on Proposal
+
 ```typescript
 const tx = governanceBuilder.buildVoteTransaction(
   tx,
@@ -151,6 +159,7 @@ const config = {
 ## 🧪 Testing
 
 ### Test Staking on Devnet
+
 ```bash
 # 1. Deploy to Devnet
 sui client publish --network devnet --gas-budget 100000000
@@ -163,6 +172,7 @@ npm run test:integration
 ```
 
 ### Test Governance Voting
+
 ```typescript
 // Create test proposal
 await governanceBuilder.buildCreateProposalTransaction(
@@ -187,12 +197,14 @@ await governanceBuilder.buildVoteTransaction(
 ## 📈 Reward Examples
 
 **100 CROZ staked @ 5% APY**
+
 - Daily: 0.0137 CROZ
 - Weekly: 0.096 CROZ
 - Monthly: 0.411 CROZ
 - Yearly: 5 CROZ
 
 **1000 CROZ staked @ 5% APY**
+
 - Daily: 0.137 CROZ
 - Weekly: 0.959 CROZ
 - Monthly: 4.11 CROZ
@@ -222,6 +234,7 @@ The StakingGovernance component includes:
 ## 📚 API Reference
 
 ### StakingTransactionBuilder
+
 - `buildStakeTransaction(tx, amount, clock)`
 - `buildUnstakeTransaction(tx, stakeId, clock)`
 - `buildClaimRewardsTransaction(tx, stakeId, clock)`
@@ -229,17 +242,20 @@ The StakingGovernance component includes:
 - `getAPY()`
 
 ### GovernanceTransactionBuilder
+
 - `buildCreateProposalTransaction(...)`
 - `buildVoteTransaction(...)`
 - `buildFinalizeProposalTransaction(...)`
 - `buildUpdateParameterTransaction(...)`
 
 ### StakingQueryHelper
+
 - `getTotalStaked()`
 - `getUserStakes(address)`
 - `getUserRewards(address)`
 
 ### GovernanceQueryHelper
+
 - `getActiveProposals()`
 - `getUserVotes(address)`
 - `getProposalDetails(id)`
@@ -247,6 +263,7 @@ The StakingGovernance component includes:
 ## 🐛 Debugging
 
 ### Enable Verbose Logging
+
 ```typescript
 // In stakingSDK.ts
 const DEBUG = true;
@@ -258,6 +275,7 @@ if (DEBUG) {
 ```
 
 ### Check Contract State
+
 ```typescript
 // Query pool state
 const pool = await client.getObject({
@@ -268,6 +286,7 @@ console.log('Pool state:', pool.data?.content);
 ```
 
 ### Verify Events
+
 ```typescript
 // Query staking events
 const events = await client.queryEvents({
@@ -288,23 +307,28 @@ console.log('Stake events:', events.data);
 ## 🚨 Common Issues
 
 **Issue**: "Insufficient Stake"
+
 - **Fix**: Ensure you have at least 1 CROZ staked
 
 **Issue**: "Proposal Expired"
+
 - **Fix**: Voting period is 7 days, finalize before claiming rewards
 
 **Issue**: "Not Staker"
+
 - **Fix**: Only stake owner can claim/unstake their stake
 
 **Issue**: "Already Voted"
+
 - **Fix**: Each user can vote once per proposal
 
 ## 📞 Support
 
 For issues or questions:
+
 1. Check [STAKING_GOVERNANCE_GUIDE.md](./STAKING_GOVERNANCE_GUIDE.md)
 2. Review inline code comments
-3. Check Sui documentation: https://docs.sui.io
+3. Check Sui documentation: <https://docs.sui.io>
 
 ## 🎓 Learning Path
 

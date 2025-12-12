@@ -13,6 +13,7 @@ npm run dev
 ### Files to Use
 
 1. Update `src/main.tsx`:
+
 ```typescript
 import AppLayout from './AppLayout'
 ReactDOM.createRoot(document.getElementById('root')!).render(<AppLayout />)
@@ -124,27 +125,33 @@ Done! Landing page + app are live.
 ## 🎨 Color Reference
 
 ### Primary Gradient (Used for CTAs)
+
 ```
 Angle: 135°
 Start: #8b5cf6 (Purple)
 End: #ec4899 (Pink)
 ```
+
 Example: [Launch Application] button
 
 ### Navigation Active State
+
 ```
 Color: #ec4899 (Pink)
 Background: rgba(236, 72, 153, 0.15)
 Border: Left 3px pink
 ```
+
 Example: Active navigation item
 
 ### Card Hover Effect
+
 ```
 Background: rgba(139, 92, 246, 0.05) → rgba(236, 72, 153, 0.05)
 Border: #3b3366 → #ec4899
 Transform: translateY(-5px)
 ```
+
 Example: Feature cards on hover
 
 ---
@@ -152,6 +159,7 @@ Example: Feature cards on hover
 ## 📐 Responsive Breakpoints
 
 ### Mobile (< 768px)
+
 ```
 Navigation: Hamburger menu
 Buttons: Full width, stacked
@@ -161,6 +169,7 @@ Spacing: Reduced
 ```
 
 ### Tablet (768px - 1024px)
+
 ```
 Navigation: Desktop menu
 Buttons: Inline, 2 columns
@@ -170,6 +179,7 @@ Spacing: Normal
 ```
 
 ### Desktop (> 1024px)
+
 ```
 Navigation: Full desktop menu
 Buttons: Inline, multiple options
@@ -185,6 +195,7 @@ Spacing: Full spacing
 ### Button States
 
 **Normal:**
+
 ```
 Background: Gradient (purple to pink)
 Text: White
@@ -193,6 +204,7 @@ Shadow: None
 ```
 
 **Hover:**
+
 ```
 Background: Same gradient
 Transform: translateY(-2px)
@@ -200,6 +212,7 @@ Shadow: 0 12px 30px rgba(139, 92, 246, 0.4)
 ```
 
 **Active:**
+
 ```
 Background: Same gradient
 Transform: translateY(0)
@@ -209,6 +222,7 @@ Shadow: Reduced
 ### Navigation Item States
 
 **Inactive:**
+
 ```
 Color: #a0aec0 (Gray)
 Background: None
@@ -216,6 +230,7 @@ Border: None
 ```
 
 **Hover:**
+
 ```
 Color: #ec4899 (Pink)
 Background: rgba(236, 72, 153, 0.1)
@@ -223,6 +238,7 @@ Transform: translateX(2px)
 ```
 
 **Active:**
+
 ```
 Color: #ec4899 (Pink)
 Background: rgba(236, 72, 153, 0.15)
@@ -234,6 +250,7 @@ Border-left: 3px solid pink
 ## 🔤 Typography Scale
 
 ### Landing Page
+
 ```
 Hero Title:     3.5rem (56px)    800 weight
 Section Title:  2.5rem (40px)    800 weight
@@ -245,6 +262,7 @@ Label:          0.85rem (13px)   600 weight
 ```
 
 ### App Layout
+
 ```
 Page Title:     2rem (32px)      800 weight
 Section:        1.25rem (20px)   600 weight
@@ -257,6 +275,7 @@ Small:          0.85rem (13px)   500 weight
 ## 📏 Spacing System
 
 ### Default Values
+
 ```
 XS: 0.25rem (4px)    Used for tiny gaps
 SM: 0.5rem  (8px)    Small components
@@ -266,6 +285,7 @@ XL: 2rem    (32px)   Section padding
 ```
 
 ### Card Padding
+
 ```
 Small cards: 1.5rem
 Large cards: 2rem
@@ -273,6 +293,7 @@ Section: 6rem vertical, 2rem horizontal
 ```
 
 ### Gap Between Elements
+
 ```
 Items in row: 1rem
 Cards in grid: 2rem
@@ -284,6 +305,7 @@ Sections: 6rem
 ## 🎬 Animations
 
 ### Floating Effect (Hero)
+
 ```css
 Duration: 6-8 seconds
 Movement: 20px up/down
@@ -292,6 +314,7 @@ Used on: Background blobs
 ```
 
 ### Hover Lift (Cards)
+
 ```css
 Duration: 0.3s
 Transform: translateY(-5px)
@@ -300,6 +323,7 @@ Used on: Feature cards
 ```
 
 ### Button Hover
+
 ```css
 Duration: 0.3s
 Transform: translateY(-2px)
@@ -308,6 +332,7 @@ Used on: All buttons
 ```
 
 ### Slide Down (Mobile Menu)
+
 ```css
 Duration: 0.3s
 From: opacity 0, translateY(-10px)
@@ -319,6 +344,7 @@ To: opacity 1, translateY(0)
 ## 📂 File Organization
 
 ### Component Files
+
 ```
 src/
 ├── AppLayout.tsx          (180 lines)
@@ -327,6 +353,7 @@ src/
 ```
 
 ### Styling Files
+
 ```
 src/
 ├── AppLayout.module.css       (600 lines)
@@ -335,6 +362,7 @@ src/
 ```
 
 ### Documentation Files
+
 ```
 ├── BRAND_GUIDELINES.md        (400 lines)
 ├── WHITEPAPER.md              (600 lines)
@@ -387,6 +415,7 @@ src/
 ## 📞 Quick Reference
 
 ### Key Colors
+
 | Color | Use | Hex |
 |-------|-----|-----|
 | Purple | Primary | #8b5cf6 |
@@ -397,6 +426,7 @@ src/
 | Border | Dividers | #3b3366 |
 
 ### Common Classes
+
 ```
 .primaryButton  - Gradient button
 .secondaryButton - Outline button
@@ -406,6 +436,7 @@ src/
 ```
 
 ### CSS Variables
+
 ```css
 --primary-purple: #8b5cf6
 --primary-pink: #ec4899
@@ -419,23 +450,27 @@ src/
 ## 🎯 Next Steps
 
 ### Immediate (5 mins)
+
 1. Update `src/main.tsx`
 2. Run `npm run dev`
 3. View landing page
 
 ### Short Term (1 hour)
+
 1. Test all navigation
 2. Check mobile responsive
 3. Test buttons/interactions
 4. Verify styling loads
 
 ### Medium Term (1 day)
+
 1. Customize content
 2. Update colors if needed
 3. Add your logo
 4. Link to actual whitepaper
 
 ### Long Term (1 week)
+
 1. Connect Sui wallet
 2. Implement smart contract calls
 3. Deploy to production
@@ -459,17 +494,18 @@ src/
 
 ---
 
-## 🎉 You're All Set!
+## 🎉 You're All Set
 
 Your CROZZ Coin landing page and application are complete, styled, documented, and ready to deploy.
 
 **To launch right now:**
+
 ```bash
 cd /workspaces/Crozz-Coin
 npm run dev
 ```
 
-Then visit: http://localhost:5173 (or your dev server URL)
+Then visit: <http://localhost:5173> (or your dev server URL)
 
 ---
 

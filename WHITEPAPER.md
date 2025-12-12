@@ -5,6 +5,7 @@
 CROZZ Coin is a decentralized finance (DeFi) platform built on the Sui blockchain that combines advanced token creation, staking rewards, and community-driven governance. The platform enables token creators to issue immutable tokens with transparent supply verification while allowing the community to earn rewards and participate in ecosystem governance.
 
 **Key Features:**
+
 - Advanced token creation with cryptographic immutability verification
 - Staking mechanism with 5% annual percentage yield (APY)
 - Democratic governance model with 3 proposal types
@@ -19,6 +20,7 @@ CROZZ Coin is a decentralized finance (DeFi) platform built on the Sui blockchai
 ### 1.1 Vision
 
 CROZZ Coin envisions a future where:
+
 - Token creation is accessible to all users with built-in security guarantees
 - Community members are rewarded for participation and governance
 - Decisions affecting the ecosystem are made democratically
@@ -27,6 +29,7 @@ CROZZ Coin envisions a future where:
 ### 1.2 Problem Statement
 
 Current DeFi platforms often suffer from:
+
 - Lack of transparency in token supply management
 - Centralized governance decisions
 - Limited participation incentives for community members
@@ -35,6 +38,7 @@ Current DeFi platforms often suffer from:
 ### 1.3 Solution
 
 CROZZ Coin solves these problems by:
+
 - Implementing cryptographic verification of token immutability
 - Enabling community governance through staking and voting
 - Providing transparent reward distribution
@@ -47,18 +51,21 @@ CROZZ Coin solves these problems by:
 ### 2.1 Technical Stack
 
 **Blockchain:** Sui (Layer 1 blockchain)
+
 - **Language:** Move (Sui's smart contract language)
 - **Security Model:** Proof-of-Stake
 - **Transaction Speed:** Sub-second finality
 - **Gas Model:** Predictable, low-cost transactions
 
 **Frontend:**
+
 - **Framework:** React 18 with TypeScript
 - **State Management:** React Hooks + Zustand
 - **Wallet Integration:** @mysten/dapp-kit
 - **UI Library:** Radix UI + Lucide React icons
 
 **SDK:**
+
 - **Language:** TypeScript
 - **Type Safety:** Full TypeScript interfaces
 - **Transaction Builders:** Object-oriented pattern
@@ -69,12 +76,14 @@ CROZZ Coin solves these problems by:
 #### Core Modules
 
 **1. Staking Module**
+
 - User deposits: Minimum 1 CROZ
 - Reward calculation: Real-time APY (5%)
 - Withdrawal: Instant unstaking with reward claiming
 - Verification: Immutable stake records
 
 **2. Governance Module**
+
 - Proposal creation: Community members can submit proposals
 - Proposal types:
   - **Technical:** Contract upgrades, bug fixes
@@ -87,6 +96,7 @@ CROZZ Coin solves these problems by:
 - Execution: 2-day delay for security review
 
 **3. Admin/RBAC Module**
+
 - Roles:
   - **User:** Basic access, staking only
   - **Admin:** Manage proposals, update parameters
@@ -100,6 +110,7 @@ CROZZ Coin solves these problems by:
 - Access control: On-chain role verification
 
 **4. Token Creation Module**
+
 - Token properties:
   - Name, symbol, decimals
   - Supply (fixed, non-modifiable)
@@ -112,6 +123,7 @@ CROZZ Coin solves these problems by:
 ### 2.3 Data Structures
 
 #### StakingPool
+
 ```move
 struct StakingPool {
     id: UID,
@@ -124,6 +136,7 @@ struct StakingPool {
 ```
 
 #### StakeRecord
+
 ```move
 struct StakeRecord {
     id: UID,
@@ -136,6 +149,7 @@ struct StakeRecord {
 ```
 
 #### Proposal
+
 ```move
 struct Proposal {
     id: UID,
@@ -153,6 +167,7 @@ struct Proposal {
 ```
 
 #### VoteRecord
+
 ```move
 struct VoteRecord {
     id: UID,
@@ -165,6 +180,7 @@ struct VoteRecord {
 ```
 
 #### AdminUser
+
 ```move
 struct AdminUser {
     address: address,
@@ -194,6 +210,7 @@ struct AdminUser {
 **Compounding:** Optional (manual claim)
 
 **Example Calculation:**
+
 ```
 Stake: 100 CROZ
 Annual Reward: 100 × 0.05 = 5 CROZ
@@ -222,6 +239,7 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 ### 4.1 Three-Tier Governance
 
 **Tier 1: Technical Proposals**
+
 - Contract upgrades
 - Bug fixes
 - New features
@@ -229,6 +247,7 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 - Execution delay: 2 days
 
 **Tier 2: Parameter Proposals**
+
 - APY adjustments (1% - 10% range)
 - Voting duration changes
 - Minimum stake adjustments
@@ -236,6 +255,7 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 - Execution delay: 2 days
 
 **Tier 3: Emergency Proposals**
+
 - Security response
 - Critical bug patches
 - Emergency parameter changes
@@ -283,6 +303,7 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 ### 4.4 Admin Governance
 
 **Super Admin Capabilities:**
+
 - Create proposals directly (no deposit)
 - Update governance parameters
 - Add/remove other admins
@@ -290,6 +311,7 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 - Manage access control
 
 **Admin Capabilities:**
+
 - Create proposals
 - Approve parameter changes
 - Manage user permissions
@@ -302,6 +324,7 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 ### 5.1 Smart Contract Security
 
 **Move Language Benefits:**
+
 - No unhandled exceptions
 - Immutability by default
 - Resource safety (no duplicate resources)
@@ -309,6 +332,7 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 - Type safety at compile time
 
 **Security Practices:**
+
 - Input validation on all functions
 - Overflow/underflow protection (u64 types)
 - Access control via RBAC system
@@ -318,12 +342,14 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 ### 5.2 Contract Verification
 
 **Immutability Verification:**
+
 - SHA-256 hash of token metadata
 - Stored on-chain permanently
 - Public verification interface
 - Tamper-proof (Move guarantees)
 
 **Smart Contract Audit:**
+
 - Code review by security experts
 - Static analysis tools
 - Testnet deployment (30 days)
@@ -333,11 +359,13 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 ### 5.3 Access Control
 
 **Authentication:**
+
 - Sui wallet signatures
 - Multi-sig support for critical functions
 - Transaction authorization
 
 **Authorization:**
+
 - Role-based access control (RBAC)
 - Permission matrix for each role
 - Time-locked execution for sensitive operations
@@ -346,18 +374,21 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 ### 5.4 Risk Mitigation
 
 **Pause Mechanism:**
+
 - Admin can pause staking
 - Pause prevents new stakes
 - Existing stakes can be unstaked
 - Used during emergencies
 
 **Parameter Bounds:**
+
 - APY: 1% - 10%
 - Min stake: 0.1 - 10 CROZ
 - Voting duration: 3 - 30 days
 - Execution delay: 1 - 7 days
 
 **Time Locks:**
+
 - All changes have minimum delay
 - Emergency proposals: 1-day delay
 - Parameter changes: 2-day delay
@@ -370,12 +401,14 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 ### 6.1 Staking Incentives
 
 **Direct Rewards:**
+
 - 5% APY on staked CROZ
 - Real-time accrual
 - Instant claiming
 - No lockup period
 
 **Compounding:**
+
 - Users can reinvest rewards
 - Automatic compounding if rewards are restaked
 - Formula: A = P(1 + r/n)^(nt)
@@ -383,12 +416,14 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 ### 6.2 Governance Incentives
 
 **Voting Incentives:**
+
 - Community participation recognition
 - Stake-weighted voting power
 - Proposal creation reward (1 CROZ returned)
 - Future: DAO treasury distribution
 
 **Delegation Incentives:**
+
 - Future version: Delegation fee sharing
 - Encourage delegation to engaged admins
 - Transparent fee structure
@@ -396,12 +431,14 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 ### 6.3 Community Incentives
 
 **Early Adopter Program:**
+
 - Bootstrap period: 10% APY
 - 30-day period from launch
 - Higher APY for earlier stakers
 - Phase-out to 5% APY
 
 **Referral Program:**
+
 - (Future) Refer new users
 - (Future) Earn 0.5% of referred stakes
 - (Future) Unlimited earning potential
@@ -414,6 +451,7 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 
 **Purpose:** Attract and educate users
 **Content:**
+
 - Hero section with value proposition
 - 6 feature highlights
 - How it works (4-step process)
@@ -424,6 +462,7 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 ### 7.2 Dashboard
 
 **Key Metrics:**
+
 - Total value staked (TVL)
 - Current APY
 - Total users staking
@@ -435,6 +474,7 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 **Three Tabs:**
 
 **Tab 1: Stake**
+
 - Current stake display
 - Deposit amount input
 - Stake button
@@ -442,6 +482,7 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 - Balance overview
 
 **Tab 2: Rewards**
+
 - Pending rewards calculation
 - Reward history
 - Claim button
@@ -449,6 +490,7 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 - Next reward estimation
 
 **Tab 3: Governance**
+
 - Active proposals list
 - Proposal details
 - Vote buttons (For/Against)
@@ -458,6 +500,7 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 ### 7.4 Admin Dashboard
 
 **Features:**
+
 - User role management
 - Proposal approval interface
 - Parameter configuration
@@ -471,12 +514,14 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 ### 8.1 Phase 1: Testnet (30 days)
 
 **Objectives:**
+
 - Contract testing in live environment
 - User acceptance testing (UAT)
 - Security audit completion
 - Bug fixing and optimization
 
 **Activities:**
+
 - Deploy to Sui testnet
 - Open testnet faucet
 - Community testing
@@ -485,12 +530,14 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 ### 8.2 Phase 2: Mainnet Launch
 
 **Milestones:**
+
 - 24-hour pre-launch notice
 - Mainnet deployment
 - Wallet integration activation
 - Public staking opening
 
 **Safety Measures:**
+
 - Pause mechanism active
 - Emergency admin ready
 - 24/7 monitoring
@@ -499,6 +546,7 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 ### 8.3 Phase 3: Growth (3-6 months)
 
 **Goals:**
+
 - $100M+ TVL
 - 10,000+ active users
 - Community governance activation
@@ -509,22 +557,26 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 ## 9. Roadmap
 
 ### Q1 2024
+
 - ✅ Smart contract development
 - ✅ Frontend development
 - ✅ Testnet deployment
 - ✅ Security audit
 
 ### Q2 2024
+
 - 🔄 Mainnet launch
 - 🔄 Community governance activation
 - 🔄 Mobile app development
 
 ### Q3 2024
+
 - 📅 Advanced token features
 - 📅 Cross-chain bridge (future)
 - 📅 Marketplace integration
 
 ### Q4 2024+
+
 - 📅 DAO treasury system
 - 📅 Yield farming
 - 📅 Decentralized exchange (DEX)
@@ -536,12 +588,14 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 ### 10.1 Economic Sustainability
 
 **Reward Distribution:**
+
 - Source: Protocol inflation (capped at 10% annually)
 - Distribution: To staking rewards pool
 - Sustainability: Indefinite (minimal inflation)
 - Adjustment: Governance vote required for changes
 
 **Fee Structure:**
+
 - Platform: 0% (no platform fees)
 - Gas fees: Standard Sui network fees
 - Execution: 3-5% for emergency proposals
@@ -550,12 +604,14 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 ### 10.2 Security Sustainability
 
 **Maintenance:**
+
 - Quarterly security audits
 - Ongoing smart contract monitoring
 - Community bug reporting
 - Continuous improvement process
 
 **Scalability:**
+
 - Sui blockchain handles 10,000+ TPS
 - Current contract: Supports unlimited users
 - Gas optimization: Built-in
@@ -575,12 +631,14 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 ### 11.2 DAO Treasury
 
 **Future Implementation:**
+
 - Community fund for ecosystem development
 - Governance proposal funding
 - Community grants program
 - Development bounties
 
 **Funding:**
+
 - 1% of governance fees
 - Community contribution matching
 - Grant allocation by vote
@@ -590,6 +648,7 @@ Daily Reward: 5 ÷ 365 ≈ 0.0137 CROZ
 ## 12. Conclusion
 
 CROZZ Coin represents a new paradigm in decentralized finance, combining:
+
 - **Security:** Cryptographic verification and smart contract safety
 - **Transparency:** On-chain governance and transparent staking
 - **Accessibility:** Simple UX and low barriers to entry
@@ -612,11 +671,11 @@ By building on Sui's high-performance blockchain, CROZZ Coin offers users a scal
 
 ### B. Useful Links
 
-- **GitHub:** https://github.com/crozzcoin
-- **Documentation:** https://docs.crozzcoin.com
-- **Whitepaper:** https://crozzcoin.com/whitepaper
-- **Governance:** https://vote.crozzcoin.com
-- **Explorer:** https://explorer.sui.io
+- **GitHub:** <https://github.com/crozzcoin>
+- **Documentation:** <https://docs.crozzcoin.com>
+- **Whitepaper:** <https://crozzcoin.com/whitepaper>
+- **Governance:** <https://vote.crozzcoin.com>
+- **Explorer:** <https://explorer.sui.io>
 
 ### C. Glossary
 
@@ -630,10 +689,10 @@ By building on Sui's high-performance blockchain, CROZZ Coin offers users a scal
 
 ### D. Contact & Support
 
-**Email:** support@crozzcoin.com
-**Discord:** https://discord.gg/crozzcoin
+**Email:** <support@crozzcoin.com>
+**Discord:** <https://discord.gg/crozzcoin>
 **Twitter:** @crozzcoin
-**Governance Forum:** https://forum.crozzcoin.com
+**Governance Forum:** <https://forum.crozzcoin.com>
 
 ---
 
@@ -644,4 +703,4 @@ By building on Sui's high-performance blockchain, CROZZ Coin offers users a scal
 
 ---
 
-*This whitepaper represents the current vision and roadmap of CROZZ Coin. Specifications may change based on community governance and technical requirements. For the latest updates, visit https://crozzcoin.com*
+*This whitepaper represents the current vision and roadmap of CROZZ Coin. Specifications may change based on community governance and technical requirements. For the latest updates, visit <https://crozzcoin.com>*
