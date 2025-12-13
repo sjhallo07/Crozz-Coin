@@ -39,6 +39,7 @@ import { GraphQLProvider } from "./contexts/GraphQLContext";
 import { GraphQLExplorer } from "./components/GraphQLExplorer";
 import { GraphQLConnectionPanel } from "./components/GraphQLConnectionPanel";
 import { TestnetStatus } from "./components/TestnetStatus";
+import { LanguageSelector } from "./i18n";
 import { ObjectViewer } from "./components/ObjectViewer";
 import { GraphQLHealthPanel } from "./components/GraphQLHealthPanel";
 import { CreateCurrencyPanel } from "./components/CreateCurrencyPanel";
@@ -147,6 +148,7 @@ function App() {
         </Box>
 
         <Box style={{ display: "flex", gap: 10, alignItems: "center" }}>
+          <LanguageSelector />
           {currentAccount && (
             <Button
               variant="soft"
