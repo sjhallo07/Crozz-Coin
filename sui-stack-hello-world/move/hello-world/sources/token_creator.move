@@ -7,7 +7,7 @@ module token_factory::token_creator {
   use std::string::{Self, String};
   use sui::coin;
   use sui::transfer;
-  use sui::tx_context::{Self, TxContext};
+  use sui::tx_context::TxContext;
   use sui::object::{Self, UID};
   use sui::balance::Balance;
   use sui::event;
@@ -41,7 +41,7 @@ module token_factory::token_creator {
 
   const MAX_NAME_LENGTH: u64 = 100;
   const MAX_DESCRIPTION_LENGTH: u64 = 1000;
-  const MAX_DECIMALS: u64 = 9;
+  const MAX_DECIMALS: u8 = 9;
 
   // ============================================================================
   // Structs
@@ -190,6 +190,47 @@ module token_factory::token_creator {
     (metadata, config)
   }
 
+  // =========================================================================
+  // Public Entry Functions (externally callable)
+  // =========================================================================
+
+  /// Entry: create token and transfer resulting objects to sender
+  public entry fun create_token_entry(
+    name: String,
+    symbol: String,
+    decimals: u8,
+    description: String,
+    icon_url: String,
+    module_name: String,
+    initial_supply: u64,
+    is_mintable: bool,
+    is_freezable: bool,
+    is_pausable: bool,
+    treasury_cap_holder: address,
+    supply_recipient: address,
+    ctx: &mut TxContext,
+  ) {
+    let (metadata, config) = create_token(
+      name,
+      symbol,
+      decimals,
+      description,
+      icon_url,
+      module_name,
+      initial_supply,
+      is_mintable,
+      is_freezable,
+      is_pausable,
+      treasury_cap_holder,
+      supply_recipient,
+      ctx,
+    );
+
+    let sender = tx_context::sender(ctx);
+    transfer::transfer(metadata, sender);
+    transfer::transfer(config, sender);
+  }
+
   // ============================================================================
   // Public Functions - Pause/Unpause
   // ============================================================================
@@ -210,6 +251,14 @@ module token_factory::token_creator {
     });
   }
 
+  /// Entry: pause token transfers (super admin only)
+  public entry fun pause_token_entry(
+    config: &mut TokenConfig,
+    ctx: &mut TxContext,
+  ) {
+    pause_token(config, ctx)
+  }
+
   /// Unpause token transfers (super admin only)
   public fun unpause_token(
     config: &mut TokenConfig,
@@ -224,6 +273,14 @@ module token_factory::token_creator {
       module_name: b"token".to_string(),
       timestamp: tx_context::epoch_timestamp_ms(ctx),
     });
+  }
+
+  /// Entry: unpause token transfers (super admin only)
+  public entry fun unpause_token_entry(
+    config: &mut TokenConfig,
+    ctx: &mut TxContext,
+  ) {
+    unpause_token(config, ctx)
   }
 
   // ============================================================================
@@ -249,6 +306,15 @@ module token_factory::token_creator {
     });
   }
 
+  /// Entry: freeze an address
+  public entry fun freeze_address_entry(
+    config: &mut TokenConfig,
+    address_to_freeze: address,
+    ctx: &mut TxContext,
+  ) {
+    freeze_address(config, address_to_freeze, ctx)
+  }
+
   /// Unfreeze an address
   public fun unfreeze_address(
     config: &mut TokenConfig,
@@ -267,6 +333,15 @@ module token_factory::token_creator {
       unfrozen_address: address_to_unfreeze,
       timestamp: tx_context::epoch_timestamp_ms(ctx),
     });
+  }
+
+  /// Entry: unfreeze an address
+  public entry fun unfreeze_address_entry(
+    config: &mut TokenConfig,
+    address_to_unfreeze: address,
+    ctx: &mut TxContext,
+  ) {
+    unfreeze_address(config, address_to_unfreeze, ctx)
   }
 
   // ============================================================================
@@ -291,6 +366,17 @@ module token_factory::token_creator {
     metadata.icon_url = icon_url;
   }
 
+  /// Entry: update token metadata (if mutable)
+  public entry fun update_metadata_entry(
+    metadata: &mut TokenMetadata,
+    name: String,
+    description: String,
+    icon_url: String,
+    ctx: &mut TxContext,
+  ) {
+    update_metadata(metadata, name, description, icon_url, ctx)
+  }
+
   /// Lock metadata (make immutable)
   public fun lock_metadata(
     metadata: &mut TokenMetadata,
@@ -298,6 +384,14 @@ module token_factory::token_creator {
   ) {
     assert!(tx_context::sender(ctx) == metadata.creator, E_NO_PERMISSION);
     metadata.is_mutable = false;
+  }
+
+  /// Entry: lock metadata (make immutable)
+  public entry fun lock_metadata_entry(
+    metadata: &mut TokenMetadata,
+    ctx: &mut TxContext,
+  ) {
+    lock_metadata(metadata, ctx)
   }
 
   // ============================================================================

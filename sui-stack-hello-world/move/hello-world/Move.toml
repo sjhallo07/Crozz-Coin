@@ -4,7 +4,8 @@ version = "0.0.1"
 edition = "2024.beta"
 
 [dependencies]
-Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/testnet" }
+# Use local Sui framework to avoid git fetch issues inside containers
+Sui = { local = "../../../crates/sui-framework/packages/sui-framework" }
 
 [addresses]
 hello_world = "0x9e10377e3868f6929cc1d38b5fb9deccf0fbc3b7afa0a7d2b395b8c23fe9a152"

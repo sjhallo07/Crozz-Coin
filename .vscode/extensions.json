@@ -6,6 +6,7 @@
         "1yib.rust-bundle",
         "swellaby.rust-pack",
         "ms-python.python",
-        "github.copilot-chat"
+        "github.copilot-chat",
+        "ms-kubernetes-tools.vscode-kubernetes-tools"
     ]
 }

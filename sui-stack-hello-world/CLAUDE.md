@@ -12,6 +12,7 @@ This is a Sui blockchain hello world application with two main components:
 ## Common Commands
 
 ### Move Package Development
+
 ```bash
 # Navigate to Move package directory
 cd move/hello-world
@@ -26,6 +27,7 @@ sui client publish --gas-budget 100000000
 ```
 
 ### Frontend Development
+
 ```bash
 # Navigate to UI directory
 cd ui
@@ -49,12 +51,14 @@ tsc
 ## Key Architecture Patterns
 
 ### Move Contract (`greeting.move`)
+
 - `new()` function creates a new shared `Greeting` object - can be called by anyone at any time
 - `update_text()` function allows anyone to modify the greeting text of existing objects
 - Uses Sui's shared object pattern - anyone can access but transactions are strictly ordered
 - Multiple `Greeting` objects can exist simultaneously
 
 ### Frontend Integration
+
 - **Package ID**: Must be updated in `ui/src/constants.ts` after Move package publication
 - **Network Config**: Uses `@mysten/dapp-kit`'s `createNetworkConfig` for testnet configuration
 - **Transaction Pattern**: Uses `Transaction` class with `moveCall` for smart contract interaction
@@ -62,6 +66,7 @@ tsc
 - **Object Management**: App tracks greeting object IDs via URL hash and local state
 
 ### Publication Workflow
+
 1. Publish Move package with `sui client publish`
 2. Copy `PackageID` from output to `TESTNET_HELLO_WORLD_PACKAGE_ID` in `constants.ts`
 3. Users can create new `Greeting` objects by calling the `new` function
@@ -70,7 +75,7 @@ tsc
 ## Prerequisites
 
 - Sui CLI installed and configured for testnet
-- Testnet wallet address with SUI tokens (from https://faucet.sui.io)
+- Testnet wallet address with SUI tokens (from <https://faucet.sui.io>)
 - pnpm for frontend package management
 
 ## Development Notes

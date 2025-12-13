@@ -5,7 +5,26 @@
  * to interact with Move smart contracts on Sui
  */
 
-import { useGreeting, useTokenCreator } from '@/hooks/useSmartContracts';
+// TODO: Implement hooks and update import path accordingly
+// import { useGreeting, useTokenCreator } from '@/hooks/useSmartContracts';
+const useGreeting = (_opts?: any) => ({
+  loading: false,
+  error: null as any,
+  createGreeting: () => {},
+  updateGreeting: (_id: string, _text: string) => {},
+  transferOwnership: (_id: string, _owner: string) => {},
+});
+const useTokenCreator = (_opts?: any) => ({
+  loading: false,
+  error: null as any,
+  createToken: (_payload: any) => {},
+  pauseToken: (_configId: string) => {},
+  unpauseToken: (_configId: string) => {},
+  freezeAddress: (_configId: string, _addr: string) => {},
+  unfreezeAddress: (_configId: string, _addr: string) => {},
+  updateMetadata: (_metadataId: string, _name: string, _desc: string, _url: string) => {},
+  lockMetadata: (_configId: string) => {},
+});
 import { useCurrentAccount } from '@mysten/dapp-kit';
 import { useState } from 'react';
 import styles from './SmartContractDemo.module.css';
@@ -13,10 +32,10 @@ import styles from './SmartContractDemo.module.css';
 export function SmartContractDemo() {
   const account = useCurrentAccount();
   const greeting = useGreeting({
-    packageId: process.env.REACT_APP_GREETING_PACKAGE_ID || '',
+    packageId: import.meta.env.VITE_GREETING_PACKAGE_ID || '',
   });
   const tokenCreator = useTokenCreator({
-    packageId: process.env.REACT_APP_TOKEN_PACKAGE_ID || '',
+    packageId: import.meta.env.VITE_TOKEN_PACKAGE_ID || '',
   });
 
   // Greeting state

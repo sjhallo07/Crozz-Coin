@@ -19,6 +19,7 @@ npm install -g pnpm@9.1.1
 ```
 
 Verify installation:
+
 ```bash
 pnpm --version
 ```
@@ -47,11 +48,13 @@ pnpm dev
 ```
 
 The development server will start and be available at:
-- **Local URL**: http://localhost:5173/
+
+- **Local URL**: <http://localhost:5173/>
 
 #### Development Server Output
 
 When running successfully, you should see:
+
 ```
 VITE v5.4.21  ready in 179 ms
 
@@ -66,6 +69,7 @@ VITE v5.4.21  ready in 179 ms
 ## Features of the Kiosk Demo
 
 The Kiosk Demo interface includes:
+
 - **Wallet Connection**: Connect your Sui wallet to interact with kiosks
 - **Network Selection**: Switch between localnet, devnet, testnet, and mainnet
 - **Kiosk Search**: Search for kiosks by address or Sui Kiosk ID
@@ -102,6 +106,7 @@ This repository contains several other dApps that can be run similarly:
 - **Sponsored Transactions** (`dapps/sponsored-transactions`)
 
 Each dApp can be run using the same pattern:
+
 ```bash
 cd dapps/<dapp-name>
 pnpm dev
@@ -138,6 +143,7 @@ If Hot Module Replacement (HMR) isn't working:
 
 1. Check your firewall settings
 2. Try using `--host` flag to expose the server:
+
    ```bash
    pnpm dev -- --host
    ```
@@ -153,7 +159,7 @@ If Hot Module Replacement (HMR) isn't working:
 
 Once the development server is running, you can:
 
-1. Open http://localhost:5173/ in your browser
+1. Open <http://localhost:5173/> in your browser
 2. Connect a Sui wallet (requires a Sui-compatible wallet extension)
 3. Select your preferred network (testnet recommended for testing)
 4. Search for existing kiosks or create your own
@@ -170,6 +176,7 @@ Once the development server is running, you can:
 ## Environment Configuration
 
 The Kiosk Demo uses the following network configurations:
+
 - **Localnet**: For local development with a local Sui node
 - **Devnet**: Sui's development network
 - **Testnet**: Sui's test network (recommended for testing)

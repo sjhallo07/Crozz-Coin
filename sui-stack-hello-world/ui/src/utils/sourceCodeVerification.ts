@@ -34,13 +34,13 @@ export interface ModuleInfo {
 export interface FunctionInfo {
   name: string;
   visibility: 'public' | 'private' | 'entry';
-  parameters: string[];
-  returnType: string;
+  parameters: any[];
+  returnType: any;
 }
 
 export interface StructInfo {
   name: string;
-  abilities: string[];
+  abilities: any;
   fields: FieldInfo[];
 }
 
@@ -91,17 +91,17 @@ export class SourceCodeVerifier {
             name: funcName,
             visibility: func.isEntry ? 'entry' : 'public',
             parameters: func.parameters || [],
-            returnType: func.return ? func.return.toString() : 'void',
+            returnType: func.return ?? 'void',
           })
         );
 
         const structs: StructInfo[] = Object.entries(module.structs || {}).map(
           ([structName, struct]) => ({
             name: structName,
-            abilities: struct.abilities || [],
-            fields: Object.entries(struct.fields || {}).map(([fieldName, field]) => ({
+            abilities: (struct as any).abilities || [],
+            fields: Object.entries((struct as any).fields || {}).map(([fieldName, field]) => ({
               name: fieldName,
-              type: field.toString(),
+              type: String(field),
             })),
           })
         );

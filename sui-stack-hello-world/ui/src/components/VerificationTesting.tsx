@@ -10,9 +10,10 @@ import {
   SourceCodeVerifier,
   VerificationResult,
   PackageInfo,
+  ModuleInfo,
   verificationUtils,
   createVerificationReport,
-} from '@/utils/sourceCodeVerification';
+} from '../utils/sourceCodeVerification';
 import {
   DAppFunctionTester,
   TestResult,
@@ -20,7 +21,7 @@ import {
   FunctionTestConfig,
   assert,
   mockData,
-} from '@/utils/dAppFunctionTesting';
+} from '../utils/dAppFunctionTesting';
 import { Transaction } from '@mysten/sui/transactions';
 import styles from './VerificationTesting.module.css';
 
@@ -172,10 +173,10 @@ export function VerificationTesting() {
         ],
       };
 
-      const results = await tester.runTestSuite(suite);
+      const results: TestResult[] = await tester.runTestSuite(suite);
       setTestResults([...results, ...testResults]);
       
-      const passed = results.filter((r) => r.success).length;
+      const passed = results.filter((r: TestResult) => r.success).length;
       alert(`Test suite completed: ${passed}/${results.length} tests passed`);
     } catch (error) {
       alert(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -247,7 +248,7 @@ export function VerificationTesting() {
                 <strong>Modules:</strong> {packageInfo.modules.length}
               </p>
               <ul>
-                {packageInfo.modules.map((module) => (
+                {packageInfo.modules.map((module: ModuleInfo) => (
                   <li key={module.name}>
                     <strong>{module.name}</strong>
                     <ul>

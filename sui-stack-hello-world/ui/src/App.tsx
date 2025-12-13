@@ -60,6 +60,10 @@ import { NetworksInfo } from "./components/NetworksInfo";
 import { WalletGrid } from "./components/WalletGrid";
 import { ServiceMarketplace } from "./components/ServiceMarketplace";
 import { MarketplaceDashboard } from "./components/MarketplaceDashboard";
+import { LandingPage } from "./LandingPage";
+import { TokenGeneratorHub } from "./TokenGeneratorHub";
+import { TokenDashboardHub } from "./TokenDashboardHub";
+import { TokenToolsHub } from "./TokenToolsHub";
 
 function App() {
   const currentAccount = useCurrentAccount();
@@ -67,13 +71,51 @@ function App() {
     const hash = window.location.hash.slice(1);
     return isValidSuiObjectId(hash) ? hash : null;
   });
-  const [viewMode, setViewMode] = useState<"dashboard" | "original">("dashboard");
+  const [viewMode, setViewMode] = useState<"landing" | "generator" | "dashboardHub" | "toolsHub" | "dashboard" | "original">("landing");
 
   const accountChains = currentAccount?.chains ?? [];
   const isOnTestnet = accountChains.includes(SUI_TESTNET_CHAIN);
   const activeChainLabel = accountChains[0];
 
-  // Show Dashboard by default
+  if (viewMode === "landing") {
+    return (
+      <LandingPage
+        onOpenApp={() => setViewMode("dashboard")}
+        onOpenGenerator={() => setViewMode("generator")}
+        onOpenDashboardHub={() => setViewMode("dashboardHub")}
+        onOpenToolsHub={() => setViewMode("toolsHub")}
+      />
+    );
+  }
+
+  if (viewMode === "generator") {
+    return (
+      <TokenGeneratorHub
+        onBack={() => setViewMode("landing")}
+        onOpenApp={() => setViewMode("dashboard")}
+      />
+    );
+  }
+
+  if (viewMode === "toolsHub") {
+    return (
+      <TokenToolsHub
+        onBack={() => setViewMode("landing")}
+        onOpenApp={() => setViewMode("dashboard")}
+      />
+    );
+  }
+
+  if (viewMode === "dashboardHub") {
+    return (
+      <TokenDashboardHub
+        onBack={() => setViewMode("landing")}
+        onOpenApp={() => setViewMode("dashboard")}
+      />
+    );
+  }
+
+  // Show Dashboard by default once inside app
   if (viewMode === "dashboard") {
     return <Dashboard />;
   }
