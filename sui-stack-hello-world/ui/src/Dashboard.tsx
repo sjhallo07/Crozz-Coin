@@ -38,14 +38,14 @@ export function Dashboard() {
   useEffect(() => {
     if (currentAccount?.address) {
       const isAdmin = adminAddresses.includes(currentAccount.address);
-      setState((prev) => ({
-        ...prev,
+      setState({
+        ...state,
         role: isAdmin ? "admin" : currentAccount ? "user" : "guest",
-      }));
+      });
     } else {
-      setState((prev) => ({ ...prev, role: "guest" }));
+      setState({ ...state, role: "guest" });
     }
-  }, [currentAccount?.address, adminAddresses]);
+  }, [currentAccount?.address, adminAddresses, state]);
 
   const handleAddAdmin = (address: string) => {
     const updated = [...adminAddresses, address];

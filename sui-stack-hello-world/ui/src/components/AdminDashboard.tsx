@@ -18,11 +18,12 @@ export function AdminDashboard({ contractFunctions = [] }: AdminDashboardProps) 
   });
 
   useEffect(() => {
-    setAdminStats({
+    const stats = {
       totalAdmins: 1, // Would fetch from state
       totalPermissions: currentUser ? 8 : 0, // Based on role
       availableFunctions: contractFunctions.length,
-    });
+    };
+    setAdminStats(stats);
   }, [currentUser, contractFunctions]);
 
   const currentUserRole = currentUser?.role || "user";

@@ -42,15 +42,21 @@ export function ConfigManager() {
     const stored = localStorage.getItem("greeting_config");
     if (stored) {
       const parsedConfig = JSON.parse(stored);
-      setConfig(parsedConfig);
-      setOriginalConfig(parsedConfig);
+      try {
+        setConfig(parsedConfig);
+        setOriginalConfig(parsedConfig);
+      } catch (e) {
+        console.error("Failed to parse config", e);
+      }
     }
   }, []);
 
   useEffect(() => {
     const changed = JSON.stringify(config) !== JSON.stringify(originalConfig);
-    setHasChanges(changed);
-  }, [config, originalConfig]);
+    if (changed !== hasChanges) {
+      setHasChanges(changed);
+    }
+  }, [config, originalConfig, hasChanges]);
 
   const handleSave = () => {
     localStorage.setItem("greeting_config", JSON.stringify(config));
