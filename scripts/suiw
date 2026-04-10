@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+LOCAL_SUI="$ROOT_DIR/.tools/sui/sui"
+
+if command -v sui >/dev/null 2>&1; then
+    exec "$(command -v sui)" "$@"
+fi
+
+if [[ -x "$LOCAL_SUI" ]]; then
+    exec "$LOCAL_SUI" "$@"
+fi
+
+echo "Sui CLI not found. Run ./scripts/install_sui_cli.sh or install Sui globally." >&2
+exit 127

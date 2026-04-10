@@ -1,0 +1,24 @@
+{
+    "mcpServers": {
+        "remote-sui-prompts": {
+            "command": "ssh",
+            "args": [
+                "user@your-remote-server.com",
+                "npx",
+                "-y",
+                "@modelcontextprotocol/server-everything"
+            ],
+            "disabled": false,
+            "alwaysAllow": [
+                "get_master_prompt",
+                "list_prompts"
+            ]
+        },
+        "local-prompt-manager": {
+            "command": "node",
+            "args": [
+                "/path/to/your/local/mcp-server/build/index.js"
+            ]
+        }
+    }
+}
